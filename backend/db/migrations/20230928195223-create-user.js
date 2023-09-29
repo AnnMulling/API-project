@@ -14,6 +14,14 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
+      firstName: {
+        type: Sequelize.STRING(30),
+        allowNull: false
+      },
+      lastName: {
+        type: Sequelize.STRING(30),
+        allowNull: false
+      },
       username: {
         type: Sequelize.STRING(30),
         allowNull: false,
@@ -40,11 +48,13 @@ module.exports = {
       }
     }, options);
 
-    // await queryInterface.addIndex('Users', ['username', 'email']);
+    //await queryInterface.addIndex('Users', ['firstName', 'lastName']);
   },
   async down(queryInterface, Sequelize) {
     options.tableName = "Users";
+
+   // await queryInterface.removeIndex('Users', ['firstName', 'lastName']);
+
     return queryInterface.dropTable(options);
-    // await queryInterface.removeIndex('Users', ['username', 'email'])
   }
 };

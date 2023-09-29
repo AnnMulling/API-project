@@ -2,11 +2,25 @@ const express = require('express');
 const router = express.Router();
 const { Op } = require('sequelize');
 const bcrypt = require('bcryptjs');
-
 const { setTokenCookie, restoreUser } = require('../../utils/auth');
 const { User } = require('../../db/models')
 
-router.post('/', async(req, res, next) => {
+//Validating Login Request Body
+const { check } = require('express-validator');
+const { handleValidationErrors } = require('../../utils/validation')
+
+const validateLogin = [
+    check('credential')
+    .exists({ checkFalsy: true })
+    .notEmpty()
+    .withMessage('Please provide a valid email or username'),
+    check('password')
+    .exists({ checkFalsy: true })
+    .withMessage('Please provide a password'),
+    handleValidationErrors
+]
+
+router.post('/', validateLogin, async(req, res, next) => {
     const { credential, password } = req.body;
     const user = await User.unscoped().findOne({
         where: {
@@ -27,6 +41,8 @@ router.post('/', async(req, res, next) => {
 
     const safeUser = {
         id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
         email: user.email,
         username: user.username,
     };
@@ -48,6 +64,8 @@ router.get('/', (req, res) => {
     if (user) {
         const safeUser = {
             id: user.id,
+            firstName: user.firstName,
+            lastName: user.lastName,
             email: user.email,
             username: user.username,
         };
@@ -60,10 +78,20 @@ router.get('/', (req, res) => {
 /*
 
 fetch('/api/session', {
-    method: 'DELETE',
+    method: 'POST',
     headers: {
         "Content-Type": "application/json",
-        "XSRF-TOKEN": "HVuejj5k-FxK4D8Cku8HTwmBTsgIF8bNbX5o"
+        "XSRF-TOKEN": "U5mFkn6f-s133ayTtOotGAw6YMSQq8sf_PkA"
+    },
+    body: JSON.stringify({ credential: 'demo@user.io', password: 'password' })
+}).then(res => res.json()).then(data => console.log(data));
+
+
+fetch('/api/session', {
+    method: 'DELETE',
+    headers: {
+         "Content-Type": "application/json",
+        "XSRF-TOKEN": "U5mFkn6f-s133ayTtOotGAw6YMSQq8sf_PkA"
     }
 }).then(res => res.json()).then(data => console.log(data));
 */
