@@ -38,6 +38,21 @@ router.post('/', async(req, res, next) => {
     });
 });
 
+router.delete('/', (_req, res) => {
+    res.clearCookie('token');
+    return res.json( {message: 'success'} )
+});
+
+/*
+
+fetch('/api/session', {
+    method: 'DELETE',
+    headers: {
+        "Content-Type": "application/json",
+        "XSRF-TOKEN": "HVuejj5k-FxK4D8Cku8HTwmBTsgIF8bNbX5o"
+    }
+}).then(res => res.json()).then(data => console.log(data));
+*/
 
 
 module.exports = router;
