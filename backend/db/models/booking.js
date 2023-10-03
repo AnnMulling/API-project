@@ -37,12 +37,13 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         isDate: true,
-        checkDate() {
-          if (this.startDate) {
-            throw new Error("Start date conflicts with an existing booking")
-          }
-        }
-       }
+      //   checkDate() {
+      //     if (this.startDate) {
+      //       throw new Error("Start date conflicts with an existing booking")
+      //     }
+      //   }
+      //  }
+      }
     },
     endDate: {
       type: DataTypes.DATE,
@@ -50,16 +51,16 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         isDate: true,
 
-        startAfterendDate() {
-          if (this.endDate.isBefore(this.startDate)) {
-            throw new Error("endDate cannot be on or before startDate")
-          }
-        },
-        checkDate() {
-          if (this.endDate) {
-            throw new Error("End date conflicts with an existing booking")
-          }
-        }
+        // startAfterendDate() {
+        //   if (this.endDate.isBefore(this.startDate)) {
+        //     throw new Error("endDate cannot be on or before startDate")
+        //   }
+        // },
+        // checkDate() {
+        //   if (this.endDate) {
+        //     throw new Error("End date conflicts with an existing booking")
+        //   }
+        // }
        }
     },
 
