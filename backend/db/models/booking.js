@@ -35,30 +35,43 @@ module.exports = (sequelize, DataTypes) => {
     startDate: {
       type: DataTypes.DATE,
       allowNull: false,
-
       validate: {
-        checkStartDate(date) {
-          if(date) {
-            throw Error ("Start date conflicts with an existing booking")
+        isDate: true,
+        checkDate() {
+          if (this.startDate) {
+            throw new Error("Start date conflicts with an existing booking")
           }
-        },
-     }
-
+        }
+       }
     },
     endDate: {
       type: DataTypes.DATE,
       allowNull: false,
       validate: {
-        checkDate(value) {
-          if (new Date(value) < new Date()) {
-            throw new Error ("endDate cannot be on or before startDate")
+        isDate: true,
+
+        startAfterendDate() {
+          if (this.endDate.isBefore(this.startDate)) {
+            throw new Error("endDate cannot be on or before startDate")
+          }
+        },
+        checkDate() {
+          if (this.endDate) {
+            throw new Error("End date conflicts with an existing booking")
           }
         }
-      }
-    }
+       }
+    },
+
+
   }, {
     sequelize,
     modelName: 'Booking',
+    defaultScope: {
+      attributes: {
+        exclude: ["createdAt", "updatedAt"]
+      }
+    }
   });
   return Booking;
 };
