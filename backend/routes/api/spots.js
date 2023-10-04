@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { Op } = require('sequelize');
+const { requireAuth } = require('../../utils/auth');
 const { Spot, User, SpotImage, Review } = require('../../db/models');
 
 
@@ -46,7 +47,7 @@ const validateSpot = [
 
 
 //Get all Spots
-router.get('/', async(req, res) => {
+router.get('/',  async(req, res) => {
 
     const spots = await Spot.findAll({
         include:
@@ -91,7 +92,7 @@ router.get('/', async(req, res) => {
 });
 
 //Get all Spots owned by the Current User
-router.get('/current', async(req, res) => {
+router.get('/current', requireAuth, async(req, res) => {
 
     const { user } = req
 
@@ -189,7 +190,7 @@ router.get('/:spotId', async(req, res) => {
 });
 
 //Create a Spot
-router.post('/', validateSpot, async(req, res) => {
+router.post('/', [ validateSpot, requireAuth ],  async(req, res) => {
     const { user } = req;
 
     const {
@@ -225,7 +226,7 @@ router.post('/', validateSpot, async(req, res) => {
 })
 
 //Add an Image to a Spot based on the Spot's id
-router.post('/:spotId/images', async(req, res) => {
+router.post('/:spotId/images', requireAuth, async(req, res) => {
     const { spotId } = req.params;
     const { url, preview } = req.body;
 
@@ -249,8 +250,9 @@ router.post('/:spotId/images', async(req, res) => {
 })
 
 //Edit a Spot
-router.put('/:spotId', validateSpot, async(req, res) => {
+router.put('/:spotId', [ validateSpot, requireAuth ], async(req, res) => {
     const { spotId } = req.params;
+    const { user  } = req;
     const {
         address,
         city,
@@ -265,6 +267,13 @@ router.put('/:spotId', validateSpot, async(req, res) => {
 
     const spot = await Spot.unscoped().findByPk(spotId);
 
+    if (spot.ownerId !== user.id) {
+        res.status(403)
+        res.json({
+            message: "Unauthorized Not Allow"
+        })
+    }
+
 
     if(!spot) {
         res.status(404)
@@ -274,6 +283,7 @@ router.put('/:spotId', validateSpot, async(req, res) => {
             }
         )
     };
+
     spot.address = address
     spot.city = city
     spot.state = state
@@ -284,10 +294,36 @@ router.put('/:spotId', validateSpot, async(req, res) => {
     spot.description = description
     spot.price = price
 
+   await spot.save();
+
     res.json(spot)
 
 })
 
 //Delete a Spot
+
+router.delete('/:spotId', requireAuth, async(req, res) => {
+    const { spotId } = req.params;
+
+    const spot = await Spot.findByPk(spotId);
+
+    if(!spot) {
+        res.status(404)
+        res.json(
+            {
+            "message": "Spot couldn't be found"
+            }
+        )
+    };
+
+    await spot.destroy();
+
+    res.json(
+        {
+        "message": "Spot couldn't be found"
+        }
+      )
+
+});
 
 module.exports = router;
