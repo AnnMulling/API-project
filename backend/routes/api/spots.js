@@ -68,13 +68,6 @@ router.get('/', async(req, res) => {
             {
                 spotId: spot.id
             },
-            include:
-            [
-                {
-                    model: SpotImage,
-                    attributes: ['url'],
-                }
-             ]
         });
 
         const sumReview = await Review.sum( 'stars', {

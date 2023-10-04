@@ -32,7 +32,7 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'ReviewImage',
     defaultScope: {
       attributes: {
-        exclude: ["createdAt", "updatedAt"]
+        exclude: [ "createdAt", "updatedAt" ]
       }
     }
   });
