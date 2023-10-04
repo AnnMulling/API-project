@@ -304,7 +304,7 @@ router.put('/:spotId', [ validateSpot, requireAuth ], async(req, res) => {
 
 router.delete('/:spotId', requireAuth, async(req, res) => {
     const { spotId } = req.params;
-
+    console.log(spotId)
     const spot = await Spot.findByPk(spotId);
 
     if(!spot) {
@@ -320,7 +320,7 @@ router.delete('/:spotId', requireAuth, async(req, res) => {
 
     res.json(
         {
-        "message": "Spot couldn't be found"
+        "message": "Successfully deleted"
         }
       )
 
