@@ -229,8 +229,6 @@ router.post('/:spotId/images', async(req, res) => {
     const { spotId } = req.params;
     const { url, preview } = req.body;
 
-    // console.log('==>', spotId, '===>', url)
-
     const spot = await Spot.findByPk(spotId);
 
     if(!spot) {
@@ -251,7 +249,44 @@ router.post('/:spotId/images', async(req, res) => {
 })
 
 //Edit a Spot
+router.put('/:spotId', validateSpot, async(req, res) => {
+    const { spotId } = req.params;
+    const {
+        address,
+        city,
+        state,
+        country,
+        lat,
+        lng,
+        name,
+        description,
+        price
+        } = req.body;
 
+    const spot = await Spot.unscoped().findByPk(spotId);
+
+
+    if(!spot) {
+        res.status(404)
+        res.json(
+            {
+            "message": "Spot couldn't be found"
+            }
+        )
+    };
+    spot.address = address
+    spot.city = city
+    spot.state = state
+    spot.country = country
+    spot.lat = lat
+    spot.lng = lng
+    spot.name = name
+    spot.description = description
+    spot.price = price
+
+    res.json(spot)
+
+})
 
 //Delete a Spot
 
