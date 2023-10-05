@@ -40,9 +40,9 @@ router.get('/current', [ requireAuth, matchUserBooking ], async (req, res) => {
         if (!images.length) booking.Spot.previewImage = "Image Not Available";
 
         for (let j = 0; j < images.length; j++) {
-            let image = images[j];
+             let image = images[j];
 
-            booking.Spot.previewImage = image.url
+             booking.Spot.previewImage = image.url
         }
     };
 
@@ -52,7 +52,7 @@ router.get('/current', [ requireAuth, matchUserBooking ], async (req, res) => {
      });
 })
 
-//Get all bookings for a spot based on the spot's id
+
 
 
 //Create a Booking from a Spot based on the spot's id

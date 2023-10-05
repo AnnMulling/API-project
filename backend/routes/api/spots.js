@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
 const { Op } = require("sequelize");
-const { requireAuth } = require('../../utils/auth');
+const { requireAuth, checkOwner } = require('../../utils/auth');
 const { Spot, User, SpotImage, Review, ReviewImage } = require('../../db/models');
 
 
 // const { check } = require('express-validator');
 // const { handleValidationErrors } = require('../../utils/validation');
-const { validateReview, validateSpot } = require('../../utils/validation-review');
+const { validateReview, validateSpot} = require('../../utils/validation-review');
 const { matchSpot, matchReview, matchUserSpot } = require('../../utils/validation-notFound');
 
 //Get all Spots owned by the Current User
@@ -111,8 +111,17 @@ router.get('/:spotId', async(req, res) => {
     res.json(result);
 });
 
+//Get all bookings for a spot based on the spot's id
+router.get('/:spotId/reviews', matchSpot,  async(req, res) => {
+
+})
+
+
+
+
+
 //Get all Reviews by a Spot's id
-router.get('/:spotId/reviews',  requireAuth, async(req, res) => {
+router.get('/:spotId/reviews',  matchSpot, async(req, res) => {
     const { spotId } = req.params;
 
     const spotReview = await Review.unscoped().findAll({
@@ -195,7 +204,7 @@ router.get('/',  async(req, res) => {
 });
 
 //Create a Review for a Spot based on the Spot's id
-router.post('/:spotId/reviews', [ requireAuth, matchUserSpot, validateReview ] , async(req, res) => {
+router.post('/:spotId/reviews', [ checkOwner, requireAuth, matchUserSpot, matchSpot, validateReview ] , async(req, res) => {
     const { spotId } = req.params;
     const { user } = req;
     const { review, stars } = req.body;
