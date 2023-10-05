@@ -10,15 +10,12 @@ const validator = {
             .withMessage('Review text is required'),
         check('stars')
             .exists({ checkFalsy: true })
-            .isFloat({ min: 1, max: 5})
+            .isInt({ min: 1, max: 5})
             .withMessage('Stars must be an integer from 1 to 5'),
 
         handleValidationErrors
     ],
     validateSpot: [
-        // check('ownerId')
-        //     .isInt({ checkFalsy: true })
-        //     .exists({ checkFalsy: true }),
         check('address')
             .exists({ checkFalsy: true })
             .withMessage('Street address is required'),
@@ -55,4 +52,4 @@ const validator = {
 
 
 
-module.exports =  validator
+module.exports =  validator;

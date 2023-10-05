@@ -49,6 +49,7 @@ const matchUserSpot = async function (req, res, next) {
     next(err);
 };
 
+
 const matchUserReview = async function (req, res, next) {
     const { reviewId } = req.params;
     const { user } = req;

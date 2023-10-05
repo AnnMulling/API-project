@@ -3,21 +3,11 @@ const router = express.Router();
 const { requireAuth } = require('../../utils/auth');
 const { Spot, User, ReviewImage, Review, SpotImage } = require('../../db/models');
 
-const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation');
-const { matchSpot, matchReview, matchUserSpot, matchUserReview  } = require('../../utils/validation-notFound');
+// const { check } = require('express-validator');
+// const { handleValidationErrors } = require('../../utils/validation');
+const { matchReview, matchUserReview  } = require('../../utils/validation-notFound');
+const { validateReview, validateSpot } = require('../../utils/validation-review');
 
-const validateReview = [
-    check('review')
-        .exists({ checkFalsy: true })
-        .withMessage('Review text is required'),
-    check('stars')
-        .exists({ checkFalsy: true })
-        .isFloat({ min: 1, max: 5})
-        .withMessage('Stars must be an integer from 1 to 5'),
-
-    handleValidationErrors
-]
 
 //Get all reviews of the Current User
 router.get('/current', requireAuth, async(req, res) => {
@@ -72,19 +62,24 @@ router.get('/current', requireAuth, async(req, res) => {
 
 
 //Add an Image to a Review bashed on the Review's id
-router.post('/:reviewId/images', [ matchUserReview , matchReview, requireAuth ], async ( req, res ) => {
+router.post('/:reviewId/images', [ matchUserReview , matchReview,  requireAuth, validateReview ], async ( req, res ) => {
     const { reviewId } = req.params;
+
     const { url } = req.body;
+
     const review = await Review.findByPk(reviewId);
+
     const allReviewImg = await ReviewImage.count({
+
         where: {
             reviewId: reviewId
-        },
+        }
     });
 
-    if (allReviewImg > 10) {
+    if (allReviewImg >= 10) {
         res.status(403);
-        res.json({
+        res.json(
+            {
             message: "Maximum number of images for this resource was reached"
         });
     };
@@ -101,7 +96,25 @@ router.post('/:reviewId/images', [ matchUserReview , matchReview, requireAuth ],
 })
 
 //Edit a Review
+router.put('/:reviewId', [  matchUserReview , matchReview, validateReview, requireAuth ], async (req, res) => {
+        const { reviewId } = req.params;
+        const { review, stars } = req.body;
+        const updatedReview = await Review.findByPk(reviewId, {
 
+          attributes: {
+
+            include: ['id', 'userId', 'spotId', 'review', 'stars', 'createdAt', 'updatedAt']
+
+        }
+
+        });
+
+        updatedReview.review = review;
+        updatedReview.stars = stars;
+        // updatedReview.update({review: review, stars: stars})
+
+        res.json(updatedReview);
+});
 
 //Delete a Review
 
