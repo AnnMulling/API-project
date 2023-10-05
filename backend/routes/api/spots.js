@@ -8,7 +8,7 @@ const { Spot, User, SpotImage, Review, ReviewImage } = require('../../db/models'
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
 const { validateReview, validateSpot } = require('../../utils/validation-review');
-
+const { matchSpot, matchReview, matchUserSpot } = require('../../utils/validation-notFound');
 
 //Get all Spots owned by the Current User
 router.get('/current', requireAuth, async(req, res) => {
@@ -220,9 +220,9 @@ router.post('/:spotId/reviews', [ requireAuth, validateReview ] , async(req, res
         res.status(403);
         res.json(
             {
-
             "message": "User already has a review for this spot"
-        });
+            }
+        );
     };
 
      const newReview = await Review.unscoped().create({
@@ -238,7 +238,7 @@ router.post('/:spotId/reviews', [ requireAuth, validateReview ] , async(req, res
 })
 
 //Create a Spot
-router.post('/', [ validateSpot, requireAuth ],  async(req, res) => {
+router.post('/', [  matchUserSpot ,validateSpot, requireAuth ],  async(req, res) => {
     const { user } = req;
 
     const {
@@ -274,20 +274,20 @@ router.post('/', [ validateSpot, requireAuth ],  async(req, res) => {
 })
 
 //Add an Image to a Spot based on the Spot's id
-router.post('/:spotId/images', requireAuth, async(req, res) => {
+router.post('/:spotId/images', [ matchSpot, requireAuth], async(req, res) => {
     const { spotId } = req.params;
     const { url, preview } = req.body;
 
     const spot = await Spot.findByPk(spotId);
 
-    if(!spot) {
-        res.status(404)
-        res.json(
-            {
-            "message": "Spot couldn't be found"
-            }
-        )
-    };
+    // if(!spot) {
+    //     res.status(404)
+    //     res.json(
+    //         {
+    //         "message": "Spot couldn't be found"
+    //         }
+    //     )
+    // };
 
     const spotImg = await spot.createSpotImage({
         url,
@@ -298,7 +298,7 @@ router.post('/:spotId/images', requireAuth, async(req, res) => {
 })
 
 //Edit a Spot
-router.put('/:spotId', [ validateSpot, requireAuth ], async(req, res) => {
+router.put('/:spotId', [ matchUserSpot, matchSpot, validateSpot, requireAuth ], async(req, res) => {
     const { spotId } = req.params;
     const { user  } = req;
     const {
@@ -315,22 +315,22 @@ router.put('/:spotId', [ validateSpot, requireAuth ], async(req, res) => {
 
     const spot = await Spot.unscoped().findByPk(spotId);
 
-    if (spot.ownerId !== user.id) {
-        res.status(403)
-        res.json({
-            message: "Unauthorized Not Allow"
-        })
-    }
+    // if (spot.ownerId !== user.id) {
+    //     res.status(403)
+    //     res.json({
+    //         message: "Unauthorized Not Allow"
+    //     })
+    // }
 
 
-    if(!spot) {
-        res.status(404)
-        res.json(
-            {
-            "message": "Spot couldn't be found"
-            }
-        )
-    };
+    // if(!spot) {
+    //     res.status(404)
+    //     res.json(
+    //         {
+    //         "message": "Spot couldn't be found"
+    //         }
+    //     )
+    // };
 
     spot.address = address
     spot.city = city
@@ -350,19 +350,18 @@ router.put('/:spotId', [ validateSpot, requireAuth ], async(req, res) => {
 
 //Delete a Spot
 
-router.delete('/:spotId', requireAuth, async(req, res) => {
+router.delete('/:spotId', [ matchUserSpot, matchSpot, requireAuth ], async(req, res) => {
     const { spotId } = req.params;
-    console.log(spotId)
     const spot = await Spot.findByPk(spotId);
 
-    if(!spot) {
-        res.status(404)
-        res.json(
-            {
-            "message": "Spot couldn't be found"
-            }
-        )
-    };
+    // if(!spot) {
+    //     res.status(404)
+    //     res.json(
+    //         {
+    //         "message": "Spot couldn't be found"
+    //         }
+    //     )
+    // };
 
     await spot.destroy();
 
