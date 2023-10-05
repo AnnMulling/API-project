@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { jwtConfig } = require('../config');
-const { User } = require('../db/models');
+const { User, Spot } = require('../db/models');
 
 const { secret, expiresIn } = jwtConfig;
 
@@ -71,4 +71,19 @@ return next(err);
 
 };
 
-module.exports = { setTokenCookie, restoreUser, requireAuth }
+
+//Owner cant review
+const checkOwner = async function (req, res, next) {
+  const { user } = req;
+  const { spotId } = req.params;
+
+  const spot = await Spot.findByPK(spotId);
+
+  if (req.method === 'PUT' || req.method === 'POST' && spot.ownerId === user.id) {
+      res.status(403);
+      res.json("Owner cannot make reviews");
+  }
+  next();
+};
+
+module.exports = { setTokenCookie, restoreUser, requireAuth, checkOwner }

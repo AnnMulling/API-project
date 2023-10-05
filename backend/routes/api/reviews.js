@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { requireAuth } = require('../../utils/auth');
+const { requireAuth, checkOwner } = require('../../utils/auth');
 const { Spot, User, ReviewImage, Review, SpotImage } = require('../../db/models');
 
+// const { check } = require('express-validator');
+// const { handleValidationErrors } = require('../../utils/validation');
 const { matchReview, matchUserReview  } = require('../../utils/validation-notFound');
-const { validateReview } = require('../../utils/validation-review');
+const { validateReview, validateSpot } = require('../../utils/validation-review');
 
 
 //Get all reviews of the Current User
@@ -24,7 +26,15 @@ router.get('/current', async(req, res) => {
             {
                 model: Spot,
                 attributes:  ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price'],
-
+                include: [
+                    {
+                        model: SpotImage,
+                        attributes: ['url'],
+                        where: {
+                            preview: true
+                        }
+                    }
+                ]
             },
             {
                 model: ReviewImage,
@@ -34,28 +44,19 @@ router.get('/current', async(req, res) => {
         ]
     });
 
-    const result = userReview.map(review => review.toJSON())
-    const images = await SpotImage.findAll({
-        where: {
-            preview: true
-        }
-    });
+
+     userReview.map( review => review.toJSON())
 
 
-    for (let i = 0; i < result.length; i++) {
-        let review = result[i];
+    for (let review of userReview) {
 
-        if (!images.length) review.Spot.previewImage = "Image Not Available";
+         review.Spot.previewImage = review.Spot.SpotImages.url
 
-        for (let j = 0; j < images.length; j++) {
-            let image = images[j];
-            review.Spot.previewImage = image.url
-        }
-    };
-
+         delete review.Spot.SpotImages
+    }
 
     res.json({
-        Review: result
+        Review: userReview
     });
 });
 
@@ -96,7 +97,7 @@ router.post('/:reviewId/images', [ matchUserReview , matchReview,  requireAuth ]
 })
 
 //Edit a Review
-router.put('/:reviewId', [  matchUserReview , matchReview, validateReview, requireAuth ], async (req, res) => {
+router.put('/:reviewId', [ checkOwner, matchUserReview , matchReview, validateReview, requireAuth ], async (req, res) => {
         const { reviewId } = req.params;
         const { review, stars } = req.body;
         const updatedReview = await Review.findByPk(reviewId, {
@@ -130,4 +131,4 @@ router.delete('/:reviewId', [ matchUserReview, matchReview ], async (req, res) =
 
 
 
-module.exports = router;
+module.exports = router ;
