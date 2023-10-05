@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { requireAuth } = require('../../utils/auth');
-const { Spot, User, SpotImage, Review } = require('../../db/models');
+const { Spot, User, SpotImage, Review, ReviewImage } = require('../../db/models');
 
 
 const { check } = require('express-validator');
@@ -45,50 +45,6 @@ const validateSpot = [
 ];
 
 
-//Get all Spots
-router.get('/',  async(req, res) => {
-
-    const spots = await Spot.findAll({
-        include:
-        [
-            {
-                model: SpotImage,
-                attributes: ['url'],
-            }
-        ]
-    });
-
-    const result = [];
-
-    for (let spot of spots) {
-        spot = spot.toJSON();
-
-        const spotRate = await Review.count({
-            where:
-            {
-                spotId: spot.id
-            },
-        });
-
-        const sumReview = await Review.sum( 'stars', {
-            where: {
-                spotId: spot.id
-            }
-        });
-
-        spot.avgRating = sumReview / spotRate;
-
-        if (spot.SpotImages.length)  {
-            spot.previewImage = spot.SpotImages[0].url
-        }
-        delete spot.SpotImages;
-
-        result.push(spot);
-
-    }
-
-    res.json(result)
-});
 
 //Get all Spots owned by the Current User
 router.get('/current', requireAuth, async(req, res) => {
@@ -103,8 +59,8 @@ router.get('/current', requireAuth, async(req, res) => {
             },
         ],
         where: {
-                ownerId: user.id
-            }
+            ownerId: user.id
+        }
     });
 
     const result = [];
@@ -114,14 +70,14 @@ router.get('/current', requireAuth, async(req, res) => {
 
         const spotRate = await Review.count({
             where: {
-                    spotId: spot.id
-                }
+                spotId: spot.id
+            }
         });
 
         const sumReview = await Review.sum( 'stars', {
             where: {
-                    spotId: spot.id
-                }
+                spotId: spot.id
+            }
         });
 
         spot.avgRating = sumReview / spotRate;
@@ -137,6 +93,7 @@ router.get('/current', requireAuth, async(req, res) => {
 
     res.json(result);
 });
+
 
 
 //Get details of a Spot from an id
@@ -187,6 +144,90 @@ router.get('/:spotId', async(req, res) => {
 
     res.json(result);
 });
+
+//Get all Reviews by a Spot's id
+router.get('/:spotId/reviews',  requireAuth, async(req, res) => {
+    const { spotId } = req.params;
+
+    const spotReview = await Review.unscoped().findAll({
+        where: {
+            spotId: spotId
+        },
+        include: [
+            {
+                model: User,
+                attributes: ['id', 'firstName', 'lastName']
+            },
+            {
+                model: ReviewImage,
+                attributes: ['id', 'url']
+            }
+        ]
+    })
+
+
+        if (!spotReview.length) {
+            res.status(404)
+            res.json(
+                {
+                "message": "Spot couldn't be found"
+                }
+              )
+        }
+
+
+
+       res.json(spotReview);
+
+
+});
+
+//Get all Spots
+router.get('/',  async(req, res) => {
+
+    const spots = await Spot.findAll({
+        include:
+        [
+            {
+                model: SpotImage,
+                attributes: ['url'],
+            }
+        ]
+    });
+
+    const result = [];
+
+    for (let spot of spots) {
+        spot = spot.toJSON();
+
+        const spotRate = await Review.count({
+            where:
+            {
+                spotId: spot.id
+            },
+        });
+
+        const sumReview = await Review.sum( 'stars', {
+            where: {
+                spotId: spot.id
+            }
+        });
+
+        spot.avgRating = sumReview / spotRate;
+
+        if (spot.SpotImages.length)  {
+            spot.previewImage = spot.SpotImages[0].url
+        }
+        delete spot.SpotImages;
+
+        result.push(spot);
+
+    }
+
+    res.json(result)
+});
+
+
 
 //Create a Spot
 router.post('/', [ validateSpot, requireAuth ],  async(req, res) => {
