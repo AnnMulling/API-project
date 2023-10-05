@@ -75,7 +75,7 @@ return next(err);
 //Owner cant review
 const checkOwner = async function (req, res, next) {
   const { user } = req;
-  const { spotId } = req.params;
+  
 
   const spot = await Spot.findByPK(spotId);
 
@@ -83,7 +83,7 @@ const checkOwner = async function (req, res, next) {
       res.status(403);
       res.json("Owner cannot make reviews");
   }
-  next();
+  next(err);
 };
 
 module.exports = { setTokenCookie, restoreUser, requireAuth, checkOwner }

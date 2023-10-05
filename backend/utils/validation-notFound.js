@@ -1,7 +1,7 @@
 
 const { Spot, Review, User, Booking } = require('../db/models');
 
-const matchSpot = async function (err, req, res, next) {
+const matchSpot = async function ( req, res, next) {
     const { spotId } = req.params;
     const spot = await Spot.findByPk(spotId);
 
