@@ -1,5 +1,5 @@
 
-const { Spot, Review, User } = require('../db/models');
+const { Spot, Review, User, Booking } = require('../db/models');
 
 const matchSpot = async function (err, req, res, next) {
     const { spotId } = req.params;
@@ -62,9 +62,29 @@ const matchUserReview = async function (req, res, next) {
         })
     }
 
-    next(err);
+    next();
 
+};
+
+const matchUserBooking = async function (req, res, next) {
+    const { user } = req;
+    const userBooking = await Booking.findAll({
+        where: {
+            userId: user.id
+        }
+    });
+
+    if (!userBooking.length) {
+        res.status(404)
+        res.json({
+            message: "Booking Not Found"
+        });
+    }
+    next();
 }
 
-
-module.exports = { matchSpot, matchReview, matchUserSpot, matchUserReview }
+module.exports = { matchSpot,
+                   matchReview,
+                   matchUserSpot,
+                   matchUserReview,
+                   matchUserBooking }
