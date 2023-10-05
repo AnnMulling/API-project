@@ -10,7 +10,7 @@ const { validateReview, validateSpot } = require('../../utils/validation-review'
 
 
 //Get all reviews of the Current User
-router.get('/current', requireAuth, async(req, res) => {
+router.get('/current', async(req, res) => {
     const { user } = req;
 
     const userReview = await Review.findAll({
@@ -31,7 +31,7 @@ router.get('/current', requireAuth, async(req, res) => {
                         model: SpotImage,
                         attributes: ['url'],
                         where: {
-                            preview : true
+                            preview: true
                         }
                     }
                 ]
@@ -49,9 +49,9 @@ router.get('/current', requireAuth, async(req, res) => {
 
 
     for (let review of userReview) {
-        console.log(userReview)
-         review.Spot.previewImage = review.Spot.SpotImages.url
 
+         review.Spot.previewImage = review.Spot.SpotImages.url
+            
          delete review.Spot.SpotImages
     }
 

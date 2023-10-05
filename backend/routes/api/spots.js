@@ -288,6 +288,7 @@ router.post('/:spotId/images', [ matchSpot, requireAuth ], async(req, res) => {
     //         }
     //     )
     // };
+    //if image prview = true set the rest to false
 
     const spotImg = await spot.createSpotImage({
         url,
