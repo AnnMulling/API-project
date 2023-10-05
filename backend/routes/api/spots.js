@@ -238,7 +238,7 @@ router.post('/:spotId/reviews', [ requireAuth, validateReview ] , async(req, res
 })
 
 //Create a Spot
-router.post('/', [  matchUserSpot ,validateSpot, requireAuth ],  async(req, res) => {
+router.post('/', [ validateSpot, requireAuth ],  async(req, res) => {
     const { user } = req;
 
     const {
@@ -251,7 +251,7 @@ router.post('/', [  matchUserSpot ,validateSpot, requireAuth ],  async(req, res)
             name,
             description,
             price
-            } = req.body;
+         } = req.body;
 
 
     const newSpot = await Spot.create({
@@ -274,7 +274,7 @@ router.post('/', [  matchUserSpot ,validateSpot, requireAuth ],  async(req, res)
 })
 
 //Add an Image to a Spot based on the Spot's id
-router.post('/:spotId/images', [ matchSpot, requireAuth], async(req, res) => {
+router.post('/:spotId/images', [ matchSpot, requireAuth ], async(req, res) => {
     const { spotId } = req.params;
     const { url, preview } = req.body;
 

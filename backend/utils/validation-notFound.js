@@ -31,7 +31,7 @@ const matchReview = async function (err, req, res, next) {
         );
     };
 
-    next();
+    next(err);
 }
 
 const matchUserSpot = async function (req, res, next) {
@@ -46,7 +46,7 @@ const matchUserSpot = async function (req, res, next) {
         })
     };
 
-    next(err);
+    next();
 };
 
 
