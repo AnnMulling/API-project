@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { requireAuth } = require('../../utils/auth');
-const { Spot, User, ReviewImage, Review } = require('../../db/models');
+const { Spot, User, ReviewImage, Review, SpotImage } = require('../../db/models');
 
 
 
@@ -16,24 +16,33 @@ router.get('/current', requireAuth, async(req, res) => {
         include: [
             {
                 model: User,
-                atrribute: ['id', 'firstName', 'lastName']
+                attributes:  ['id', 'firstName', 'lastName'],
             },
+
             {
                 model: Spot,
-                atrribute: ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price', 'previewImage']
+                attributes:  ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price'],
+                include: [
+                    {
+                        model: SpotImage,
+                        as: 'previewImage',
+                        attributes: ['url']
+                    }
+                ]
             },
             {
                 model: ReviewImage,
-                atrribute: ['id', 'url']
+                attributes: ['id', 'url']
+
             }
         ]
-    })
+    });
+
 
     res.json(userReview);
-})
+});
 
 
-//Get all Reviews by a Spot's id
 
 
 //Create a Review for a Spot based on the Spot's id
