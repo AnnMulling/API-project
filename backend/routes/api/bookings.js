@@ -54,9 +54,7 @@ router.get('/current', [ requireAuth, matchUserBooking ], async (req, res) => {
 
 
 
-
 //Create a Booking from a Spot based on the spot's id
-
 
 
 //Edite a Booking
