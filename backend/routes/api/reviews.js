@@ -3,7 +3,20 @@ const router = express.Router();
 const { requireAuth } = require('../../utils/auth');
 const { Spot, User, ReviewImage, Review, SpotImage } = require('../../db/models');
 
+const { check } = require('express-validator');
+const { handleValidationErrors } = require('../../utils/validation');
 
+const validateReview = [
+    check('review')
+        .exists({ checkFalsy: true })
+        .withMessage('Review text is required'),
+    check('stars')
+        .exists({ checkFalsy: true })
+        .isFloat({ min: 1, max: 5})
+        .withMessage('Stars must be an integer from 1 to 5'),
+
+    handleValidationErrors
+]
 
 //Get all reviews of the Current User
 router.get('/current', requireAuth, async(req, res) => {
@@ -25,8 +38,10 @@ router.get('/current', requireAuth, async(req, res) => {
                 include: [
                     {
                         model: SpotImage,
-                        as: 'previewImage',
-                        attributes: ['url']
+                        attributes: ['url'],
+                        where: {
+                            preview : true
+                        }
                     }
                 ]
             },
@@ -39,13 +54,20 @@ router.get('/current', requireAuth, async(req, res) => {
     });
 
 
-    res.json(userReview);
+     userReview.map( review => review.toJSON())
+
+
+    for (let review of userReview) {
+        console.log(userReview)
+         review.Spot.previewImage = review.Spot.SpotImages.url
+
+         delete review.Spot.SpotImages
+    }
+
+    res.json({
+        Review: userReview
+    });
 });
-
-
-
-
-//Create a Review for a Spot based on the Spot's id
 
 
 //Add an Image to a Review bashed on the Review's id
@@ -60,4 +82,10 @@ router.get('/current', requireAuth, async(req, res) => {
 
 
 
+<<<<<<< HEAD
 module.exports = router;
+=======
+
+
+module.exports = router ;
+>>>>>>> get-review
