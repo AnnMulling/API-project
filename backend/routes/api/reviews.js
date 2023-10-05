@@ -62,7 +62,7 @@ router.get('/current', requireAuth, async(req, res) => {
 
 
 //Add an Image to a Review bashed on the Review's id
-router.post('/:reviewId/images', [ matchUserReview , matchReview,  requireAuth, validateReview ], async ( req, res ) => {
+router.post('/:reviewId/images', [ matchUserReview , matchReview,  requireAuth ], async ( req, res ) => {
     const { reviewId } = req.params;
 
     const { url } = req.body;
@@ -88,6 +88,7 @@ router.post('/:reviewId/images', [ matchUserReview , matchReview,  requireAuth, 
             url
     });
 
+    await reviewImg.save();
 
     res.json({
         id: reviewImg.id,
@@ -105,22 +106,28 @@ router.put('/:reviewId', [  matchUserReview , matchReview, validateReview, requi
 
             include: ['id', 'userId', 'spotId', 'review', 'stars', 'createdAt', 'updatedAt']
 
-        }
+            }
 
         });
 
         updatedReview.review = review;
         updatedReview.stars = stars;
-        // updatedReview.update({review: review, stars: stars})
+
+        updatedReview.save();
 
         res.json(updatedReview);
 });
 
 //Delete a Review
+router.delete('/:reviewId', [ matchUserReview, matchReview ], async (req, res) => {
+    const { reviewId } = req.params;
+    const review = await Review.findByPk(reviewId);
 
-
-
-
+    await review.destroy();
+    res.json({
+        message: "Successfully deleted"
+    });
+});
 
 
 
