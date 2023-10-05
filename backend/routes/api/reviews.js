@@ -5,6 +5,7 @@ const { Spot, User, ReviewImage, Review, SpotImage } = require('../../db/models'
 
 const { check } = require('express-validator');
 const { handleValidationErrors } = require('../../utils/validation');
+const { matchSpot, matchReview, matchUserSpot, matchUserReview  } = require('../../utils/validation-notFound');
 
 const validateReview = [
     check('review')
@@ -71,9 +72,32 @@ router.get('/current', requireAuth, async(req, res) => {
 
 
 //Add an Image to a Review bashed on the Review's id
-router.post('/:reviewId/images', requireAuth, async ( req, res ) => {
-    
+router.post('/:reviewId/images', [ matchUserReview , matchReview, requireAuth ], async ( req, res ) => {
+    const { reviewId } = req.params;
+    const { url } = req.body;
+    const review = await Review.findByPk(reviewId);
+    const allReviewImg = await ReviewImage.count({
+        where: {
+            reviewId: reviewId
+        },
+    });
 
+    if (allReviewImg > 10) {
+        res.status(403);
+        res.json({
+            message: "Maximum number of images for this resource was reached"
+        });
+    };
+
+    const reviewImg = await review.createReviewImage({
+            url
+    });
+
+
+    res.json({
+        id: reviewImg.id,
+        url
+    });
 })
 
 //Edit a Review
