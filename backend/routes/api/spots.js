@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { Op } = require("sequelize");
 const { requireAuth } = require('../../utils/auth');
 const { Spot, User, SpotImage, Review, ReviewImage } = require('../../db/models');
 
@@ -205,6 +206,25 @@ router.post('/:spotId/reviews', [ requireAuth, validateReview ] , async(req, res
           });
     }
 
+    const theReview = await Review.findOne({
+        where: {
+            [Op.and] : [
+
+                { spotId: spotId } ,
+                { userId: user.id }
+            ]
+        }
+    });
+
+    if (theReview) {
+        res.status(403);
+        res.json(
+            {
+
+            "message": "User already has a review for this spot"
+        });
+    };
+
      const newReview = await Review.unscoped().create({
         userId: user.id,
         spotId,
@@ -212,8 +232,8 @@ router.post('/:spotId/reviews', [ requireAuth, validateReview ] , async(req, res
         stars
      });
 
-    res.status(201)
-    res.json(newReview)
+    res.status(201);
+    res.json(newReview);
 
 })
 
