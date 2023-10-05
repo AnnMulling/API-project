@@ -55,7 +55,9 @@ router.get('/current', requireAuth, async(req, res) => {
 
     }
 
-    res.json(result);
+    res.json({
+        "Spots": result
+    });
 });
 
 
@@ -187,11 +189,13 @@ router.get('/',  async(req, res) => {
 
     }
 
-    res.json(result);
+    res.json({
+        "Spots": result
+    });
 });
 
 //Create a Review for a Spot based on the Spot's id
-router.post('/:spotId/reviews', [ requireAuth, validateReview ] , async(req, res) => {
+router.post('/:spotId/reviews', [ requireAuth, matchUserSpot, validateReview ] , async(req, res) => {
     const { spotId } = req.params;
     const { user } = req;
     const { review, stars } = req.body;
