@@ -82,10 +82,6 @@ router.get('/current', requireAuth, async(req, res) => {
 
 
 
-<<<<<<< HEAD
-module.exports = router;
-=======
 
 
 module.exports = router ;
->>>>>>> get-review
