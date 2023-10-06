@@ -7,6 +7,9 @@ const { Spot, User, SpotImage, Review, ReviewImage, Booking } = require('../../d
 
 const { validateReview, validateSpot} = require('../../utils/validation-review');
 const { matchSpot, matchReview, matchUserSpot } = require('../../utils/validation-match');
+const { dateOverlap, dateExists } = require('../../utils/validation-booking');
+
+
 
 //Get all Spots owned by the Current User
 router.get('/current', requireAuth, async(req, res) => {
@@ -148,8 +151,6 @@ router.get('/:spotId/bookings', matchSpot,  async(req, res) => {
 
 
 
-
-
 //Get all Reviews by a Spot's id
 router.get('/:spotId/reviews',  matchSpot, async(req, res) => {
     const { spotId } = req.params;
@@ -185,6 +186,8 @@ router.get('/:spotId/reviews',  matchSpot, async(req, res) => {
 
 
 });
+
+
 
 //Get all Spots
 router.get('/',  async(req, res) => {
@@ -232,6 +235,26 @@ router.get('/',  async(req, res) => {
         "Spots": result
     });
 });
+
+
+//Create a Booking from a Spot based on the spot's id
+router.post('/:spotId/bookings', [ matchSpot, isOwner,  dateExists, dateOverlap], async (req, res) => {
+    const { user } = req;
+    const { spotId } = req.params;
+    let { startDate, endDate } = req.body;
+
+
+
+    const newBooking = await Booking.unscoped().create({
+        spotId,
+        userId: user.id,
+        startDate,
+        endDate,
+    });
+
+
+    res.json(newBooking);
+})
 
 //Create a Review for a Spot based on the Spot's id
 router.post('/:spotId/reviews', [ isOwner,  matchSpot, validateReview ] , async(req, res) => {

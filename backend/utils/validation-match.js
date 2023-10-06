@@ -32,19 +32,38 @@ const matchReview = async function (err, req, res, next) {
     };
 
     next();
-}
+};
+
+
+const matchBooking = async function (req, res, next) {
+    const { bookingId } = req.params;
+    const booking = await Booking.findByPk(bookingId);
+
+    if (!booking) {
+        res.status(404);
+        res.json(
+            {
+                "message": "Booking couldn't be found"
+            }
+        )
+    }
+    next();
+};
 
 const matchUserSpot = async function (req, res, next) {
     const { spotId } = req.params
     const { user } = req;
     const spot = await Spot.findByPk(spotId)
 
-    if (spot.ownerId !== user.id) {
-        res.status(403)
-        res.json({
-            message: "Unauthorized Not Allow"
-        })
-    };
+    if (spot) {
+
+        if (spot.ownerId !== user.id) {
+            res.status(403)
+            res.json({
+                message: "Unauthorized Activity"
+            })
+        };
+    }
 
     next();
 };
@@ -55,11 +74,14 @@ const matchUserReview = async function (req, res, next) {
     const { user } = req;
     const review = await Review.findByPk(reviewId);
 
-    if (review.userId !== user.id) {
-        res.status(403)
-        res.json({
-            message: "Unauthorized Not Allow"
-        })
+    if (review) {
+
+        if (review.userId !== user.id) {
+            res.status(403)
+            res.json({
+                message: "Unauthorized Activity"
+            })
+        }
     }
 
     next();
@@ -68,23 +90,23 @@ const matchUserReview = async function (req, res, next) {
 
 const matchUserBooking = async function (req, res, next) {
     const { user } = req;
-    const userBooking = await Booking.findAll({
-        where: {
-            userId: user.id
-        }
-    });
+    const { bookingId } = req.params;
+    const userBooking = await Booking.findByPk(bookingId);
 
-    if (!userBooking.length) {
-        res.status(404)
-        res.json({
-            message: "Booking Not Found"
-        });
+    if (userBooking) {
+        if (userBooking.userId !== user.id) {
+            res.status(404)
+            res.json({
+                message: "Unauthorized Activity"
+            });
+        }
     }
     next();
 }
 
 module.exports = { matchSpot,
                    matchReview,
+                   matchBooking,
                    matchUserSpot,
                    matchUserReview,
                    matchUserBooking }
