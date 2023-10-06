@@ -4,7 +4,7 @@ const { requireAuth } = require('../../utils/auth');
 const { Spot, Booking, User, SpotImage } = require('../../db/models');
 
 const { matchUserBooking, matchBooking } = require('../../utils/validation-match');
-const { validateBooking, isExisting, dateOverlap } = require('../../utils/validation-booking');
+const { validateBooking, isExisting, dateOverlap, dateExists } = require('../../utils/validation-booking');
 
 
 //Get all the current user's bookings
@@ -57,12 +57,12 @@ router.get('/current', [ requireAuth, matchUserBooking ], async (req, res) => {
 
 //Edit a Booking
 
-router.put('/:bookingId', [ matchBooking,  matchUserBooking, dateOverlap ], async (req, res) => {
+router.put('/:bookingId', [ matchBooking,  matchUserBooking, dateExists, dateOverlap ], async (req, res) => {
 
     const { startDate, endDate } = req.body;
     const { bookingId } = req.params;
 
-    // let newStartDate = new Date(startDate).getTime();
+    let newStartDate = new Date(startDate).getTime();
     let newEndDate = new Date(endDate).getTime();
     let currentDate = new Date().getTime();
 
@@ -89,5 +89,25 @@ router.put('/:bookingId', [ matchBooking,  matchUserBooking, dateOverlap ], asyn
 });
 
 //Delete a Booking
+router.delete('/:bookingId', [ matchUserBooking, matchBooking ], async (req, res) => {
+    const { bookingId } = req.params;
+    const booking = await Booking.findByPk(bookingId)
+
+    let startDate = new Date(booking.startDate).getTime();
+    let endDate = new Date(booking.endDate).getTime();
+    let currentDate = new Date().getTime();
+
+    if (startDate < currentDate) {
+        res.status(403)
+       return res.json({
+            message: "Bookings that have been started can't be deleted"
+        })
+    }
+
+    await booking.destroy();
+    res.json({
+        message: "Successfully deleted"
+    });
+})
 
 module.exports = router;

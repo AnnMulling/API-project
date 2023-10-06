@@ -238,7 +238,7 @@ router.get('/',  async(req, res) => {
 
 
 //Create a Booking from a Spot based on the spot's id
-router.post('/:spotId/bookings', [ matchSpot, isOwner,  dateExists, dateOverlap], async (req, res) => {
+router.post('/:spotId/bookings', [ matchSpot, isOwner, dateExists, dateOverlap], async (req, res) => {
     const { user } = req;
     const { spotId } = req.params;
     let { startDate, endDate } = req.body;

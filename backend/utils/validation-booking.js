@@ -27,9 +27,6 @@ const dateExists = async function (req, _res, next) {
     const { spotId } = req.params;
     let { startDate, endDate } = req.body;
 
-
-
-
     let error = new Error("Booking Conflict");
     error.errors = {};
     let sendMessage = false;
@@ -66,7 +63,7 @@ const dateExists = async function (req, _res, next) {
        //if the existing newStart is same as endDate
             if ((oldStart === newEnd) ||
             //OR if the existing newStart is after the desired newEnd AND the existing newEnd is after the disired newEnd
-                (oldStart > newEnd && oldEnd > newEnd) ||
+                (oldStart < newEnd && oldEnd > newEnd) ||
                 //OR if the existing endtDate is same as newEnd
                 (oldEnd === newEnd) ||
                 //OR if  the desired newStart is before the existing newEnd AND the existing newEnd is before the desired newEnd
@@ -75,7 +72,6 @@ const dateExists = async function (req, _res, next) {
                    error.errors.newEnd = "End date conflicts with an existing booking"
                    sendMessage = true
                };
-
        //Both
        // if the newStart is after desired newStart AND the existing newEnd is before the desired newEnd
             if (oldStart > newStart && oldEnd < newEnd ) {
