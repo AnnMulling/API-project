@@ -4,9 +4,8 @@ const { Op } = require("sequelize");
 const { requireAuth, isOwner } = require('../../utils/auth');
 const { Spot, User, SpotImage, Review, ReviewImage, Booking } = require('../../db/models');
 
-
 const { validateReview, validateSpot} = require('../../utils/validation-review');
-const { matchSpot, matchReview, matchUserSpot } = require('../../utils/validation-match');
+const { matchSpot, matchUserSpot } = require('../../utils/validation-match');
 const { dateOverlap, dateExists } = require('../../utils/validation-booking');
 
 
@@ -242,7 +241,6 @@ router.post('/:spotId/bookings', [ requireAuth, matchSpot, isOwner, dateExists, 
     const { user } = req;
     const { spotId } = req.params;
     let { startDate, endDate } = req.body;
-
 
 
     const newBooking = await Booking.unscoped().create({

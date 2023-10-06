@@ -3,7 +3,9 @@ const sessionRouter = require('./session.js');
 const usersRouter = require('./users.js');
 const spotsRouter = require('./spots.js');
 const reviewRouter = require('./reviews.js');
-const bookingRouter = require('./bookings.js')
+const bookingRouter = require('./bookings.js');
+const spotImageRouter = require('./spot-images.js');
+const reviewImageRouter = require('./review-images.js');
 const { setTokenCookie, restoreUser, requireAuth } = require('../../utils/auth.js');
 const { User } = require('../../db/models');
 
@@ -25,6 +27,11 @@ router.use('/reviews', reviewRouter);
 //Booking route
 router.use('/bookings', bookingRouter);
 
+//Spot Image route
+router.use('/spot-images', spotImageRouter);
+
+//Review  Image route
+router.use('/review-images', reviewImageRouter);
 
 //Front-end
 // router.post('/test', (req, res) => {
