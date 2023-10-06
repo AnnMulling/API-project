@@ -78,14 +78,14 @@ const isOwner = async function (req, res, next) {
   const { spotId } = req.params;
 
   const spot = await Spot.findByPk(spotId);
-  
-  if (spot) {
-    if (spot.ownerId === user.id) {
+
+  if (spot && spot.ownerId === user.id) {
+    // if (spot.ownerId === user.id) {
         res.status(403);
         res.json({
           message: "Property owner prohibited from the activity"
         });
-    }
+    //}
 
   }
   next();
