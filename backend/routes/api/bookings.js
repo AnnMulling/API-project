@@ -62,12 +62,11 @@ router.put('/:bookingId', [ requireAuth, matchBooking, matchUserBooking, dateOve
     const { startDate, endDate } = req.body;
     const { bookingId } = req.params;
 
-    let newStartDate = new Date(startDate).getTime();
     let newEndDate = new Date(endDate).getTime();
     let currentDate = new Date().getTime();
 
-    if (currentDate > newEndDate) {
-        res.status(404)
+    if (newEndDate > currentDate ) {
+        res.status(403)
         res.json(
             {
             message: "Past bookings can't be modified"
@@ -83,6 +82,8 @@ router.put('/:bookingId', [ requireAuth, matchBooking, matchUserBooking, dateOve
 
     updatedBooking.startDate = startDate;
     updatedBooking.endDate = endDate;
+
+    updatedBooking.save();
 
     res.json(updatedBooking);
 
