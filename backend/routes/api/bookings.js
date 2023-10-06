@@ -3,7 +3,8 @@ const router = express.Router();
 const { requireAuth } = require('../../utils/auth');
 const { Spot, Booking, User, SpotImage } = require('../../db/models');
 
-const { matchUserBooking } = require('../../utils/validation-match');
+const { matchUserBooking, matchBooking } = require('../../utils/validation-match');
+const { validateBooking, isExisting, dateOverlap } = require('../../utils/validation-booking');
 
 
 //Get all the current user's bookings
@@ -54,12 +55,38 @@ router.get('/current', [ requireAuth, matchUserBooking ], async (req, res) => {
 
 
 
-//Create a Booking from a Spot based on the spot's id
+//Edit a Booking
 
+router.put('/:bookingId', [ matchBooking,  matchUserBooking, dateOverlap ], async (req, res) => {
 
-//Edite a Booking
+    const { startDate, endDate } = req.body;
+    const { bookingId } = req.params;
 
+    // let newStartDate = new Date(startDate).getTime();
+    let newEndDate = new Date(endDate).getTime();
+    let currentDate = new Date().getTime();
 
+    if (currentDate > newEndDate) {
+        res.status(404)
+        res.json(
+            {
+            message: "Past bookings can't be modified"
+         })
+    }
+
+    const updatedBooking = await Booking.unscoped().findByPk(bookingId, {
+            attributes: {
+                include: ['id', 'spotId', 'userId', 'startDate', 'endDate', 'createdAt', 'updatedAt']
+            }
+
+    });
+
+    updatedBooking.startDate = startDate;
+    updatedBooking.endDate = endDate;
+
+    res.json(updatedBooking);
+
+});
 
 //Delete a Booking
 
