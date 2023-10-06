@@ -57,7 +57,7 @@ router.get('/current', [ requireAuth, matchUserBooking ], async (req, res) => {
 
 //Edit a Booking
 
-router.put('/:bookingId', [ matchBooking,  matchUserBooking, dateExists, dateOverlap ], async (req, res) => {
+router.put('/:bookingId', [ requireAuth, matchBooking, matchUserBooking, dateOverlap ], async (req, res) => {
 
     const { startDate, endDate } = req.body;
     const { bookingId } = req.params;
