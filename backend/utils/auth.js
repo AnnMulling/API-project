@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { jwtConfig } = require('../config');
-const { User, Spot } = require('../db/models');
+const { User, Spot, Review } = require('../db/models');
 
 const { secret, expiresIn } = jwtConfig;
 
@@ -72,18 +72,37 @@ return next(err);
 };
 
 
-//Owner cant review
-const checkOwner = async function (req, res, next) {
+//spot owner cant review
+const isOwner = async function (req, res, next) {
   const { user } = req;
-  
+  const { spotId } = req.params;
 
-  const spot = await Spot.findByPK(spotId);
+  const spot = await Spot.findByPk(spotId);
 
-  if (req.method === 'PUT' || req.method === 'POST' && spot.ownerId === user.id) {
+  if (spot.ownerId === user.id) {
       res.status(403);
-      res.json("Owner cannot make reviews");
+      res.json({
+        message: "Property owner prohibited from writing reviews"
+      });
   }
-  next(err);
+  next();
 };
 
-module.exports = { setTokenCookie, restoreUser, requireAuth, checkOwner }
+//Only review owner can edit review
+const isreviewWriter = async function (req, res, next) {
+  const { user } = req;
+  const { reviewId } = req.params;
+  const review = await Review.findByPk(reviewId);
+
+  if (review.userId == user.id) {
+      next ()
+  }else {
+      res.status(403);
+      res.json({
+        message: "Review editiing prohibited"
+      })
+      next()
+  };
+}
+
+module.exports = { setTokenCookie, restoreUser, requireAuth, isOwner, isreviewWriter }

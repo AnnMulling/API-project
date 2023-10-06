@@ -3,7 +3,7 @@ const router = express.Router();
 const { requireAuth } = require('../../utils/auth');
 const { Spot, Booking, User, SpotImage } = require('../../db/models');
 
-const { matchUserBooking } = require('../../utils/validation-notFound');
+const { matchUserBooking } = require('../../utils/validation-match');
 
 
 //Get all the current user's bookings

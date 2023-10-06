@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { requireAuth, checkOwner } = require('../../utils/auth');
+const { requireAuth, isreviewWriter } = require('../../utils/auth');
 const { Spot, User, ReviewImage, Review, SpotImage } = require('../../db/models');
 
 // const { check } = require('express-validator');
 // const { handleValidationErrors } = require('../../utils/validation');
-const { matchReview, matchUserReview  } = require('../../utils/validation-notFound');
+const { matchReview, matchUserReview  } = require('../../utils/validation-match');
 const { validateReview, validateSpot } = require('../../utils/validation-review');
 
 
@@ -62,7 +62,7 @@ router.get('/current', async(req, res) => {
 
 
 //Add an Image to a Review bashed on the Review's id
-router.post('/:reviewId/images', [ matchUserReview , matchReview,  requireAuth ], async ( req, res ) => {
+router.post('/:reviewId/images', [ isreviewWriter, matchUserReview , matchReview,  requireAuth ], async ( req, res ) => {
     const { reviewId } = req.params;
 
     const { url } = req.body;
@@ -97,7 +97,7 @@ router.post('/:reviewId/images', [ matchUserReview , matchReview,  requireAuth ]
 })
 
 //Edit a Review
-router.put('/:reviewId', [ checkOwner, matchUserReview , matchReview, validateReview, requireAuth ], async (req, res) => {
+router.put('/:reviewId', [ isreviewWriter, matchUserReview , matchReview, validateReview, requireAuth ], async (req, res) => {
         const { reviewId } = req.params;
         const { review, stars } = req.body;
         const updatedReview = await Review.findByPk(reviewId, {
