@@ -4,7 +4,7 @@ const { Op } = require("sequelize");
 const { requireAuth, isOwner } = require('../../utils/auth');
 const { Spot, User, SpotImage, Review, ReviewImage, Booking } = require('../../db/models');
 
-const { validateReview, validateSpot} = require('../../utils/validation-review');
+const { validateReview, validateSpot, validateQuery} = require('../../utils/validation-review');
 const { matchSpot, matchUserSpot } = require('../../utils/validation-match');
 const { dateOverlap, dateExists } = require('../../utils/validation-booking');
 
@@ -189,17 +189,42 @@ router.get('/:spotId/reviews',  matchSpot, async(req, res) => {
 
 
 //Get all Spots
-router.get('/',  async(req, res) => {
-    
+router.get('/', validateQuery, async(req, res) => {
+
+    let { page, size, maxLat, minLat, minLng, maxLng, minPrice, maxPrice } = req.query;
+    const whereSearch = {};
+    const pagination = {};
+
+
+    if (maxLat) whereSearch.lat = {[Op.lte]: maxLat};
+    if (minLat) whereSearch.lat = {[Op.gte]: minLat};
+    if (minLng) whereSearch.lng = {[Op.gte]: minLng};
+    if (maxLng) whereSearch.lng = {[Op.lte]: maxLng};
+    if (minPrice) whereSearch.price = {[Op.gte]: minPrice};
+    if (maxPrice) whereSearch.price = {[Op.lte]: maxPrice};
+
+    if (!page) page = 1;
+    if (page > 10) page = 10;
+
+    if (!size) size = 1;
+    if (size > 20) size = 20;
+
+    pagination.limit = size;
+    pagination.offset = size * (page - 1);
 
     const spots = await Spot.findAll({
         include:
         [
             {
                 model: SpotImage,
-                attributes: ['url'],
+                attributes: ['url', 'preview'],
             }
-        ]
+        ],
+        where: {
+            ...whereSearch
+        },
+
+        ...pagination
     });
 
     const result = [];
@@ -232,7 +257,9 @@ router.get('/',  async(req, res) => {
     }
 
     res.json({
-        "Spots": result
+        "Spots": result,
+        page,
+        size,
     });
 });
 

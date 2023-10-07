@@ -29,7 +29,9 @@ router.delete('/:imageId',  requireAuth, async(req, res) => {
                 if (user.id != review.userId) {
 
                     res.status(403);
-                    return res.json("Unauthorized Activity")
+                    return res.json({
+                        message: "Unauthorized Activity"
+                    })
                 }
         }
 

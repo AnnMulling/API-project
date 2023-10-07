@@ -18,10 +18,12 @@ router.delete('/:imageId', [ requireAuth ], async (req, res) => {
 
     if (spotImage.spotId) {
         const spot = await Spot.findByPk(spotImage.spotId);
-        
+
             if (spot.ownerId !== user.id) {
                 res.status(403);
-                return res.json("Unauthorized Activity")
+                return res.json({
+                    message: "Unauthorized Activity"
+                })
             }
     }
 
