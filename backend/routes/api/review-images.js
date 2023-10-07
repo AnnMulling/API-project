@@ -3,44 +3,42 @@ const router = express.Router();
 const { Op } = require("sequelize");
 const { requireAuth } = require('../../utils/auth');
 const { ReviewImage, Review } = require('../../db/models');
+const {reqAuthImageReview } = require('../../utils/validation-reqAuth');
 
 
 
-router.delete('/:imageId',  requireAuth, async(req, res) => {
+router.delete('/:imageId', [ requireAuth, reqAuthImageReview ], async(req, res) => {
         const { user } = req;
         const { imageId } = req.params;
-
-
         const imageReview = await ReviewImage.findByPk(imageId);
 
-        if (!imageReview) {
-            res.status(404)
-            res.json({
+        // if (!imageReview) {
+        //     res.status(404)
+        //     res.json({
 
-                    message: "Review Image couldn't be found"
+        //             message: "Review Image couldn't be found"
 
-            })
-        };
+        //     })
+        // };
 
 
-        if (imageReview.reviewId) {
-            const review = await Review.findByPk(imageReview.reviewId);
+        // if (imageReview.reviewId) {
+        //     const review = await Review.findByPk(imageReview.reviewId);
 
-                if (user.id != review.userId) {
+        //         if (user.id != review.userId) {
 
-                    res.status(403);
-                    return res.json({
-                        message: "Unauthorized Activity"
-                    })
-                }
-        }
+        //             res.status(403);
+        //             return res.json({
+        //                 message: "Unauthorized Activity"
+        //             })
+        //         }
+        // }
 
 
         await imageReview.destroy();
         res.json({
 
                 message: "Successfully deleted"
-
         });
 });
 

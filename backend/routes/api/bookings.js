@@ -1,14 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const { requireAuth } = require('../../utils/auth');
-const { Spot, Booking, User, SpotImage } = require('../../db/models');
+const { Spot, Booking, SpotImage } = require('../../db/models');
 
-const { matchUserBooking, matchBooking } = require('../../utils/validation-match');
+const { reqAuthBooking } = require('../../utils/validation-reqAuth');
 const { validateBooking, isExisting, dateOverlap, dateExists } = require('../../utils/validation-booking');
 
 
 //Get all the current user's bookings
-router.get('/current', [ requireAuth, matchUserBooking ], async (req, res) => {
+router.get('/current', requireAuth , async (req, res) => {
      const { user } = req;
      const userBooking = await Booking.findAll({
         where: {
@@ -57,7 +57,7 @@ router.get('/current', [ requireAuth, matchUserBooking ], async (req, res) => {
 
 //Edit a Booking
 
-router.put('/:bookingId', [ requireAuth, matchBooking, matchUserBooking, dateOverlap ], async (req, res) => {
+router.put('/:bookingId', [ requireAuth, reqAuthBooking, dateOverlap, dateExists ], async (req, res) => {
 
     const { startDate, endDate } = req.body;
     const { bookingId } = req.params;
@@ -65,7 +65,7 @@ router.put('/:bookingId', [ requireAuth, matchBooking, matchUserBooking, dateOve
     let newEndDate = new Date(endDate).getTime();
     let currentDate = new Date().getTime();
 
-    if (newEndDate > currentDate ) {
+    if (newEndDate >= currentDate ) {
         res.status(403)
         res.json(
             {
@@ -90,7 +90,7 @@ router.put('/:bookingId', [ requireAuth, matchBooking, matchUserBooking, dateOve
 });
 
 //Delete a Booking
-router.delete('/:bookingId', [ matchUserBooking, matchBooking ], async (req, res) => {
+router.delete('/:bookingId', [ requireAuth, reqAuthBooking ], async (req, res) => {
     const { bookingId } = req.params;
     const booking = await Booking.findByPk(bookingId)
 

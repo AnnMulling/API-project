@@ -80,31 +80,28 @@ const isOwner = async function (req, res, next) {
   const spot = await Spot.findByPk(spotId);
 
   if (spot && spot.ownerId === user.id) {
-    // if (spot.ownerId === user.id) {
-        res.status(403);
-        res.json({
-          message: "Property owner prohibited from the activity"
-        });
-    //}
-
+    const err = new Error ('Authorization required');
+    err.erros = { message: 'Forbidden'}
+    err.status = 403;
+    return next(err);
   }
   next();
 };
 
-//Only review owner can edit review
-const isreviewWriter = async function (req, res, next) {
-  const { user } = req;
-  const { reviewId } = req.params;
-  const review = await Review.findByPk(reviewId);
+// //Only review owner can edit review
+// const isreviewWriter = async function (req, res, next) {
+//   const { user } = req;
+//   const { reviewId } = req.params;
+//   const review = await Review.findByPk(reviewId);
 
-  if (review.userId !== user.id) {
-      res.status(403);
-      return res.json({
-        message: "Review editiing prohibited"
-      })
+//   if (review.userId !== user.id) {
+//       res.status(403);
+//       return res.json({
+//         message: "Forbidden"
+//       })
 
-  }
-  next();
-}
+//   }
+//   next();
+// }
 
-module.exports = { setTokenCookie, restoreUser, requireAuth, isOwner, isreviewWriter }
+module.exports = { setTokenCookie, restoreUser, requireAuth, isOwner }
