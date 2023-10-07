@@ -54,22 +54,37 @@ const validator = {
         check('page')
             .optional()
             .isInt({min: 1, max: 10})
-            .withMessage('Page must be greater than 1 or equal to 10'),
+            .withMessage('Page must be greater than or equal to 1'),
         check('size')
             .optional()
             .isInt({min: 1, max: 20})
-            .withMessage('Size must be greater than 1 or equal to 20'),
+            .withMessage('Size must be greater than or equal to 1'),
         check('minLat')
             .optional()
             .isFloat({min: -90.0000000, max: 90.0000000})
-            .withMessage('Minimum latitued is invalid'),
-        check('maxLng')
+            .withMessage('Minimum latitude is invalid'),
+        check('maxLat')
             .optional()
             .isFloat({min: -90.0000000, max: 90.0000000})
             .withMessage('Maximum longtitude is invalid'),
+        check('minLng')
+            .optional()
+            .isFloat({min: -180.0000000, max: 180.0000000})
+            .withMessage('Minimum longitude is invalid'),
         check('maxLng')
             .optional()
-            .isFloat({min: -180.0000000})
+            .isFloat({min: -180.0000000, max: 180.0000000})
+            .withMessage('Maximum longitude is invalid'),
+        check('minPrice')
+            .optional()
+            .isFloat({min: 0})
+            .withMessage('Minimum price must be greater than or equal to 0'),
+        check('maxPrice')
+            .optional()
+            .isFloat({min: 0})
+            .withMessage('Maximum price must be greater than or equal to 0'),
+
+            handleValidationErrors
     ]
 }
 
