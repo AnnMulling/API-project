@@ -22,7 +22,6 @@ const dateOverlap = async function (req, _res, next) {
 
 
 
-
 const dateExists = async function (req, _res, next) {
     const { spotId } = req.params;
     let { startDate, endDate } = req.body;

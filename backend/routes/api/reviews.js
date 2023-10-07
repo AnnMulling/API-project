@@ -1,16 +1,46 @@
 const express = require('express');
 const router = express.Router();
-const { requireAuth, isreviewWriter } = require('../../utils/auth');
+const { requireAuth } = require('../../utils/auth');
 const { Spot, User, ReviewImage, Review, SpotImage } = require('../../db/models');
 
-// const { check } = require('express-validator');
-// const { handleValidationErrors } = require('../../utils/validation');
-const { matchReview, matchUserReview  } = require('../../utils/validation-match');
-const { validateReview, validateSpot } = require('../../utils/validation-review');
+const { reqAuthReview  } = require('../../utils/validation-reqAuth');
+const { validateReview } = require('../../utils/validation-review');
 
+
+//Add an Image to a Review bashed on the Review's id
+router.post('/:reviewId/images', [ requireAuth , reqAuthReview ], async ( req, res ) => {
+    const { url } = req.body;
+    const { reviewId } = req.params;
+
+    // const review = await Review.findByPk(reviewId);
+
+    const allReviewImg = await ReviewImage.findAll({
+
+        where: {
+            reviewId: reviewId
+        }
+    });
+
+    if (allReviewImg.length >= 10) {
+        res.status(403);
+        res.json(
+            {
+            message: "Maximum number of images for this resource was reached"
+        });
+    };
+
+    const reviewImg = await ReviewImage.create({
+        reviewId,
+        url,
+    });
+
+    await reviewImg.save();
+
+    res.json(reviewId);
+})
 
 //Get all reviews of the Current User
-router.get('/current', async(req, res) => {
+router.get('/current', requireAuth, async(req, res) => {
     const { user } = req;
 
     const userReview = await Review.findAll({
@@ -63,43 +93,9 @@ router.get('/current', async(req, res) => {
 });
 
 
-//Add an Image to a Review bashed on the Review's id
-router.post('/:reviewId/images', [ isreviewWriter, matchUserReview , matchReview,  requireAuth ], async ( req, res ) => {
-    const { reviewId } = req.params;
-
-    const { url } = req.body;
-
-    const review = await Review.findByPk(reviewId);
-
-    const allReviewImg = await ReviewImage.count({
-
-        where: {
-            reviewId: reviewId
-        }
-    });
-
-    if (allReviewImg >= 10) {
-        res.status(403);
-        res.json(
-            {
-            message: "Maximum number of images for this resource was reached"
-        });
-    };
-
-    const reviewImg = await review.createReviewImage({
-            url
-    });
-
-    await reviewImg.save();
-
-    res.json({
-        id: reviewImg.id,
-        url
-    });
-})
 
 //Edit a Review
-router.put('/:reviewId', [ isreviewWriter, matchUserReview , matchReview, validateReview, requireAuth ], async (req, res) => {
+router.put('/:reviewId', [ requireAuth, reqAuthReview, validateReview ] , async (req, res) => {
         const { reviewId } = req.params;
         const { review, stars } = req.body;
         const updatedReview = await Review.findByPk(reviewId, {
@@ -121,7 +117,7 @@ router.put('/:reviewId', [ isreviewWriter, matchUserReview , matchReview, valida
 });
 
 //Delete a Review
-router.delete('/:reviewId', [ matchUserReview, matchReview ], async (req, res) => {
+router.delete('/:reviewId', [ requireAuth, reqAuthReview ], async (req, res) => {
     const { reviewId } = req.params;
     const review = await Review.findByPk(reviewId);
 
