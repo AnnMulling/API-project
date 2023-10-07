@@ -1,5 +1,5 @@
 
-const { Spot, Review, User, Booking } = require('../db/models');
+const { Spot, Review, Booking } = require('../db/models');
 
 const matchSpot = async function ( req, res, next) {
     const { spotId } = req.params;
@@ -59,7 +59,7 @@ const matchUserSpot = async function (req, res, next) {
 
         if (spot.ownerId !== user.id) {
             res.status(403)
-            res.json({
+           return res.json({
                 message: "Unauthorized Activity"
             })
         };
