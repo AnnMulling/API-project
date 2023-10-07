@@ -1,22 +1,32 @@
 const express = require('express');
 const router = express.Router();
-const { Op } = require("sequelize");
-const { requireAuth, isOwner } = require('../../utils/auth');
-const { SpotImage} = require('../../db/models');
-const { matchSpot, matchReview, matchUserSpot } = require('../../utils/validation-match');
+const { requireAuth } = require('../../utils/auth');
+const { SpotImage, Spot } = require('../../db/models');
 
-router.delete('/:imageId', [ requireAuth, matchUserSpot ], async (req, res) => {
+
+router.delete('/:imageId', [ requireAuth ], async (req, res) => {
+    const { user } = req;
     const { imageId } = req.params;
-    const image = await SpotImage.findByPk(imageId);
+    const spotImage = await SpotImage.findByPk(imageId);
 
-    if (!image) {
+    if (!spotImage) {
         res.status(404);
         res.json({
             "message": "Spot Image couldn't be found"
           })
     }
 
-    await image.destroy();
+    if (spotImage.spotId) {
+        const spot = await Spot.findByPk(spotImage.spotId);
+        
+            if (spot.ownerId !== user.id) {
+                res.status(403);
+                return res.json("Unauthorized Activity")
+            }
+    }
+
+
+    await spotImage.destroy();
 
     res.json({
 

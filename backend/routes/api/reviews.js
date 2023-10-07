@@ -25,16 +25,7 @@ router.get('/current', async(req, res) => {
 
             {
                 model: Spot,
-                attributes:  ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price'],
-                include: [
-                    {
-                        model: SpotImage,
-                        attributes: ['url'],
-                        where: {
-                            preview: true
-                        }
-                    }
-                ]
+                attributes:  ['id', 'ownerId', 'address', 'city', 'state', 'country', 'lat', 'lng', 'name', 'price']
             },
             {
                 model: ReviewImage,
@@ -45,18 +36,29 @@ router.get('/current', async(req, res) => {
     });
 
 
-     userReview.map( review => review.toJSON())
 
+    const result = userReview.map( review => review.toJSON())
+    const images = await SpotImage.findAll({
+        where: {
+            preview: true
+        }
+    });
 
-    for (let review of userReview) {
+    for (let i = 0; i < result.length; i++) {
+       let review = result[i];
 
-         review.Spot.previewImage = review.Spot.SpotImages.url
+       if (!images.length) review.Spot.previewImage = "Image Not Available";
 
-         delete review.Spot.SpotImages
-    }
+       for (let j = 0; j < images.length; j++) {
+            let image = images[j];
+
+            review.Spot.previewImage = image.url
+       }
+   };
+
 
     res.json({
-        Review: userReview
+       Booking : result
     });
 });
 

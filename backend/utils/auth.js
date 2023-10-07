@@ -97,15 +97,14 @@ const isreviewWriter = async function (req, res, next) {
   const { reviewId } = req.params;
   const review = await Review.findByPk(reviewId);
 
-  if (review.userId == user.id) {
-      next ()
-  }else {
+  if (review.userId !== user.id) {
       res.status(403);
-      res.json({
+      return res.json({
         message: "Review editiing prohibited"
       })
-      next()
-  };
+
+  }
+  next();
 }
 
 module.exports = { setTokenCookie, restoreUser, requireAuth, isOwner, isreviewWriter }

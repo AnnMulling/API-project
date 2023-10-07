@@ -190,6 +190,7 @@ router.get('/:spotId/reviews',  matchSpot, async(req, res) => {
 
 //Get all Spots
 router.get('/',  async(req, res) => {
+    
 
     const spots = await Spot.findAll({
         include:
