@@ -80,8 +80,8 @@ const isOwner = async function (req, res, next) {
   const spot = await Spot.findByPk(spotId);
 
   if (spot && spot.ownerId === user.id) {
-    const err = new Error ('Authorization required');
-    err.erros = { message: 'Forbidden'}
+    const err = new Error ('Property owner prohibited from the activity');
+    err.errors = { message: 'Forbidden'}
     err.status = 403;
     return next(err);
   }

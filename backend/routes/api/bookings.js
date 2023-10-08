@@ -57,7 +57,7 @@ router.get('/current', requireAuth , async (req, res) => {
 
 //Edit a Booking
 
-router.put('/:bookingId', [ requireAuth, reqAuthBooking, dateOverlap, dateExists ], async (req, res) => {
+router.put('/:bookingId', [ requireAuth, reqAuthBooking, dateExists, dateOverlap ], async (req, res) => {
 
     const { startDate, endDate } = req.body;
     const { bookingId } = req.params;
@@ -67,7 +67,7 @@ router.put('/:bookingId', [ requireAuth, reqAuthBooking, dateOverlap, dateExists
 
     if (newEndDate >= currentDate ) {
         res.status(403)
-        res.json(
+        return res.json(
             {
             message: "Past bookings can't be modified"
          })
