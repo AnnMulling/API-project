@@ -287,7 +287,7 @@ router.post('/:spotId/bookings', [ requireAuth,  isOwner, dateExists, dateOverla
 
     if (!spot) {
         res.status(404)
-        res.json(
+        return res.json(
             {
             "message": "Spot couldn't be found"
             }
@@ -306,7 +306,7 @@ router.post('/:spotId/bookings', [ requireAuth,  isOwner, dateExists, dateOverla
 })
 
 //Create a Review for a Spot based on the Spot's id
-router.post('/:spotId/reviews', [ requireAuth,  validateReview ] , async(req, res) => {
+router.post('/:spotId/reviews', [ requireAuth, validateReview ] , async(req, res) => {
     const { spotId } = req.params;
     const { user } = req;
     const { review, stars } = req.body;
@@ -316,7 +316,7 @@ router.post('/:spotId/reviews', [ requireAuth,  validateReview ] , async(req, re
 
     if (!spot) {
         res.status(404);
-        res.json({
+        return res.json({
             "message": "Spot couldn't be found"
           });
     }
@@ -333,15 +333,16 @@ router.post('/:spotId/reviews', [ requireAuth,  validateReview ] , async(req, re
 
     if (theReview) {
         res.status(500);
-        res.json(
+        return res.json(
             {
             "message": "User already has a review for this spot"
             }
         );
     };
 
-    const newReview = await spot.unscoped().createReview({
+    const newReview = await Review.unscoped().create({
         userId: user.id,
+        spotId: spotId,
         review,
         stars
      });
@@ -468,7 +469,7 @@ router.put('/:spotId', [ requireAuth, reqAuthSpot, validateSpot ], async(req, re
 
 //Delete a Spot
 
-router.delete('/:spotId', [ requireAuth,reqAuthSpot ], async(req, res) => {
+router.delete('/:spotId', [ requireAuth, reqAuthSpot ], async(req, res) => {
     const { spotId } = req.params;
     const spot = await Spot.findByPk(spotId);
 

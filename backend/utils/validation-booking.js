@@ -23,7 +23,8 @@ const dateOverlap = async function (req, _res, next) {
 
 
 const dateExists = async function (req, _res, next) {
-    const { spotId } = req.params;
+    const { user } = req;
+    // const { spotId } = req.params;
     let { startDate, endDate } = req.body;
 
     let error = new Error("Booking Conflict");
@@ -32,7 +33,7 @@ const dateExists = async function (req, _res, next) {
 
     const bookings = await Booking.findAll({
        where: {
-           spotId,
+           userId: user.id
        }
     });
 

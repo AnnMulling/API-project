@@ -45,12 +45,16 @@ const reqAuthReview = async function (req, res, next) {
         );
     };
 
-    if(user.id === review.userId) next();
+    if(user.id === review.userId) {
+        next();
+    }else {
 
-    const err = new Error ('Authorization required');
-    err.errors = { message: 'Forbidden'}
-    err.status = 403;
-    return next(err);
+        const err = new Error ('Authorization required');
+        err.errors = { message: 'Forbidden'}
+        err.status = 403;
+        return next(err);
+    }
+
 };
 
 //check if booking exists
@@ -64,16 +68,19 @@ const reqAuthBooking = async function (req, res, next) {
         res.status(404);
         return res.json(
             {
-                "message": "Booking couldn't be found"
+                message: "Booking couldn't be found"
             }
         )
     }
 
-    if(user.id === booking.userId) next();
-    const err = new Error ('Authorization required');
-    err.errors = { message: 'Forbidden'}
-    err.status = 403;
-    return next(err);
+    if(user.id === booking.userId) {
+        next();
+    }else{
+        const err = new Error ('Authorization required');
+        err.errors = { message: 'Forbidden'}
+        err.status = 403;
+        return next(err);
+    }
 };
 
 //check if Image exists
