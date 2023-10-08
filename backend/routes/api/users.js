@@ -23,10 +23,13 @@ const validateSignup = [
         .not()
         .isEmail()
         .withMessage('Username cannot be an email.'),
+    check('username')
+        .exists({ checkFalsy: true})
+        .withMessage('Username is required'),
     check('password')
         .exists({ checkFalsy: true })
-        .isLength({ min: 6 })
-        .withMessage('Password must be 6 characters or more.'),
+        .isLength({ min: 6 }),
+        // .withMessage('Password must be 6 characters or more.'),
     check('firstName')
         .exists({ checkFalsy: true})
         .withMessage('First Name is required'),
@@ -52,7 +55,7 @@ router.post('/', validateSignup, async(req, res) => {
         id: user.id,
         firstName: user.firstName,
         lastName: user.lastName,
-        //email: user.email,
+        email: user.email,
         username: user.username
     };
 

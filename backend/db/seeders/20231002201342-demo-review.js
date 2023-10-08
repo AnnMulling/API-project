@@ -12,13 +12,13 @@ module.exports = {
         spotId: 1,
         userId: 1,
         review: 'Love it!',
-        stars: 5
+        stars: 4.2
       },
       {
         spotId: 2,
         userId: 4,
         review: 'Great',
-        stars: 3
+        stars: 3.9
       },
       {
         spotId: 3,

@@ -88,7 +88,7 @@ const isOwner = async function (req, res, next) {
   next();
 };
 
-// //Only review owner can edit review
+// //Onoy review owner can edit review
 // const isreviewWriter = async function (req, res, next) {
 //   const { user } = req;
 //   const { reviewId } = req.params;

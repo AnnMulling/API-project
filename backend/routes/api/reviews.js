@@ -18,6 +18,9 @@ router.post('/:reviewId/images', [ requireAuth , reqAuthReview ], async ( req, r
 
         where: {
             reviewId: reviewId
+        },
+        attributes: {
+            exclude: ['createdAt', 'updatedAt']
         }
     });
 
@@ -34,9 +37,14 @@ router.post('/:reviewId/images', [ requireAuth , reqAuthReview ], async ( req, r
         url,
     });
 
+    const result = { id: reviewImg.id,
+                     url: reviewImg.url
+                   }
+
     await reviewImg.save();
 
-    res.json(reviewId);
+
+    res.json(result);
 })
 
 //Get all reviews of the Current User
@@ -88,7 +96,7 @@ router.get('/current', requireAuth, async(req, res) => {
 
 
     res.json({
-       Booking : result
+       Reviews : result
     });
 });
 
