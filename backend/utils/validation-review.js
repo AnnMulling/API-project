@@ -30,21 +30,23 @@ const validator = {
             .exists({ checkFalsy: true })
             .withMessage('Country is required'),
         check('lat')
-            .isDecimal({force_decimal: true})
             .exists({ checkFalsy: true })
+            .isFloat({min: -90.0000000, max: 90.0000000 })
             .withMessage('Latitude is not valid'),
         check('lng')
-            .isDecimal({force_decimal: true})
             .exists({ checkFalsy: true })
+            .isFloat({min: -180.0000000, max: 180.0000000 })
             .withMessage('Longitude is not valid'),
         check('name')
             .exists({ checkFalsy: true })
+            .isLength({ max: 50 })
             .withMessage('Name must be less than 50 characters'),
         check('description')
             .exists({ checkFalsy: true })
             .withMessage('Description is required'),
         check('price')
             .exists({ checkFalsy: true })
+            .isFloat({min: 0})
             .withMessage('Price per day is required'),
 
         handleValidationErrors
@@ -61,19 +63,19 @@ const validator = {
             .withMessage('Size must be greater than or equal to 1'),
         check('minLat')
             .optional()
-            .isFloat({min: -90.0000000, max: 90.0000000})
+            .isFloat({ min: -90.0000000, max: 90.0000000 })
             .withMessage('Minimum latitude is invalid'),
         check('maxLat')
             .optional()
-            .isFloat({min: -90.0000000, max: 90.0000000})
+            .isFloat({ min: -90.0000000, max: 90.0000000})
             .withMessage('Maximum longtitude is invalid'),
         check('minLng')
             .optional()
-            .isFloat({min: -180.0000000, max: 180.0000000})
+            .isFloat({ min: -180.0000000, max: 180.0000000 })
             .withMessage('Minimum longitude is invalid'),
         check('maxLng')
             .optional()
-            .isFloat({min: -180.0000000, max: 180.0000000})
+            .isFloat({ min: -180.0000000, max: 180.0000000 })
             .withMessage('Maximum longitude is invalid'),
         check('minPrice')
             .optional()

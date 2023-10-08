@@ -100,13 +100,13 @@ router.get('/:spotId', async(req, res) => {
          }
     });
 
-    const sumReview = await Review.sum( 'stars', {
+    const sumReview = await Review.sum('stars', {
         where: {
                 spotId: spot.id
             }
     });
    result.numReviews = reviews;
-   result.avgRating = sumReview / reviews;
+   result.avgRating = sumReview/reviews;
 
     res.json(result);
 });
@@ -191,7 +191,6 @@ router.get('/:spotId/reviews', async(req, res) => {
               )
         }
 
-
        res.json({
         Review: spotReview
        });
@@ -225,12 +224,12 @@ router.get('/', validateQuery, async(req, res) => {
     pagination.limit = size;
     pagination.offset = size * (page - 1);
 
-    const spots = await Spot.findAll({
+    const spots = await Spot.unscoped().findAll({
         include:
         [
             {
                 model: SpotImage,
-                attributes: ['url', 'preview'],
+                attributes: ['id', 'url', 'preview'],
             }
         ],
         where: {
@@ -398,6 +397,15 @@ router.post('/:spotId/images', [ requireAuth, reqAuthSpot ], async(req, res) => 
 
     const spot = await Spot.findByPk(spotId);
 
+    // const spotImage = await SpotImage.findAll({
+    //     where: {
+    //         spotId: spotId
+    //     }
+    // });
+
+    // if (spotId.length) {
+    //     for (let )
+    // }
     // if(!spot) {
     //     res.status(404)
     //     res.json(
@@ -413,8 +421,13 @@ router.post('/:spotId/images', [ requireAuth, reqAuthSpot ], async(req, res) => 
         preview
     });
 
-    res.json(spotImg);
-})
+    const result = { id: spotImg.id,
+                     url: spotImg.url,
+                     preview: spotImg.preview
+                    }
+
+    res.json(result);
+});
 
 //Edit a Spot
 router.put('/:spotId', [ requireAuth, reqAuthSpot, validateSpot ], async(req, res) => {

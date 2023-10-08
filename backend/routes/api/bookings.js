@@ -65,7 +65,7 @@ router.put('/:bookingId', [ requireAuth, reqAuthBooking, dateExists, dateOverlap
     let newEndDate = new Date(endDate).getTime();
     let currentDate = new Date().getTime();
 
-    if (newEndDate >= currentDate ) {
+    if (currentDate >= newEndDate ) {
         res.status(403)
         return res.json(
             {
