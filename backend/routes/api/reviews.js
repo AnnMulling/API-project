@@ -51,7 +51,7 @@ router.post('/:reviewId/images', [ requireAuth , reqAuthReview ], async ( req, r
 router.get('/current', requireAuth, async(req, res) => {
     const { user } = req;
 
-    const userReview = await Review.findAll({
+    const userReview = await Review.unscoped().findAll({
         where: {
             userId: user.id
         },

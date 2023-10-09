@@ -15,7 +15,7 @@ router.get('/current', requireAuth, async(req, res) => {
 
     const { user } = req
 
-    const spots = await Spot.findAll({
+    const spots = await Spot.unscoped().findAll({
         include: [
             {
                 model: SpotImage,
@@ -158,7 +158,7 @@ router.get('/:spotId/bookings', requireAuth,  async(req, res) => {
                     spotId: spotId
                 },
                 attributes: {
-                    exclude: ['userId', 'createdAt', 'upDatedAt']
+                    exclude: ['id', 'userId', 'createdAt', 'upDatedAt']
                 }
             });
 
