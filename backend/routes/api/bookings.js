@@ -92,6 +92,7 @@ router.put('/:bookingId', [ requireAuth, reqAuthBooking, dateExistsEdit, dateOve
     const updatedBooking = {
         id: update.id,
         spotId: update.spotId,
+        userId: update.userId,
         startDate: update.startDate.toISOString().slice(0,10),
         endtDate: update.endDate.toISOString().slice(0,10),
         createdAt: update.createdAt,
