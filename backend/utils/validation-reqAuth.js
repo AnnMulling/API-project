@@ -96,7 +96,7 @@ const reqAuthImageSpot  = async function (req, res, next) {
         return res.json({
             message: "Spot Image couldn't be found"
           })
-    }
+    };
 
     if (spotImage && spotImage.spotId) {
         const spot = await Spot.findByPk(spotImage.spotId);

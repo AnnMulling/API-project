@@ -22,10 +22,20 @@ const dateOverlap = async function (req, _res, next) {
 
 
 
-const dateExists = async function (req, _res, next) {
-    const { user } = req;
-    // const { spotId } = req.params;
+const dateExistsCreate = async function (req, _res, next) {
+
     let { startDate, endDate } = req.body;
+    let spotId;
+
+    if (req.params.spotId) {
+       spotId = req.params.spotId;
+
+    }else{
+        const bookingId = req.params.bookingId;
+        const booking = await Booking.findByPk(bookingId);
+        spotId = booking.spotId;
+    }
+
 
     let error = new Error("Booking Conflict");
     error.errors = {};
@@ -33,7 +43,8 @@ const dateExists = async function (req, _res, next) {
 
     const bookings = await Booking.findAll({
        where: {
-           userId: user.id
+            spotId,
+
        }
     });
 
@@ -90,35 +101,67 @@ const dateExists = async function (req, _res, next) {
  next();
 };
 
-// const dateExists = async function (req, _res, next) {
-//     const { spotId } = req.params;
-//     const { sDate, eDate } = req.body;
+const dateExistsEdit = async function(req, res, next) {
+    const { user } = req;
+    const { bookingId } = req.params;
+    let { startDate, endDate } = req.body;
 
-//     let startDate = new Date(sDate).getTime();
-//     let endDate = new Date(eDate).getTime();
+    const booking = await Booking.findByPk(bookingId)
 
-//     let error = new Error( "Booking Conflicts" );
-//      error.errors = {};
+    const bookings = await Booking.findAll({
+        where: {
+            userId: user.id,
+            id: {[Op.not]: booking.id}
+        }
+    });
 
-//     const allBookings = await Booking.findAll({
-//         where: {
-//             spotId,
-//         }
-//     });
-
-//     // if (allBookings.length) {
-//     //     for (let booking of allBookings) {
-//     //         if ((startDate === booking.startDate) ||
-//     //             (startDate < booking.startDate && startDate <)
-//     //     }
-//     }
-
-//     console.log(allBookings)
-//     next();
-// }
+    const currentDate = new Date().getTime()
+    const newStartDate = new Date(startDate).getTime();
+    const newEndDate = new Date(endDate).getTime();
 
 
+    let error = new Error("Booking Conflict");
+    error.errors = {};
+    let sendMessage = false;
+
+    bookings.forEach(booking => {
+        const oldStartDate = new Date(booking.startDate).getTime();
+        const oldEndDate = new Date(booking.endDate).getTime();
+
+        if (currentDate >= newEndDate ) {
+            res.status(403)
+            return res.json(
+                {
+                message: "Past bookings can't be modified"
+             });
+        };
+
+        if(newStartDate >= oldStartDate && newStartDate <= oldEndDate){
+            error.errors.newStart = "Start date conflicts with an existing booking"
+            sendMessage = true;
+        }
+        if(newEndDate >= oldStartDate && newEndDate <= oldEndDate) {
+            error.errors.newEnd = "End date conflicts with an existing booking"
+            sendMessage = true;
+        }
+        if(newStartDate < oldStartDate && oldEndDate < newEndDate) {
+            error.errors.newEnd = "End date conflicts with an existing booking";
+            error.errors.newStart = "Start date conflicts with an existing booking"
+            sendMessage = true;
+        }
+        if (sendMessage) {
+            error.message = "Sorry, this spot is already booked for the specified dates"
+            error.status = 403;
+            next(error)
+     }
+
+    });
+
+    next();
+}
 
 
 
-module.exports = { dateExists, dateOverlap };
+
+
+module.exports = { dateExistsCreate, dateOverlap, dateExistsEdit };

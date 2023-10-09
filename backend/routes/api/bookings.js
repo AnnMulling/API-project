@@ -4,7 +4,7 @@ const { requireAuth } = require('../../utils/auth');
 const { Spot, Booking, SpotImage } = require('../../db/models');
 
 const { reqAuthBooking } = require('../../utils/validation-reqAuth');
-const { validateBooking, isExisting, dateOverlap, dateExists } = require('../../utils/validation-booking');
+const { dateOverlap, dateExistsCreate, dateExistsEdit } = require('../../utils/validation-booking');
 
 
 //Get all the current user's bookings
@@ -38,7 +38,9 @@ router.get('/current', requireAuth , async (req, res) => {
      for (let i = 0; i < result.length; i++) {
         let booking = result[i];
 
-        if (!images.length) booking.Spot.previewImage = "Image Not Available";
+        if (!images.length) {
+            booking.Spot.previewImage = "Image Not Available";
+        }
 
         for (let j = 0; j < images.length; j++) {
              let image = images[j];
@@ -57,33 +59,49 @@ router.get('/current', requireAuth , async (req, res) => {
 
 //Edit a Booking
 
-router.put('/:bookingId', [ requireAuth, reqAuthBooking, dateExists, dateOverlap ], async (req, res) => {
-
+router.put('/:bookingId', [ requireAuth, reqAuthBooking, dateExistsEdit, dateOverlap ], async (req, res) => {
+    const { user } = req;
     const { startDate, endDate } = req.body;
     const { bookingId } = req.params;
 
-    let newEndDate = new Date(endDate).getTime();
-    let currentDate = new Date().getTime();
+    // let newEndDate = new Date(endDate).getTime();
+    // let currentDate = new Date().getTime();
 
-    if (currentDate >= newEndDate ) {
-        res.status(403)
-        return res.json(
-            {
-            message: "Past bookings can't be modified"
-         })
-    }
+    // if (currentDate >= newEndDate ) {
+    //     res.status(403)
+    //     return res.json(
+    //         {
+    //         message: "Past bookings can't be modified"
+    //      });
+    // };
 
-    const updatedBooking = await Booking.unscoped().findByPk(bookingId, {
-            attributes: {
-                include: ['id', 'spotId', 'userId', 'startDate', 'endDate', 'createdAt', 'updatedAt']
-            }
 
+    // const updatedBooking = await Booking.unscoped().findByPk(bookingId, {
+    //         attributes: {
+    //             include: ['id', 'spotId', 'userId', 'startDate', 'endDate', 'createdAt', 'updatedAt']
+    //         }
+
+    // });
+
+    const booking = await Booking.findByPk(bookingId);
+
+    const update = await booking.update({
+        startDate, endDate
     });
 
-    updatedBooking.startDate = startDate;
-    updatedBooking.endDate = endDate;
+    const updatedBooking = {
+        id: update.id,
+        spotId: update.spotId,
+        startDate: update.startDate.toISOString().slice(0,10),
+        endtDate: update.endDate.toISOString().slice(0,10),
+        createdAt: update.createdAt,
+        updatedAt: update.updatedAt
+    }
 
-    updatedBooking.save();
+    // updatedBooking.startDate = startDate;
+    // updatedBooking.endDate = endDate;
+
+    // updatedBooking.save();
 
     res.json(updatedBooking);
 
