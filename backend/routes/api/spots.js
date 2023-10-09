@@ -195,7 +195,7 @@ router.get('/:spotId/reviews', async(req, res) => {
             res.status(404)
             res.json(
                 {
-                "message": "Spot couldn't be found"
+                "message": "Review on spot couldn't be found"
                 }
               )
         }
