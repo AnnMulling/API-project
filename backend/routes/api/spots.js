@@ -72,7 +72,7 @@ router.get('/current', requireAuth, async(req, res) => {
 router.get('/:spotId', async(req, res) => {
     const { spotId } = req.params
 
-    const spot = await Spot.findByPk( spotId, {
+    const spot = await Spot.unscoped().findByPk( spotId, {
         include:
         [
             {
