@@ -83,7 +83,7 @@ router.put('/:bookingId', [ requireAuth, reqAuthBooking, dateExistsEdit, dateOve
 
     // });
 
-    const booking = await Booking.findByPk(bookingId);
+    const booking = await Booking.unscoped().findByPk(bookingId);
 
     const update = await booking.update({
         startDate, endDate
