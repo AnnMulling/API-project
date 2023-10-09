@@ -6,7 +6,7 @@ const { Spot, User, SpotImage, Review, ReviewImage, Booking } = require('../../d
 
 const { validateReview, validateSpot, validateQuery} = require('../../utils/validation-review');
 const {reqAuthSpot } = require('../../utils/validation-reqAuth');
-const { dateOverlap, dateExists } = require('../../utils/validation-booking');
+const { dateOverlap, dateExistsCreat, dateExistsCreate } = require('../../utils/validation-booking');
 
 
 
@@ -49,6 +49,12 @@ router.get('/current', requireAuth, async(req, res) => {
         if (spot.SpotImages.length)  {
             spot.previewImage = spot.SpotImages[0].url
         }
+
+
+        if (spot.SpotImages.length < 0) {
+             spot.previewImage = "Image not available"
+        }
+
         delete spot.SpotImages;
 
         result.push(spot);
@@ -126,13 +132,14 @@ router.get('/:spotId/bookings', requireAuth,  async(req, res) => {
                 "message": "Spot couldn't be found"
                 }
               )
-        }
+        };
 
 
-        if (user.id == spot.ownerId) {
+        if (spot && spot.ownerId === user.id) {
+
             const ownerBookingDetail = await Booking.findAll({
                 where: {
-                    userId: user.id
+                    spotId: spotId
                 },
                 attributes: {
                     include: ['id', 'spotId', 'userId', 'startDate', 'endDate', 'createdAt', 'updatedAt']
@@ -143,18 +150,20 @@ router.get('/:spotId/bookings', requireAuth,  async(req, res) => {
                         attributes: ['id', 'firstName', 'lastName']
                     }
                 ]
-            })
-            res.json(ownerBookingDetail)
+            });
+            return res.json({ Bookings : ownerBookingDetail } )
         }else {
             const guestBookingDetail = await Booking.findAll({
                 where: {
-                    userId: user.id
+                    spotId: spotId
                 },
                 attributes: {
-                    include: ['spotId', 'startDate', 'endDate']
+                    exclude: ['userId', 'createdAt', 'upDatedAt']
                 }
-            })
-            res.json(guestBookingDetail)
+            });
+
+            //const result = { Booking: [{spotId: spotId, startDate: guestBookingDetail.startDate, endDate: guestBookingDetail.endDate }] }
+            return res.json({ Bookings: guestBookingDetail });
         }
 
 })
@@ -165,7 +174,7 @@ router.get('/:spotId/bookings', requireAuth,  async(req, res) => {
 router.get('/:spotId/reviews', async(req, res) => {
     const { spotId } = req.params;
 
-    const spotReview = await Review.unscoped().findAll({
+    const spotReview = await Review.unscoped().findOne({
         where: {
             spotId: spotId
         },
@@ -182,7 +191,7 @@ router.get('/:spotId/reviews', async(req, res) => {
     })
 
 
-        if (!spotReview.length) {
+        if (!spotReview) {
             res.status(404)
             res.json(
                 {
@@ -277,7 +286,7 @@ router.get('/', validateQuery, async(req, res) => {
 
 
 //Create a Booking from a Spot based on the spot's id
-router.post('/:spotId/bookings', [ requireAuth,  isOwner, dateExists, dateOverlap ], async (req, res) => {
+router.post('/:spotId/bookings', [ requireAuth,  isOwner, dateExistsCreate, dateOverlap ], async (req, res) => {
     const { user } = req;
     const { spotId } = req.params;
     let { startDate, endDate } = req.body;
@@ -293,13 +302,21 @@ router.post('/:spotId/bookings', [ requireAuth,  isOwner, dateExists, dateOverla
           )
     }
 
-    const newBooking = await Booking.unscoped().create({
-        spotId,
-        userId: user.id,
-        startDate,
-        endDate,
+    // const newBooking = await Booking.unscoped().create({
+    //     spotId,
+    //     userId: user.id,
+    //     startDate,
+    //     endDate,
+    // });
+
+    const newBooking = await spot.createBooking({
+            spotId,
+            userId: user.id,
+            startDate,
+            endDate
     });
 
+     await newBooking.save();
 
     res.json(newBooking);
 })

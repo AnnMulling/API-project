@@ -6,7 +6,7 @@ const {reqAuthImageSpot } = require('../../utils/validation-reqAuth');
 
 
 router.delete('/:imageId', [ requireAuth, reqAuthImageSpot ], async (req, res) => {
-    const { user } = req;
+    // const { user } = req;
     const { imageId } = req.params;
     const spotImage = await SpotImage.findByPk(imageId);
 
