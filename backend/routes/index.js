@@ -46,7 +46,7 @@ if (process.env.NODE_ENV === 'production') {
     });
 
   }
-
+}
 
 //   fetch('/api/test', {
 //     method: "POST",
