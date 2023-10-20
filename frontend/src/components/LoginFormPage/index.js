@@ -8,8 +8,6 @@ import './LoginForm.css'
 
 function LoginFormPage () {
     console.log('login form rendered')
-
-
     const dispatch = useDispatch();
     const sessionUser = useSelector(state => state.session.user);
 
@@ -18,7 +16,7 @@ function LoginFormPage () {
     const [ password, setPassword ] = useState("");
     const [ errors, setErrors ] = useState({});
 
-    // if (!sessionUser) return <Redirect to='/'/>
+    //if (!sessionUser) return <Redirect to='/'/>
 
     const handleSubmit = (e) => {
         e.preventDefault();
