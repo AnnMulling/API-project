@@ -57,11 +57,20 @@ export const signup = (user) => async (dispatch) => {
     dispatch(setUser(data.user));
     return response;
 };
+//logout
+export const logout = () => async (dispatch) => {
+    const response = await csrfFetch('/api/session', {
+        method: 'DELETE',
+    });
+    dispatch(removeUser());
+    return response;
+}
 
 
 const initialState = {
     user: null
 };
+
 
 const  sessionReducer = (state=initialState, action ) => {
     console.log('session reducer..')
@@ -80,6 +89,6 @@ const  sessionReducer = (state=initialState, action ) => {
         default:
             return state;
     }
-}
+};
 
 export default sessionReducer;

@@ -1,0 +1,20 @@
+/* .nav {
+    margin: 0 20px;
+    padding: 10px;
+    color: black;
+    background-color: white;
+    border-radius: 10px;
+    border: 3px solid gray;
+    text-decoration: none;
+
+
+  } */
+
+ .hidden {
+    display: none;
+ }
+
+  nav a.active {
+    color: white;
+    background-color: black;
+  }
