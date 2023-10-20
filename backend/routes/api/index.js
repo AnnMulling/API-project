@@ -34,11 +34,11 @@ router.use('/spot-images', spotImageRouter);
 router.use('/review-images', reviewImageRouter);
 
 //Front-end
-// router.post('/test', (req, res) => {
-//   res.json({
-//     requestBody: req.body
-//   })
-// });
+router.post('/test', (req, res) => {
+  res.json({
+    requestBody: req.body
+  })
+});
 
 
 
