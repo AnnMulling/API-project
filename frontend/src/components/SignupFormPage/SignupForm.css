@@ -1,0 +1,7 @@
+.errors {
+    color: red;
+    height: 20px;
+    margin: 3px;
+    box-sizing: border-box;
+    font-size: small;
+}
