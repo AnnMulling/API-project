@@ -5,7 +5,7 @@ import { useModal } from "../../context/Modal";
 import "./LoginForm.css";
 
 function LoginFormModal() {
-    console.log('loginform rendered')
+    console.log('loginform ')
   const dispatch = useDispatch();
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
@@ -13,15 +13,21 @@ function LoginFormModal() {
   const { closeModal } = useModal();
 
   const handleSubmit = (e) => {
+
     e.preventDefault();
     setErrors({});
+
     return dispatch(sessionActions.login({ credential, password }))
       .then(closeModal)
       .catch(async (res) => {
         const data = await res.json();
+
         if (data && data.errors) {
           setErrors(data.errors);
+
+          console.log(errors)
         }
+
       });
   };
 
@@ -48,7 +54,7 @@ function LoginFormModal() {
           />
         </label>
         {errors.credential && (
-          <p>{errors.credential}</p>
+          <p className="errors">{errors.credential}</p>
         )}
         <button type="submit">Log In</button>
       </form>
