@@ -46,6 +46,54 @@ module.exports = {
         description: "Breathtaking Oceanview! ",
         price: 123
       },
+      {
+        ownerId: 4,
+        address: "678 Oak Shadow ",
+        city: 'Devenport',
+        state: 'Florida',
+        country: 'United States of America',
+        lat: 28.67582928,
+        lng: -128.94873199,
+        name: "Entire home",
+        description: "Mini Golf, 5xThemed Bedrooms, Sauna, Space Theater",
+        price: 607
+      },
+      {
+        ownerId: 5,
+        address: "177 Paw Paw Ave ",
+        city: 'Coloma',
+        state: 'Michigan',
+        country: 'United States of America',
+        lat: 40.67582928,
+        lng: -169.94873199,
+        name: "Entire-Cabin",
+        description: "Beautiful Cabin by the River, across Paw Paw Lake! ",
+        price: 420
+      },
+      {
+        ownerId: 6,
+        address: "380 Salem ",
+        city: 'Wisconsin',
+        state: 'Michigan',
+        country: 'United States of America',
+        lat: 36.67582928,
+        lng: -154.94873199,
+        name: "Entire-House",
+        description: "Cozy Holiday Log Cabin Getaway ",
+        price: 123
+      },
+      {
+        ownerId: 3,
+        address: " W Oaky Blvd ",
+        city: 'Las Vegas',
+        state: 'Nevada',
+        country: 'United States of America',
+        lat: 34.67582928,
+        lng: -134.94873199,
+        name: "Entire-Guesthouse",
+        description: "Private Luxury Guesthouse with Romantic Patio",
+        price: 123
+      },
     ], {validate: true})
   },
 
@@ -53,8 +101,7 @@ module.exports = {
     options.tableName = 'Spots'
     const Op = Sequelize.Op;
     return queryInterface.bulkDelete(options, {
-      name: { [Op.in]: ['Cottage', 'Tiny-home', 'Entire-Condo'] }
+      name: { [Op.in]: ['Cottage', 'Tiny-home', 'Entire-Condo', 'Entire home', 'Entire-Cabin', 'Entire-House', 'Entire-Guesthouse' ] }
     }, {})
   }
 };
-

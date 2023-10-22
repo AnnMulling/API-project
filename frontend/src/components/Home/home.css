@@ -1,0 +1,34 @@
+
+* {
+    box-sizing: border-box;
+}
+
+.mainContainer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 8px;
+    border: solid green;
+
+}
+
+.spotContainer {
+    padding: 10px;
+    border: solid purple;
+}
+
+.spotDetail {
+    /* border: 1px solid rgb(235, 0, 0); */
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* grid-column-gap: 100px; */
+    /* text-align: right; */
+
+
+
+}
+
+.spotImg {
+    border-radius: 5%;
+    width: 300px;
+    height: 250px;
+}

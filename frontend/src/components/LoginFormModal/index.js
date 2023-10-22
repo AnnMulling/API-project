@@ -11,12 +11,20 @@ function LoginFormModal() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [disabled, setDisabled] = useState(true);
+  const [className, setClassName ] = useState("disabled")
   const { closeModal } = useModal();
 
   useEffect(() => {
 
-    if (credential.length >= 4 || password.length >= 4) setDisabled(false);
-    if (Object.keys(errors).length > 0) setDisabled(true)
+    if (credential.length >= 4 || password.length >= 4) {
+      setDisabled(false)
+      setClassName("loginBtn")
+    }
+
+    if (Object.keys(errors).length > 0) {
+      setDisabled(true)
+      setClassName("disabled")
+     }
 
   }, [credential, password, errors])
 
@@ -67,7 +75,7 @@ function LoginFormModal() {
           {errors.credential && (
             <p className="errors">{errors.credential}</p>
           )}
-          <button type="submit" disabled={disabled} id='loginBtn' >Log In</button>
+          <button type="submit" disabled={disabled} className={className} >Log In</button>
         </form>
       </div>
     </>
