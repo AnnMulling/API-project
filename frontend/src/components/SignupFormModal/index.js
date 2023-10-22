@@ -5,7 +5,7 @@ import * as sessionActions from "../../store/session";
 import "./SignupForm.css";
 
 function SignupFormModal() {
-    console.log('signup form rendered')
+  console.log('signup form rendered')
   const dispatch = useDispatch();
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
@@ -45,70 +45,88 @@ function SignupFormModal() {
   return (
     <>
       <h1>Sign Up</h1>
-      <form onSubmit={handleSubmit}>
-        <label>
+      <form onSubmit={handleSubmit} id="signup">
+        <label className="labelSighup">
           Email
-          <input
-            type="text"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
         </label>
+        <input
+          type="text"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+          className="inputSignup"
+          required
+        />
+
         {errors.email && <p className="errors">{errors.email}</p>}
-        <label>
+        <label className="labelSighup">
           Username
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-          />
         </label>
+        <input
+          type="text"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Username"
+          className="inputSignup"
+          required
+        />
+
         {errors.username && <p className="errors">{errors.username}</p>}
-        <label>
+        <label className="labelSighup">
           First Name
-          <input
-            type="text"
-            value={firstName}
-            onChange={(e) => setFirstName(e.target.value)}
-            required
-          />
         </label>
+        <input
+          type="text"
+          value={firstName}
+          onChange={(e) => setFirstName(e.target.value)}
+          placeholder="First Name"
+          className="inputSignup"
+          required
+        />
+
         {errors.firstName && <p className="errors">{errors.firstName}</p>}
-        <label>
+        <label className="labelSighup">
           Last Name
-          <input
-            type="text"
-            value={lastName}
-            onChange={(e) => setLastName(e.target.value)}
-            required
-          />
         </label>
+        <input
+          type="text"
+          value={lastName}
+          onChange={(e) => setLastName(e.target.value)}
+          placeholder="Last Name"
+          className="inputSignup"
+          required
+        />
+
         {errors.lastName && <p className="errors">{errors.lastName}</p>}
-        <label>
+        <label className="labelSighup">
           Password
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
         </label>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+          className="inputSignup"
+          required
+        />
+
         {errors.password && <p className="errors">{errors.password}</p>}
-        <label>
+        <label className="labelSighup">
           Confirm Password
-          <input
-            type="password"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            required
-          />
         </label>
+        <input
+          type="password"
+          value={confirmPassword}
+          onChange={(e) => setConfirmPassword(e.target.value)}
+          placeholder="Confirm Password"
+          className="inputSignup"
+          required
+        />
+
         {errors.confirmPassword && (
           <p className="errors">{errors.confirmPassword}</p>
         )}
-        <button type="submit">Sign Up</button>
+        <button type="submit" id="signupBtn">Sign Up</button>
       </form>
     </>
   );

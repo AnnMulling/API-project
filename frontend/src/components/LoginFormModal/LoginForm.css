@@ -6,3 +6,37 @@
     font-size: small;
 }
 
+#loginContainer {
+   text-align: center;
+
+}
+
+.login {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    padding: 20px
+}
+
+.inputLogin {
+    height: 50px;
+    text-align: left;
+    padding-left: 20px;
+}
+
+
+#loginBtn {
+    background-color: rgb(233, 91, 95);
+    color:rgb(251, 249, 249);
+    font-size: 15px;
+    border: none;
+    height: 50px;
+    width: 95%;
+    margin-left: 20px;
+}
+
+nav a.active {
+    color: rgb(60, 60, 60);
+    text-decoration: none;
+
+}
