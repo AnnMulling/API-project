@@ -32,14 +32,26 @@
 }
 
 
-
-#signupBtn {
+.signupBtn {
     background-color: rgb(233, 91, 95);
-    border: 1px solid #dddddd;
-    /* border-radius: 10px; */
+    color:rgb(251, 249, 249);
+    font-size: 15px;
+    border: none;
+    height: 50px;
     width: 100%;
 
-    border: none;
-    height: 30px;
+    cursor: pointer;
 
+}
+
+.disabled {
+    background-color: rgb(233, 91, 95);
+    color:rgb(251, 249, 249);
+    font-size: 15px;
+    border: none;
+    height: 50px;
+    width: 100%;
+    /* margin-left: 20px; */
+    cursor: not-allowed;
+    opacity: 0.6;
 }
