@@ -1,20 +1,71 @@
-/* .nav {
-    margin: 0 20px;
-    padding: 10px;
-    color: black;
-    background-color: white;
-    border-radius: 10px;
-    border: 3px solid gray;
-    text-decoration: none;
-
-
-  } */
+#navContainer {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px 20px;
+}
 
  .hidden {
     display: none;
  }
 
-  nav a.active {
-    color: white;
-    background-color: black;
-  }
+nav a.active {
+    color: rgb(233, 91, 95);
+    font-size: 25px;
+    text-decoration: none;
+
+}
+
+
+#profileBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+
+  border-radius: 15px;
+  border: 1px solid #dddddd;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  background-color: transparent;
+  width: 100px;
+  height: 40px;
+}
+
+#profileBtn > * {
+  font-size: 20px;
+  padding: 7px;
+  color: rgb(98, 94, 94);
+}
+
+.home{
+  font-size: 25px;
+  font-family: 'Manrope', sans-serif;
+  font-weight: bold;
+}
+
+
+/*----------------------- Profile ------------------------------------*/
+
+
+.profileList{
+  list-style-type: none;
+  /* border-radius: 12px; */
+  border: 1px solid #dddddd;
+  width: fit-content;
+  cursor: pointer;
+}
+
+.profileList > * {
+  padding-right: 15px;
+  margin-bottom: 4px;
+}
+
+#logoutBtn {
+  background-color: rgb(233, 91, 95);
+  color:rgb(251, 249, 249);
+  font-size: 15px;
+  border: none;
+  border-radius: 5px;
+  margin-left: 5px;
+  margin-top: 5px;
+  cursor: pointer;
+}
