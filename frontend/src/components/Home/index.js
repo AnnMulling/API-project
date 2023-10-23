@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
-import { Switch, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import SpotDetail from '../SingleSpotDetail';
 import * as spotActions from '../../store/spots';
 
 import './home.css';
@@ -13,7 +12,7 @@ export default function HomePage () {
     const spots = Object.values(spotState);
 
 
-    console.log('spotState===>', spotState)
+    console.log('spotState home-page', spotState)
 
     useEffect(() => {
         dispatch(spotActions.fetchSpots())
@@ -39,6 +38,7 @@ export default function HomePage () {
                     </div>
                 </Link>
             )}
+
            </div>
         </>
     );
