@@ -7,24 +7,22 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     column-gap: 8px;
-    border: solid green;
+    /* border: solid green; */
 
 }
 
 .spotContainer {
     padding: 10px;
-    border: solid purple;
+    /* border: solid purple; */
 }
 
 .spotDetail {
     /* border: 1px solid rgb(235, 0, 0); */
-    display: grid;
+    /* display: grid;
     grid-template-columns: repeat(2, 1fr);
-    /* grid-column-gap: 100px; */
-    /* text-align: right; */
-
-
-
+    grid-gap: 5px 5px; */
+    display: flex;
+    justify-content: space-between;
 }
 
 .spotImg {

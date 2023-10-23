@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
+import { Switch, Route, NavLink } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import SpotDetail from '../SingleSpotDetail';
 import * as spotActions from '../../store/spots';
 
 import './home.css';
@@ -7,29 +9,39 @@ import './home.css';
 
 export default function HomePage () {
     const dispatch = useDispatch();
-    const spotState = Object.values(useSelector(state => state.spots.allSpots))
+    const spotState = (useSelector(state => state.spots))
+    const spots = Object.values(spotState);
+
+
     console.log('spotState===>', spotState)
 
     useEffect(() => {
         dispatch(spotActions.fetchSpots())
     },[dispatch])
 
+    if(!spots) return null;
+
     return(
         <>
           <h1>home page</h1>
           <div className='mainContainer'>
-            {spotState.map((spot) =>
+            {spots.map((spot) =>
                 <div key={spot.id} className='spotContainer'>
                     <img className='spotImg' src={spot.previewImage} alt='houses'/>
                     <div className='spotDetail'>
-                        <div className='address'>{spot.city}</div>
+                        <div className='address'>City, {spot.city}</div>
                         {/* <div className='country'>{spot.country}</div> */}
-                        <span className='starsRating'><i class="fa-solid fa-star"></i>{spot.avgRating}</span>
-                        <div className='price'>${spot.price}</div>
+                        <div className='starsRating'><i class="fa-solid fa-star"></i>{spot.avgRating}</div>
                     </div>
+                        <div className='price'>${spot.price} night</div>
                 </div>
             )}
-        </div>
+            <Switch>
+                <Route path="/:spotId">
+                    <SpotDetail spots={spots}/>
+                </Route>
+            </Switch>
+           </div>
         </>
     );
 }

@@ -1,6 +1,9 @@
 /** Action Type Constants: */
+import { csrfFetch } from "./csrf";
+
 export const LOAD_SPOTS = 'spot/LOAD_SPOTS';
 export const RECEIVE_SPOT = 'spot/RECEIVE_SPOT'
+
 
 const loadSpots = (spots) => ({
 
@@ -11,16 +14,18 @@ const loadSpots = (spots) => ({
 //get all spot
 export const fetchSpots = () => async (dispatch) => {
     console.log('fectching all spots..')
-    const response = await fetch('/api/spots');
+    const response = await csrfFetch ('/api/spots');
 
     if(response.ok) {
         const spots = await response.json();
         dispatch(loadSpots(spots))
-    }
 
-    // return response;
+        return spots;
+    }
 }
-// const initialState = {}
+
+//get spot details
+
 
 const spotReducer = (state = {}, action) => {
     console.log('spot reducer..')
@@ -30,11 +35,12 @@ const spotReducer = (state = {}, action) => {
             action.payload.Spots.forEach((spot) => {
               spotsState[spot.id] = spot;
             });
-            return {...state,
-                      allSpots: {
-                        ...spotsState
-                      }
-                    }
+            // return { ...state,
+            //           allSpots: {
+            //             ...spotsState
+            //           }
+            //         }
+            return spotsState
 
         default:
             return state;
