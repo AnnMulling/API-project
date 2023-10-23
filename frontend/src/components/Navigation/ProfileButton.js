@@ -39,13 +39,6 @@ function ProfileButton({ user }) {
     closeMenu();
   };
 
-  const demoLogin = (e) => {
-    e.preventDefault();
-    return dispatch(sessionActions.login({
-      credential: 'user6',
-      password: 'password6'
-    })).then(closeMenu)
-  }
 
   const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
 
@@ -56,7 +49,7 @@ function ProfileButton({ user }) {
         <i className="fas fa-user-circle" />
       </div>
 
-      <ul className={`profileList ${ulClassName}`}  ref={ulRef}>
+      <ul className={`${ulClassName}`}  ref={ulRef}>
         {user ? (
           <>
 
@@ -81,7 +74,6 @@ function ProfileButton({ user }) {
               onItemClick={closeMenu}
               modalComponent={<SignupFormModal />}
             />
-            <div onClick={demoLogin}>DemoUser</div>
           </>
         )}
       </ul>

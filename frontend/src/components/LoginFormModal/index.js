@@ -47,6 +47,15 @@ function LoginFormModal() {
       });
   };
 
+  const demoLogin = (e) => {
+    e.preventDefault();
+
+    return dispatch(sessionActions.login({
+      credential: 'user6',
+      password: 'password6'
+    })).then(closeModal);
+  }
+
   return (
     <>
       <div id="loginContainer">
@@ -77,6 +86,7 @@ function LoginFormModal() {
           )}
           <button type="submit" disabled={disabled} className={className} >Log In</button>
         </form>
+        <button onClick={demoLogin} className="demoBtn">DemoUser</button>
       </div>
     </>
   );
