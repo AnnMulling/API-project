@@ -30,3 +30,9 @@
     width: 300px;
     height: 250px;
 }
+
+.spotDetailLink {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+
+}

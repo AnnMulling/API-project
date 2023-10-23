@@ -3,6 +3,7 @@ import { Switch, Route} from "react-router-dom";
 import { useDispatch } from "react-redux";
 import Navigation from "./components/Navigation";
 import HomePage from "./components/Home";
+import SpotDetail from "./components/SingleSpotDetail"
 import * as sessionActions from "./store/session";
 
 
@@ -22,6 +23,9 @@ function App() {
     <Switch>
       <Route exact path="/">
         <HomePage />
+      </Route>
+      <Route path="/spots/:spotId">
+        <SpotDetail />
       </Route>
     </Switch>
     {isLoaded && <Switch></Switch>}
