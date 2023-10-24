@@ -1,10 +1,11 @@
 #navContainer {
   display: flex;
   justify-content: space-between;
-  margin: 20px 20px;
-  height: 70px;
   border-bottom: 1px solid #dddddd;
+  padding: 30px;
 }
+
+
 
  .hidden {
     display: none;
@@ -14,7 +15,6 @@ nav a.active {
     color: rgb(233, 91, 95);
     font-size: 25px;
     text-decoration: none;
-
 }
 
 
@@ -24,7 +24,7 @@ nav a.active {
   align-items: center; */
 
   position: absolute;
-  right: 10px;
+  right: 50px;
   text-align: center;
   cursor: pointer;
 
@@ -32,13 +32,14 @@ nav a.active {
   border: 1px solid #dddddd;
   box-shadow: 0 2px 4px rgba(0,0,0,0.18);
   background-color: transparent;
-  width: 80px;
-  height: 40px;
+  width: 95px;
+  height: 45px;
+
 }
 
 #profileBtn > * {
   font-size: 20px;
-  padding: 7px;
+  padding: 10px;
   color: rgb(98, 94, 94);
 }
 

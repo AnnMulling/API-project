@@ -28,11 +28,11 @@ export default function HomePage () {
             {spots.map((spot) =>
                 <Link to={`/spots/${spot.id}`} className="spotDetailLink">
                     <div key={spot.id} className='spotContainer'>
-                        <img className='spotImg' src={spot.previewImage} alt='houses'/>
+                        <img className='spotImg' src={spot.previewImage} alt='houses' title={spot.name}/>
                         <div className='spotDetail'>
                             <div className='address'>City, {spot.city}</div>
                             {/* <div className='country'>{spot.country}</div> */}
-                            <div className='starsRating'><i class="fa-solid fa-star"></i>{spot.avgRating}</div>
+                            <div className='starsRating'><i class="fa-solid fa-star"></i>{!spot.avgRating ? `New` : spot.avgRating} </div>
                         </div>
                             <div className='price'>${spot.price} night</div>
                     </div>

@@ -12,13 +12,13 @@ module.exports = {
         spotId: 1,
         userId: 1,
         review: 'Love it!',
-        stars: 4.2
+        stars: 4
       },
       {
         spotId: 2,
         userId: 4,
         review: 'Great',
-        stars: 3.9
+        stars: 3
       },
       {
         spotId: 3,
@@ -30,7 +30,7 @@ module.exports = {
         spotId: 4,
         userId: 1,
         review: 'Very cool place!',
-        stars: 4.6
+        stars: 4
       },
       {
         spotId: 5,
@@ -48,7 +48,7 @@ module.exports = {
         spotId: 7,
         userId: 3,
         review: 'Huge Place',
-        stars: 4
+        stars: 4.2
       }
     ], {validate: true})
   },

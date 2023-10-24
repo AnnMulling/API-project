@@ -50,13 +50,16 @@
 .descriptionContainer {
     display: flex;
     gap: 10%;
-    margin-top: 30px;
+    margin: 40px 0;
     width: 100%;
+    border-bottom: 1px solid #dddddd;
 }
 
 .descriptionDown {
     width: 60%;
 }
+
+/*---------------------------------------------------RESERVE--------------------------------------------------*/
 
 
 .reserveBox {
@@ -84,4 +87,18 @@
     margin-top: 5px;
     cursor: pointer;
     width: 100%;
+}
+
+.reserveBtn:hover {
+    background-color: rgb(32, 32, 30);
+
+}
+/*---------------------------------------------------REVIEW--------------------------------------------------*/
+.reviewContainer {
+    display: flex;
+    gap: 20px;
+}
+
+.reviewBelowContainer {
+    margin-left: 50px;
 }
