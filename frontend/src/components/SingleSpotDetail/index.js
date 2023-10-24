@@ -1,24 +1,36 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory, useParams } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom/cjs/react-router-dom.min';
+import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import * as spotActions from '../../store/spots';
 
+
 import './SingleSpot.css'
+import AllReviews from './reviews';
 
 
 function SpotDetail () {
-    const history = useHistory();
     const { spotId } = useParams();
-    const spot = useSelector((state) => state.spots.requestedSpot)
+
+    const spot = useSelector((state) => state.spots.requestedSpot);
     const dispatch = useDispatch();
 
     console.log('detail', spot)
-//    console.log('spotimg', spot.SpotImages)
+
 
     useEffect(() => {
-        dispatch(spotActions.fetchSpotDetail(spotId))
+        console.log('dispatch spot')
+        dispatch(spotActions.fetchSpotDetail(spotId));
+
     }, [dispatch])
 
+
+
+    const handleReserve = (e) => {
+        e.preventDefault();
+
+        alert("Feature coming soon");
+    }
 
     return !spot ? 'Page Not Found' : (
         <>
@@ -51,14 +63,20 @@ function SpotDetail () {
                     </div>
                     <div className='reserveContainer'>
                         <div className='reserveBox'>
-                            <div style={{fontSize:'20px', fontWeight:'bold'}}>${spot.price}</div>
+                            <div style={{fontSize:'20px', fontWeight:'bold'}}>${spot.price} night</div>
                             <div style={{paddingLeft: '25px'}}><i class="fa-solid fa-star"></i> {spot.avgRating}</div>
-                            <div>#{spot.numReviews} reviews</div>
-                            <button className='reserveBtn'>reserve</button>
+                            <div>#{spot.numReviews}{spot.numReviews > 1 ? 'Reviews' : 'Review'}</div>
+                            <button onClick={handleReserve} className='reserveBtn'>reserve</button>
                         </div>
                     </div>
                 </div>
+                <div className='reviewContainer'>
+                    <div style={{paddingLeft: '25px'}}><i class="fa-solid fa-star"></i>{!spot.avgRating ? `New` : spot.avgRating}</div>
+                    <span>#{spot.numReviews}{spot.numReviews > 1 ? 'Reviews' : 'Review'}</span>
+
+                </div>
             </div>
+             <AllReviews spotId={spotId} />
         </>
     );
 };

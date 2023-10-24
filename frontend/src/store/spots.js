@@ -42,6 +42,9 @@ export const fetchSpotDetail = (spotId) => async (dispatch) => {
         dispatch(receivesSpot(spot));
         console.log('from fetch', spot)
         return spot;
+    }else {
+        const error = await response.json();
+        return error;
     }
 }
 

@@ -44,7 +44,8 @@ router.get('/current', requireAuth, async(req, res) => {
             }
         });
 
-        spot.avgRating = sumReview / spotRate;
+        const avg = spotRate ? (sumReview / spotRate).toFixed(2): 0
+        spot.avgRating = avg
 
         if (spot.SpotImages.length)  {
             spot.previewImage = spot.SpotImages[0].url
@@ -112,7 +113,9 @@ router.get('/:spotId', async(req, res) => {
             }
     });
    result.numReviews = reviews;
-   result.avgRating = sumReview/reviews;
+
+   const avg = reviews ? (sumReview / reviews).toFixed(2) : 0
+   result.avgRating = avg
 
     res.json(result);
 });
@@ -266,7 +269,8 @@ router.get('/', validateQuery, async(req, res) => {
             }
         });
 
-        spot.avgRating = sumReview / spotRate;
+        const avg = spotRate ? (sumReview / spotRate).toFixed(2): 0
+        spot.avgRating = avg
 
         if (spot.SpotImages.length)  {
             spot.previewImage = spot.SpotImages[0].url
