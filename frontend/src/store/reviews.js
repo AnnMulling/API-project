@@ -34,24 +34,24 @@ export const fetchReviews = (spotId) =>  async (dispatch) => {
 };
 
 
-const initialState = {
-    spot: {}
+// const initialState = {
+//     spot: {}
 
-};
+// };
 
-const reviewReducer = (state=initialState, action) => {
+const reviewReducer = (state={}, action) => {
     switch (action.type) {
         case LOAD_REVIEWS:
             console.log('reducer, LOAD_REVIEWS')
             const reviewsState = {...state};
-            Object.values(action.payload).forEach((review) => {
-                console.log('each review', review)
-                reviewsState.spot[review.id] = review
+            action.payload.Reviews.forEach((review) => {
+                // console.log('each review', review)
+                reviewsState[review.id] = review
             });
-            console.log('reducer review', reviewsState)
-            return reviewsState
+            console.log('review state from reducer', reviewsState)
+            return reviewsState;
         case CLEAR_REVIEWS:
-            return {spot:{}};
+            return {};
         default:
             return state;
     }
