@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom/cjs/react-router-dom.min';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import * as spotActions from '../../store/spots';
@@ -41,7 +40,7 @@ function SpotDetail () {
                 </div>
                 {spot.SpotImages.map((img) => (
                 <div className='spotImgContainer'>
-                    <div><img className="bigImg"src={img.url}/></div>
+                    <div className="bigImgContainer"><img className="bigImg"src={img.url}/></div>
                     <div className='groupImage'>
                         <div><img className="smallImg" src={img.url}/></div>
                         <div><img className="smallImg" src={img.url}/></div>
@@ -64,19 +63,21 @@ function SpotDetail () {
                     <div className='reserveContainer'>
                         <div className='reserveBox'>
                             <div style={{fontSize:'20px', fontWeight:'bold'}}>${spot.price} night</div>
-                            <div style={{paddingLeft: '25px'}}><i class="fa-solid fa-star"></i> {spot.avgRating}</div>
-                            <div>#{spot.numReviews}{spot.numReviews > 1 ? 'Reviews' : 'Review'}</div>
+                            <div style={{paddingLeft: '25px'}}><i class="fa-solid fa-star"></i> {spot.avgRating === 0 ? '' : spot.avgRating}</div>
+                            <div style={{fontSize:'20px'}}>{!spot.numReviews ? '' : '·'}</div>
+                            <span>#{spot.numReviews ? spot.numReviews : ''}{!spot.numReviews ? '' : spot.numReviews > 1 ? 'Reviews' : 'Review'}</span>
                             <button onClick={handleReserve} className='reserveBtn'>reserve</button>
                         </div>
                     </div>
                 </div>
                 <div className='reviewContainer'>
                     <div style={{paddingLeft: '25px'}}><i class="fa-solid fa-star"></i>{!spot.avgRating ? `New` : spot.avgRating}</div>
-                    <span>#{spot.numReviews}{spot.numReviews > 1 ? 'Reviews' : 'Review'}</span>
+                    <div style={{fontSize:'20px'}}>·</div>
+                    <span>#{spot.numReviews ? spot.numReviews : ''}{!spot.numReviews ? '' : spot.numReviews > 1 ? 'Reviews' : 'Review'}</span>
 
                 </div>
             </div>
-             <AllReviews spotId={spotId} />
+             <AllReviews spotId={spotId} spot={spot}/>
         </>
     );
 };

@@ -11,10 +11,15 @@
     display: none;
  }
 
-nav a.active {
-    color: rgb(233, 91, 95);
-    font-size: 25px;
-    text-decoration: none;
+/* nav a.active {
+
+
+} */
+
+.navHome {
+  text-decoration: none;
+  color:rgb(233, 91, 95);
+  font-size: 25px;
 }
 
 

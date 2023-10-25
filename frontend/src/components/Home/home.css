@@ -22,11 +22,12 @@
     font-family: 'Manrope', sans-serif;
 }
 
-.spotImg {
+.spotImg{
+    width: 400px;
+    height: 300px;
     border-radius: 5%;
-    width: 300px;
-    height: 250px;
 }
+
 
 
 .spotDetailLink {
