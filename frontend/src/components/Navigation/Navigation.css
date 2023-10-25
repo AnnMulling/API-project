@@ -1,8 +1,9 @@
 #navContainer {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   border-bottom: 1px solid #dddddd;
-  padding: 30px;
+  padding: 50px;
 }
 
 
@@ -28,7 +29,7 @@
   justify-content: center;
   align-items: center; */
 
-  position: absolute;
+  position: static;
   right: 50px;
   text-align: center;
   cursor: pointer;
@@ -69,9 +70,9 @@
   position: absolute;
   z-index: 10000;
 
-  right: 50px;
+  right: 4%;
 
-  margin-top: 50px;
+  top: 12.5%;
   list-style-type: none;
   border-radius: 12px;
   border: 1px solid #dddddd;
@@ -81,4 +82,31 @@
 
   padding: 15px;
   margin-bottom: 4px;
+}
+
+
+
+.createSpotBtn {
+  position: relative;
+  color: rgb(98, 94, 94);
+  font-size: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  text-decoration: none;
+  cursor: pointer;
+
+  border-radius: 20px;
+  border: 1px solid #dddddd;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.18);
+  background-color: transparent;
+  width: 150px;
+  height: 45px;
+
+  margin-left: 60%;
+}
+
+.createSpotBtn:hover {
+  background-color: #dddddd;
+  color:rgb(233, 91, 95)
 }
