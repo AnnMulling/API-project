@@ -5,6 +5,7 @@ import Navigation from "./components/Navigation";
 import HomePage from "./components/Home";
 import SpotDetail from "./components/SingleSpotDetail"
 import * as sessionActions from "./store/session";
+import CreateSpot from "./components/CreateSpotForm";
 
 
 
@@ -23,6 +24,9 @@ function App() {
     <Switch>
       <Route exact path="/">
         <HomePage />
+      </Route>
+      <Route path="/spots/new">
+        <CreateSpot />
       </Route>
       <Route path="/spots/:spotId">
         <SpotDetail />
