@@ -19,7 +19,7 @@ function SignupFormModal() {
   const { closeModal } = useModal();
 
  useEffect(() => {
-
+    // const error = {}
     if (email && username && firstName && lastName && password && confirmPassword !== ''){
        setDisabled(false);
        setClassName("signupBtn");
@@ -29,6 +29,8 @@ function SignupFormModal() {
         setDisabled(true)
         setClassName("disabled")
      }
+
+    //  if (!email.length)
 
 
 }, [email, username, firstName, lastName, password, confirmPassword, errors])

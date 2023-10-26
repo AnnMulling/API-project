@@ -409,7 +409,7 @@ router.post('/', [ requireAuth, validateSpot],  async(req, res) => {
             price
     });
 
-    await newSpot.save();
+    // await newSpot.save();
 
     res.status(201);
     res.json(newSpot)
