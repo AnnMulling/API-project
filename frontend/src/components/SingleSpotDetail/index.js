@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import * as spotActions from '../../store/spots';
+import { faker } from '@faker-js/faker';
 
 
 import './SingleSpot.css'
@@ -10,18 +11,39 @@ import AllReviews from './reviews';
 
 function SpotDetail () {
     const { spotId } = useParams();
-
     const spot = useSelector((state) => state.spots.requestedSpot);
     const dispatch = useDispatch();
 
-    console.log('detail', spot)
+    const [ previewImg, setPreviewImg ] = useState(spot && spot.SpotImages ? spot.SpotImages.find((img) => img.preview == true) : '');
 
 
+    console.log('SPOT detail', spot)
     useEffect(() => {
         console.log('dispatch spot')
         dispatch(spotActions.fetchSpotDetail(spotId));
 
     }, [dispatch])
+
+    useEffect(() => {
+
+        setPreviewImg(spot && spot.SpotImages ? spot.SpotImages.find((img) => img.preview == true) : '')
+
+    }, [spot])
+
+    if (!spot?.Owner) return null;
+
+
+    if (spot.SpotImages.length < 5) {
+        for (let i = spot.SpotImages.length; i < 5 ; i++) {
+            const img = {
+                id: i ,
+                url: faker.image.cats(),
+                preview: false
+            }
+            spot.SpotImages.push(img)
+        }
+    }
+
 
 
 
@@ -38,17 +60,27 @@ function SpotDetail () {
                     <h1 className='spotTitle'>{spot.name}</h1>
                     <p>{spot.city}, {spot.state}, {spot.country}</p>
                 </div>
-                {spot.SpotImages.map((img) => (
                 <div className='spotImgContainer'>
+                <div className="bigImgContainer">{previewImg &&  <img className="bigImg" src={previewImg.url} alt={previewImg.id}/>}</div>
+                {/* {spot.SpotImages.length > 0 &&
+                spot.SpotImages.map((img) => (
+                     img.id!== previewImg.id ?
                     <div className="bigImgContainer"><img className="bigImg"src={img.url}/></div>
-                    <div className='groupImage'>
+
                         <div><img className="smallImg" src={img.url}/></div>
                         <div><img className="smallImg" src={img.url}/></div>
                         <div><img className="smallImg" src={img.url}/></div>
                         <div><img className="smallImg" src={img.url}/></div>
                     </div>
+                ))} */}
+                     <div className='groupImage'>
+                        {spot.SpotImages.length > 0 && spot.SpotImages.map(img => (
+                         img.id !== previewImg.id ? (
+                        <div><img className="smallImg" key={img.id} src={img.url} alt={`Spot ${img.id}`} /></div>
+                        ) : null
+                        ))}
+                    </div>
                 </div>
-                ))}
                 <div className='descriptionContainer'>
                     <div className='descriptionDown'>
                         <h2>Host By {spot.Owner.firstName} {spot.Owner.lastName}</h2>

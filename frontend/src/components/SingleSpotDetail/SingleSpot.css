@@ -20,8 +20,9 @@
     width: 100%;
     height: 100%;
     gap: 1%;
-
     cursor: pointer;
+
+    /* border: 5px solid green */
 }
 
 .groupImage {
@@ -44,9 +45,9 @@
 }
 
 .bigImg {
-    width: 100%;
-    height: 100%;
-    border-radius: 10px;
+   width: 100%;
+   height: 100%;
+   border-radius: 10px;
 }
 
 .descriptionContainer {

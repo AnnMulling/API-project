@@ -51,7 +51,11 @@ function AllReviews({ spotId, spot }) {
     ): (
         <>
             {(!user || user.id === spot.ownerId ?
-                <div className="noReview">No reivews...yet</div> : <div className="noReview">Be the first to post a review!</div>
+                <div className="noReview">No reivews...yet</div>
+                : <>
+                    <div className="noReview">Be the first to post a review!</div>
+                    <button className="reviewBtn"></button>
+                 </>
             )}
         </>
 

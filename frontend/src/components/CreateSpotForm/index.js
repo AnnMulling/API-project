@@ -1,28 +1,168 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+
+
+import { fetchCreateSpot } from '../../store/spots';
+// import { fetchAddImage } from '../../store/images';
 
 import './CreateSpot.css';
 
-function CreateSpot() {
+function CreateSpot({ formType }) {
+    const history = useHistory();
     const dispatch = useDispatch();
-
+    const user = useSelector((state) => state.session.user);
     const [country, setCountry] = useState("");
-    const [streetAddress, setStreetAddress] = useState("");
+    const [address, setAddress] = useState("");
     const [city, setCity] = useState("");
     const [state, setState] = useState("");
-    const [latitude, setLatitue] = useState("");
-    const [longitude, setLongitude] = useState("");
-    const [textArea, setTextArea] = useState("");
-    const [spotName, setSpotName] = useState("");
+    const [lat, setLat] = useState("");
+    const [lng, setLng] = useState("");
+    const [description, setDescription] = useState("");
+    const [name, setName] = useState("");
     const [price, setPrice] = useState("");
-    const [url, setUrl] = useState("");
-    const [errors, setError] = useState("");
+    const [previewImg, setPreviewImg] = useState("");
+    const [url1, setUrl1] = useState("");
+    const [url2, setUrl2] = useState("");
+    const [url3, setUrl3] = useState("");
+    const [url4, setUrl4] = useState("");
+    const [errors, setError] = useState({});
+    const [disabled, setDisabled] = useState(true);
+    const [className, setClassName ] = useState("disabled")
 
-    const handleSubmit = (e) => {
+
+
+    console.log('USER====>', user)
+
+
+    if(!user) {
+       history.replace('/')
+    }
+
+
+    useEffect(() => {
+
+        const error = {};
+
+        if(!previewImg.length) {
+            error.previewImageUrl = "Preview Image is required"
+        }
+
+        if(!previewImg.includes(".png") &&
+           !previewImg.includes(".jpg") &&
+           !previewImg.includes(".jpeg")
+           ) {
+            error.previewImg = "Image URL must end in .png .jpg or .jpeg"
+        }
+
+        if (!country.length) error.country = "Country is required";
+        if (!address.length) error.address = "Address is required";
+        if (!city.length) error.city = "City is required";
+        if (!state.length) error.state = "State is required";
+        if (!lat) error.lat = "Lat is requrired";
+        if (!lng) error.lng = "Longtitude is required";
+        if (description.length < 30) error.description = "Description needs a minimum of 30 or more characters";
+        if (!name) error.name = "Name of spot is required";
+        if (!price) error.price = "Price is required";
+        if (isNaN(price)) error.price = "Price is invalid";
+        if (lat > 90 || lat < -90 || isNaN(lat)) errors.lat = "Lat is invalid";
+        if (lng > 180 || lng < -180 || isNaN(lng)) errors.lng = "Lng is invalid";
+
+        setError(error);
+
+        if (Object.keys(errors).length > 0) {
+            setDisabled(true)
+            setClassName("disabled")
+         }
+
+    }, [country, address, city, state, lat, lng, description, name, price, errors])
+
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
+    const spotImages = [
+        {
+            url: previewImg,
+            preview: true
+        }
 
+    ];
+
+    [url1, url2, url3, url4].forEach((url) => {
+            if (url) {
+                spotImages.push({
+                    url: url,
+                    preview: false
+                })
+            }else {
+                spotImages.push({
+                    url: "https://media.istockphoto.com/id/1145840259/vector/home-flat-icon-pixel-perfect-for-mobile-and-web.jpg?s=612x612&w=0&k=20&c=2DWK30S50TbctWwccYw5b-uR6EAksv1n4L_aoatjM9Q=",
+                    preview: false
+                })
+            }
+    });
+    console.log('spotImages', spotImages)
+
+    const spot = {
+            ownerId: user.id,
+            address,
+            country,
+            city,
+            lat,
+            lng,
+            state,
+            description,
+            name,
+            price,
     }
+
+
+        // if(!previewImg.length) {
+        //     error.previewImageUrl = "Preview Image is required"
+        // }
+
+        // if(!previewImg.includes(".png") &&
+        //    !previewImg.includes(".jpg") &&
+        //    !previewImg.includes(".jpeg")
+        //    ) {
+        //     error.previewImg = "Image URL must end in .png .jpg or .jpeg"
+        // }
+
+        // if(
+        //     !imgUrl.includes(".png") &&
+        //     !imgUrl.includes(".jpg") &&
+        //     !imgUrl.includes(".jpeg")
+        //   ) {
+        //     error.imgUrl = "Image URL must end in .png .jpg or .jpeg"
+        // }
+
+        // if (!country.length) error.country = "Country is required";
+        // if (!address.length) error.address = "Address is required";
+        // if (!city.length) error.city = "City is required";
+        // if (!state.length) error.state = "State is required";
+        // if (!lat) error.lat = "Lat is requrired";
+        // if (!lng) error.lng = "Longtitude is required";
+        // if (description.length < 30) error.description = "Description needs a minimum of 30 or more characters";
+        // if (!name) error.name = "Name of spot is required";
+        // if (!price) error.price = "Price is required";
+        // if (lat > 90 || lat < -90) errors.lat = "Lat is invalid";
+        // if (lng > 180 || lng < -180) errors.lng = "Lng is invalid";
+
+        // setError(error);
+
+
+        if (!(Object.values(errors).length) && formType === "Create Form") {
+
+            const newSpot =  await dispatch(fetchCreateSpot(spot, spotImages, user.id));
+            // await dispatch(fetchAddImage(newSpot.id, spotImages));
+            history.push(`/spots/${newSpot.id}`)
+        }
+
+
+        setError({});
+
+    };
 
     return (
         <>
@@ -32,23 +172,52 @@ function CreateSpot() {
                     <h2>Where's your place located?</h2>
                     <p className='descriptionText'>Guests will only get your exact address once they booked a reservation</p>
                 </div>
-                <form onsubmit={handleSubmit} className="createSpotForm">
+                <form onSubmit={handleSubmit} className="createSpotForm">
                      <div className='addressContainer'>
                         <label className="createFormLabel">Country</label>
-                        <input className="createFormInput" placeholder="Country" value={country} onChange={(e) => setCountry(e.target.value)} />
+                        <input
+                        className="createFormInput"
+                        placeholder="Country"
+                        value={country}
+                        onChange={(e) => setCountry(e.target.value)} />
+                        {errors.country && <p className="errors">{errors.country}</p>}
 
                         <label className="createFormLabel">Stree Address</label>
-                        <input className="createFormInput" placeholder="Address" value={streetAddress} onChange={(e) => setCountry(e.target.value)} />
+                        <input
+                        className="createFormInput"
+                        placeholder="Address"
+                        value={address} onChange={(e) => setAddress(e.target.value)} />
+                        {errors.address && <p className="errors">{errors.address}</p>}
 
                         <label className="createFormLabel">City</label>
-                        <input className="createFormInput" placeholder="City" value={city} onChange={(e) => setCountry(e.target.value)} />
-                        <label className="createFormLabel">State</label>
-                        <input className="createFormInput" placeholder="STATE" value={state} onChange={(e) => setCountry(e.target.value)} />
+                        <input
+                        className="createFormInput"
+                        placeholder="City"
+                        value={city} onChange={(e) => setCity(e.target.value)} />
+                        {errors.city && <p className="errors">{errors.city}</p>}
 
-                        <label className="createFormLabel">Latitude</label>
-                        <input className="createFormInput" placeholder="Latitude" value={latitude} onChange={(e) => setLatitue(e.target.value)} />
-                        <label className="createFormLabel">Longitude</label>
-                        <input className="createFormInput" placeholder="Longtitude" value={longitude} onChange={(e) => setLatitue(e.target.value)} />
+                        <label className="createFormLabel">State</label>
+                        <input
+                        className="createFormInput"
+                        placeholder="STATE"
+                        value={state} onChange={(e) => setState(e.target.value)} />
+                        {errors.state && <p className="errors">{errors.state}</p>}
+
+                        <label className="createFormLabel">Lat</label>
+                        <input
+                        className="createFormInput"
+                        placeholder="Lat"
+                        value={lat} onChange={(e) => setLat(e.target.value)} />
+                        {errors.lat && <p className="errors">{errors.lat}</p>}
+
+
+                        <label className="createFormLabel">Lng</label>
+                        <input
+                        className="createFormInput"
+                        placeholder="Longtitude"
+                        value={lng} onChange={(e) => setLng(e.target.value)} />
+                        {errors.lng && <p className="errors">{errors.lng}</p>}
+
                      </div>
 
                     <div className='groupInput'>
@@ -56,22 +225,26 @@ function CreateSpot() {
                         <p className='descriptionText'>Mention the best features of your space, any special amentities like fast wifi
                             or parking, and what you love about the neighborhood.
                         </p>
-                        <textArea
+                        <textarea
                          id="textCreate"
                          className="createFormInput"
                          placeholder="Please write at least 30 characters"
-                         name={textArea}></textArea>
+                         value={description}
+                         onChange={(e) => setDescription(e.target.value)}>
+                         </textarea>
+                         {errors.description && <p className="errors">{errors.description}</p>}
                     </div>
 
                     <div className='groupInput'>
                         <label className="createTitle createFormLabel">Create a title for your spot</label>
                         <p className='descriptionText'>Catch guests' attention with a spot title that highlights what makes your place special.</p>
                         <input
-                        className="createFormInput"
-                        type="text"
-                        placeholder='Name of your spot'
-                        value={spotName}
-                        onChange={(e) => setSpotName(e.target.value)}/>
+                         className="createFormInput"
+                         type="text"
+                         placeholder='Name of your spot'
+                         value={name}
+                         onChange={(e) => setName(e.target.value)}/>
+                          {errors.name && <p className="errors">{errors.name}</p>}
                     </div>
 
                     <div className='groupInput'>
@@ -85,21 +258,47 @@ function CreateSpot() {
                         placeholder='Price per night(USD)'
                         value={price}
                         onChange={(e) => setPrice(e.target.value)}/>
+                         {errors.price && <p className="errors">{errors.price}</p>}
                         </div>
                     </div>
 
                     <div className='groupInput'>
                         <label className="setUrl createFormLabel">Liven up your spot with photos</label>
                         <p className='descriptionText'>Catch guests attention with a spot title that highlights what makes your place special</p>
-                        <input className="createFormInput" type="text" placeholder='Preview Image URL' value={url} onChange={(e) => setUrl(e.target.value)}/>
-                        <input className="createFormInput" type="text" placeholder='Image URL' value={url} onChange={(e) => setUrl(e.target.value)}/>
-                        <input className="createFormInput" type="text" placeholder='Image URL' value={url} onChange={(e) => setUrl(e.target.value)}/>
-                        <input className="createFormInput" type="text" placeholder='Image URL' value={url} onChange={(e) => setUrl(e.target.value)}/>
-                        <input className="createFormInput" type="text" placeholder='Image URL' value={url} onChange={(e) => setUrl(e.target.value)}/>
+                        <input className="createFormInput"
+                        type="text"
+                        placeholder='Preview Image URL'
+                        value={previewImg}
+                        onChange={(e) => setPreviewImg(e.target.value)}/>
+                        {errors.previewImg && <p className="errors">{errors.previewImg}</p>}
+
+                        <input
+                        className="createFormInput"
+                        type="text"
+                        placeholder='Image URL'
+                        value={url1} onChange={(e) => setUrl1(e.target.value)}/>
+
+                        <input
+                        className="createFormInput"
+                        type="text"
+                        placeholder='Image URL'
+                        value={url2} onChange={(e) => setUrl2(e.target.value)}/>
+
+                        <input
+                        className="createFormInput" type="text"
+                        placeholder='Image URL'
+                        value={url3} onChange={(e) => setUrl3(e.target.value)}/>
+
+                        <input
+                        className="createFormInput"
+                        type="text"
+                        placeholder='Image URL'
+                        value={url4} onChange={(e) => setUrl4(e.target.value)}/>
+
                     </div>
 
+                     <button className={`createFormBtn ${className}`} type="submit" disabled={disabled}>{formType}</button>
                 </form>
-                <button id="createFormBtn" type="submit">Create Spot</button>
             </div>
         </>
     );
