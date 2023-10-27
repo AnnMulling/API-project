@@ -176,10 +176,7 @@ router.get('/:spotId/bookings', requireAuth,  async(req, res) => {
 //Get all Reviews by a Spot's id
 router.get('/:spotId/reviews', async(req, res) => {
     const { spotId } = req.params;
-<<<<<<< Updated upstream
-=======
     // const reviews = [];
->>>>>>> Stashed changes
 
     const spotReview = await Review.unscoped().findOne({
         where: {
@@ -208,9 +205,10 @@ router.get('/:spotId/reviews', async(req, res) => {
         }
 
 
-<<<<<<< Updated upstream
+        // reviews.push(spotReview)
+
        res.json({
-        Review: spotReview
+        Reviews: spotReview
        });
 
 
