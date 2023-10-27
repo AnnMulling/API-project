@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import * as spotActions from '../../store/spots';
-import { faker } from '@faker-js/faker';
+
 
 import './SingleSpot.css'
 
@@ -33,10 +33,10 @@ function SpotDetail () {
 
 
     if (spot.SpotImages.length < 5) {
-        for (let i = spot.SpotImages.length; i < 5 ; i++) {
+        for (let i = spot.SpotImages.length; i < 6 ; i++) {
             const img = {
                 id: i ,
-                url: faker.image.cats(),
+                url: "https://banner2.cleanpng.com/20180506/roq/kisspng-house-computer-icons-clip-art-house-clipart-5aee8560d623a0.3006532015255811528771.jpg",
                 preview: false
             }
             spot.SpotImages.push(img)
