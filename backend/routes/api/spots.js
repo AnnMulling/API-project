@@ -176,9 +176,9 @@ router.get('/:spotId/bookings', requireAuth,  async(req, res) => {
 //Get all Reviews by a Spot's id
 router.get('/:spotId/reviews', async(req, res) => {
     const { spotId } = req.params;
-    // fix the backend route
+    // fix the backend route again in new branch front touch up
 
-    const spotReview = await Review.unscoped().findOne({
+    const spotReview = await Review.unscoped().findAll({
         where: {
             spotId: spotId
         },
