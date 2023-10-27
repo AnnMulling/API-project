@@ -8,7 +8,6 @@ import './SingleSpot.css'
 
 import AllReviews from './reviews';
 
-
 function SpotDetail () {
     const { spotId } = useParams();
     const spot = useSelector((state) => state.spots[spotId]);
@@ -107,6 +106,7 @@ function SpotDetail () {
 
                 </div>
             </div>
+
              <AllReviews spotId={spotId} spot={spot}/>
         </>
     );

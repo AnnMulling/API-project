@@ -21,6 +21,8 @@ function AllReviews({ spotId, spot }) {
         day: 'numeric',
     }
 
+    console.log('SPOT', spot)
+
 
     useEffect(() => {
         console.log('send action')
@@ -38,14 +40,19 @@ function AllReviews({ spotId, spot }) {
     let reviewexists;
     if (user) {
         reviewexists = reviews.find(review => review.userId === user.id)
-    }
+    };
+
+    let isOwner;
+    if (user) {
+        isOwner =  spot.ownerId === user.id
+    };
 
    return reviews.length  > 0  ? (
         <>
             <div>
                 {reviews.reverse().map((review) => (
                     <div key={review.id} className="reviewBelowContainer">
-                    {(user && user.id !== spot.ownerId && !reviewexists  && (
+                    {(user && !(isOwner) && !(reviewexists)  && (
                         <>
                             <span style={{ marginTop:"15px"}}></span>
                             <OpenModalButton
@@ -62,7 +69,7 @@ function AllReviews({ spotId, spot }) {
                             <span style={{ marginTop:"15px"}}></span>
                             <OpenModalButton
                             buttonText={"Delete Review"}
-                            modalComponent={<DeleteReview review={review} />}
+                            modalComponent={<DeleteReview review={review} spot={spot} />}
                             />
                         </>
                     ))}

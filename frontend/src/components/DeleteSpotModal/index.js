@@ -4,6 +4,7 @@ import { useModal } from "../../context/Modal";
 import { useDispatch } from "react-redux";
 import { fetchDeleteSpot } from "../../store/spots";
 
+
 import './DeleteSpot.css'
 
 
@@ -14,10 +15,13 @@ function DeleteSpot({ spot }) {
 
     console.log('spot to delete', spot)
 
-    const deleteSpot = (e) => {
+    const deleteSpot =  async (e) => {
         e.preventDefault();
 
-        dispatch(fetchDeleteSpot(spot.id)).then(closeModal);
+        await dispatch(fetchDeleteSpot(spot.id)).then(closeModal);
+
+        // await dispatch(fetchSpotDetail(spot.id));
+
 
         history.push("/spots/current");
     };

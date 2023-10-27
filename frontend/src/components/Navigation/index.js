@@ -11,15 +11,16 @@ function Navigation({ isLoaded }) {
   return (
 
       <div id="navContainer">
-          <NavLink exact to="/" className="navHome" style={{fontWeight:'bold', fontSize: '40px'}}> <i class="fa-brands fa-airbnb"></i>annbnb</NavLink>
+          <NavLink exact to="/" className="navHome"><i class="fa-brands fa-airbnb"></i>annbnb</NavLink>
+          <div className='navBtns'>
+            {sessionUser && (
+              <NavLink to="/spots/new" className="createSpotBtn">Create a New Spot</NavLink>
+            )}
 
-          {sessionUser && (
-            <NavLink to="/spots/new" className="createSpotBtn">Create a New Spot</NavLink>
+          {isLoaded && (
+              <ProfileButton user={sessionUser} />
           )}
-
-        {isLoaded && (
-            <ProfileButton user={sessionUser} />
-        )}
+          </div>
      </div>
 
   );

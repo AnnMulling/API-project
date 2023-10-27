@@ -6,6 +6,7 @@ import { fetchCreateReview } from '../../store/reviews';
 
 
 import './createReview.css';
+import { fetchSpotDetail } from '../../store/spots';
 
 function CreateReviewModal({ spot }) {
     const { closeModal } = useModal();
@@ -34,7 +35,7 @@ function CreateReviewModal({ spot }) {
 
     },[message]);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         const review = {
@@ -43,12 +44,16 @@ function CreateReviewModal({ spot }) {
         }
 
             console.log('dispatching review....')
-        dispatch(fetchCreateReview({
+        await dispatch(fetchCreateReview({
             ...review
         }, +spot.id, user)
-        ).then(closeModal)
+        )
+
+        await dispatch(fetchSpotDetail(spot.id))
 
         console.log('REVIEW', review)
+
+        closeModal()
     }
 
 

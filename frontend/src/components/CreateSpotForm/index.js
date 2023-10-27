@@ -64,17 +64,21 @@ function CreateSpot({  spot, formType }) {
         if (!lat) error.lat = "Lat is requrired";
         if (!lng) error.lng = "Longtitude is required";
         if (description.length < 30) error.description = "Description needs a minimum of 30 or more characters";
-        if (!name) error.name = "Name of spot is required";
+        if (!name.length) error.name = "Name of spot is required";
         if (!price) error.price = "Price is required";
+
         if (isNaN(price)) error.price = "Price is invalid";
-        if (lat > 90 || lat < -90 || isNaN(lat)) errors.lat = "Lat is invalid";
-        if (lng > 180 || lng < -180 || isNaN(lng)) errors.lng = "Lng is invalid";
+        if (lat > 90 || lat < -90) error.lat = "Latitude must be between 90 and -90";
+        if (isNaN(lat)) error.lat = "Latitude is invalid"
+        if (lng > 180 || lng < -180) error.lng = "Longitude must be between 180 and -180";
+        if (isNaN(lng)) error.lng = "Longtitude is invalid"
 
         setError(error);
 
-        if (Object.keys(errors).length > 0) {
-            setDisabled(true)
-            setClassName("disabled")
+
+        if (!Object.keys(errors).length) {
+            setDisabled(false)
+            setClassName("createFormBtn")
          }
 
     }, [country, address, city, state, lat, lng, description, name, price, previewImg])
@@ -226,7 +230,7 @@ function CreateSpot({  spot, formType }) {
                     <div className='groupInput'>
                         <label className="setPrice createFormLabel">Set a base price for your spot</label>
                         <p className='descriptionText'>Competitive pricing can help your listing stand out and rank higher in search results.</p>
-                        <div><span style={{marginRight:'5px'}}>$</span>
+                        <span style={{marginRight:'5px'}}>$</span>
                         <input
                         className="createFormInput"
                         id="priceInput"
@@ -235,7 +239,7 @@ function CreateSpot({  spot, formType }) {
                         value={price}
                         onChange={(e) => setPrice(e.target.value)}/>
                          {errors.price && <p className="errors">{errors.price}</p>}
-                        </div>
+
                     </div>
 
                     <div className='groupInput'>
@@ -273,7 +277,7 @@ function CreateSpot({  spot, formType }) {
 
                     </div>
 
-                     <button className={`createFormBtn ${className}`} type="submit" disabled={disabled}>{formType}</button>
+                     <button className={`${className}`} type="submit" disabled={disabled}>{formType}</button>
                 </form>
             </div>
         </>
