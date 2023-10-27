@@ -9,7 +9,6 @@ const rootReducer = combineReducers({
     session: sessionReducer,
     spots: spotReducer,
     reviews: reviewReducer,
-    images: imgReducer,
 });
 
 let enhancer;

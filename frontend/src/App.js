@@ -6,7 +6,8 @@ import HomePage from "./components/Home";
 import SpotDetail from "./components/SingleSpotDetail"
 import * as sessionActions from "./store/session";
 import EditSpotForm from "./components/CreateSpotForm/EditForm";
-import CreateSpotForm from "./components/CreateSpotForm/CreateForm";
+import CreateSpot from "./components/CreateSpotForm";
+import ManageSpot from "./components/ManageSpot/ManangeSpot";
 
 
 
@@ -27,13 +28,16 @@ function App() {
         <HomePage />
       </Route>
       <Route path="/spots/new">
-        <CreateSpotForm />
+        <CreateSpot />
       </Route>
-      <Route path="/spots/:spotId">
-        <SpotDetail />
+      <Route path="/spots/current">
+        <ManageSpot />
       </Route>
       <Route path="/spots/:spotId/edit">
         <EditSpotForm />
+      </Route>
+      <Route path="/spots/:spotId">
+        <SpotDetail />
       </Route>
     </Switch>
     {isLoaded && <Switch></Switch>}

@@ -3,25 +3,26 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 
-import { fetchCreateSpot } from '../../store/spots';
+import { fetchCreateSpot, fetchEditSpot } from '../../store/spots';
 // import { fetchAddImage } from '../../store/images';
 
 import './CreateSpot.css';
 
-function CreateSpot({ formType }) {
+function CreateSpot({  spot, formType= "Create Form" }) {
     const history = useHistory();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.session.user);
-    const [country, setCountry] = useState("");
-    const [address, setAddress] = useState("");
-    const [city, setCity] = useState("");
-    const [state, setState] = useState("");
-    const [lat, setLat] = useState("");
-    const [lng, setLng] = useState("");
-    const [description, setDescription] = useState("");
-    const [name, setName] = useState("");
-    const [price, setPrice] = useState("");
-    const [previewImg, setPreviewImg] = useState("");
+
+    const [country, setCountry] = useState(spot?.country);
+    const [address, setAddress] = useState(spot?.address);
+    const [city, setCity] = useState(spot?.city);
+    const [state, setState] = useState(spot?.state);
+    const [lat, setLat] = useState(spot?.lat);
+    const [lng, setLng] = useState(spot?.lng);
+    const [description, setDescription] = useState(spot?.description);
+    const [name, setName] = useState(spot?.name);
+    const [price, setPrice] = useState(spot?.price);
+    const [previewImg, setPreviewImg] = useState(spot?.previewImage);
     const [url1, setUrl1] = useState("");
     const [url2, setUrl2] = useState("");
     const [url3, setUrl3] = useState("");
@@ -32,7 +33,7 @@ function CreateSpot({ formType }) {
 
 
 
-    console.log('USER====>', user)
+    // console.log('USER====>', user)
 
 
     if(!user) {
@@ -75,7 +76,7 @@ function CreateSpot({ formType }) {
             setClassName("disabled")
          }
 
-    }, [country, address, city, state, lat, lng, description, name, price, errors])
+    }, [country, address, city, state, lat, lng, description, name, price])
 
 
     const handleSubmit = async (e) => {
@@ -104,7 +105,8 @@ function CreateSpot({ formType }) {
     });
     console.log('spotImages', spotImages)
 
-    const spot = {
+    spot = {
+        // ...spot,
             ownerId: user.id,
             address,
             country,
@@ -115,50 +117,21 @@ function CreateSpot({ formType }) {
             description,
             name,
             price,
+            previewImg,
     }
-
-
-        // if(!previewImg.length) {
-        //     error.previewImageUrl = "Preview Image is required"
-        // }
-
-        // if(!previewImg.includes(".png") &&
-        //    !previewImg.includes(".jpg") &&
-        //    !previewImg.includes(".jpeg")
-        //    ) {
-        //     error.previewImg = "Image URL must end in .png .jpg or .jpeg"
-        // }
-
-        // if(
-        //     !imgUrl.includes(".png") &&
-        //     !imgUrl.includes(".jpg") &&
-        //     !imgUrl.includes(".jpeg")
-        //   ) {
-        //     error.imgUrl = "Image URL must end in .png .jpg or .jpeg"
-        // }
-
-        // if (!country.length) error.country = "Country is required";
-        // if (!address.length) error.address = "Address is required";
-        // if (!city.length) error.city = "City is required";
-        // if (!state.length) error.state = "State is required";
-        // if (!lat) error.lat = "Lat is requrired";
-        // if (!lng) error.lng = "Longtitude is required";
-        // if (description.length < 30) error.description = "Description needs a minimum of 30 or more characters";
-        // if (!name) error.name = "Name of spot is required";
-        // if (!price) error.price = "Price is required";
-        // if (lat > 90 || lat < -90) errors.lat = "Lat is invalid";
-        // if (lng > 180 || lng < -180) errors.lng = "Lng is invalid";
-
-        // setError(error);
 
 
         if (!(Object.values(errors).length) && formType === "Create Form") {
 
-            const newSpot =  await dispatch(fetchCreateSpot(spot, spotImages, user.id));
+            const res =  await dispatch(fetchCreateSpot(spot, spotImages, user.id));
             // await dispatch(fetchAddImage(newSpot.id, spotImages));
-            history.push(`/spots/${newSpot.id}`)
+            history.push(`/spots/${res.id}`)
         }
+        if (!(Object.values(errors).length) && formType === "Update Form") {
 
+            const res = await dispatch(fetchEditSpot(spot.id, spot))
+            history.push(`/spots/${res.id}`)
+        }
 
         setError({});
 

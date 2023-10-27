@@ -1,31 +1,36 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
 import { fetchSpotDetail } from '../../store/spots';
 
 import CreateSpot from './index';
 
 const EditSpotForm = () => {
+    const history = useHistory();
     const { spotId } = useParams();
     const dispatch = useDispatch();
     const spot = useSelector((state) => state.spots ? state.spots[spotId] : null);
+    const user = useSelector((state) => state.session.user);
+
+    if (!user) {
+        history.replace("/")
+    }
 
     useEffect(() => {
-        dispatch(fetchSpotDetail(spotId))
+       if (spot) dispatch(fetchSpotDetail(spotId))
     }, [dispatch, spotId])
 
-    if (!spot) return (<></>);
+    if (!spot) {
+        history.push("/");
+        return null
+    };
 
     return (
-        Object.values(spot).length > 1 && (
+
             <>
-                <CreateSpot
-                spot={spot}
-                formType="Update Form"
-                />
+                <CreateSpot spot={spot} formType="Update Form"/>
             </>
-        )
+
     );
 }
 

@@ -330,7 +330,7 @@ router.post('/:spotId/bookings', [ requireAuth,  isOwner, dateExistsCreate, date
 })
 
 //Create a Review for a Spot based on the Spot's id
-router.post('/:spotId/reviews', [ requireAuth, validateReview ] , async(req, res) => {
+router.post('/:spotId/reviews', [ requireAuth, validateReview, isOwner ] , async(req, res) => {
     const { spotId } = req.params;
     const { user } = req;
     const { review, stars } = req.body;
@@ -366,7 +366,7 @@ router.post('/:spotId/reviews', [ requireAuth, validateReview ] , async(req, res
 
     const newReview = await Review.unscoped().create({
         userId: user.id,
-        spotId: spotId,
+        spotId: parseInt(spotId),
         review,
         stars
      });

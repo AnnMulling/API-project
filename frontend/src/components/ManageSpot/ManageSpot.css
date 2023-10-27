@@ -1,0 +1,108 @@
+
+.mainContainer {
+    margin-left: 10px;
+    display: flex;
+    /* flex-direction: column; */
+}
+
+
+.spotsContainer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 8px;
+    margin: 10px;
+
+    width: 100%;
+
+}
+
+.titleContainer {
+   width: 100%;
+   margin-left: 5%;
+}
+
+.spotContainer {
+    padding: 10px;
+
+    /* border: solid purple; */
+}
+
+.manageSpotDetail {
+    display: flex;
+    /* justify-content: space-around; */
+    flex-wrap: wrap;
+    gap: 50%;
+    row-gap: 10px;
+    font-family: 'Manrope', sans-serif;
+}
+
+.spotImg{
+    width: 400px;
+    height: 300px;
+    border-radius: 5%;
+}
+
+.spotDetailLink {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+
+}
+
+
+#createSpotBtn {
+    background-color: rgb(233, 91, 95);
+    border-radius: 20px;
+    color:rgb(251, 249, 249);
+    font-size: 15px;
+    border: none;
+    height: 50px;
+    width: 20%;
+
+    margin-left: 30px;
+
+    cursor: pointer;
+}
+
+#createSpotBtn:hover {
+    background-color: #dddddd;
+    color: black;
+}
+
+#updateSpotBtn:hover {
+    background-color: #dddddd;
+    color: black;
+}
+
+#deleteSpotBtn:hover {
+    background-color: rgb(12, 12, 12);
+    color: rgb(246, 245, 245);
+}
+
+#updateSpotBtn {
+    background-color: rgb(233, 91, 95);
+    border-radius: 20px;
+    color:rgb(251, 249, 249);
+    font-size: 15px;
+    border: none;
+    height: 50px;
+    width: 50%;
+
+    margin-left: 25%;
+    margin-bottom: 10px;
+
+    cursor: pointer;
+}
+
+#deleteSpotBtn {
+    background-color: #77b4bd;
+    border-radius: 20px;
+    color:rgb(251, 249, 249);
+    font-size: 15px;
+    border: none;
+    height: 50px;
+    width: 50%;
+
+    margin-left: 25%;
+
+    cursor: pointer;
+}

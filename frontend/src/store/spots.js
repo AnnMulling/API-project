@@ -3,8 +3,9 @@ import { useDispatch } from "react-redux";
 import { csrfFetch } from "./csrf";
 
 const LOAD_SPOTS = 'spots/LOAD_SPOTS';
-const RECEIVE_SPOT = 'spots/RECEIVE_SPOT'
+const SPOT_DETAIL = 'spots/SPOT_DETAIL'
 const CREATE_SPOT = 'spots/CREATE_SPOT'
+const DELETE_SPOT = 'spots/DELETE_SPOT'
 
 
 export const loadSpots = (spots) => ({
@@ -14,9 +15,9 @@ export const loadSpots = (spots) => ({
 
 });
 
-export const receivesSpot = (spot) => ({
+export const loadSpotDetailt = (spot) => ({
 
-        type: RECEIVE_SPOT,
+        type: SPOT_DETAIL,
         payload: spot
 });
 
@@ -25,7 +26,15 @@ export const createSpot = (spot) => ({
 
         type: CREATE_SPOT,
         payload: spot
-})
+});
+
+export const deleteSpot = (spotId) => ({
+
+        type: DELETE_SPOT,
+        payload: spotId
+});
+
+
 
 //get all spot
 export const fetchSpots = () => async (dispatch) => {
@@ -47,7 +56,7 @@ export const fetchSpotDetail = (spotId) => async (dispatch) => {
 
     if (response.ok) {
         const spot = await response.json();
-        dispatch(receivesSpot(spot));
+        dispatch(loadSpotDetailt(spot));
         console.log('from fetch', spot)
         return spot;
     }else {
@@ -64,7 +73,7 @@ export const fetchCreateSpot = (spot, spotImages, userId) => async (dispatch) =>
 
         const response = await csrfFetch('/api/spots', {
             method: 'POST',
-            // headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(
              {
                 ...spot
@@ -82,7 +91,7 @@ export const fetchCreateSpot = (spot, spotImages, userId) => async (dispatch) =>
 
                 await csrfFetch (`/api/spots/${spot.id}/images`, {
                     method: 'POST',
-                    // headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         ...img
                     })
@@ -102,6 +111,64 @@ export const fetchCreateSpot = (spot, spotImages, userId) => async (dispatch) =>
 
 };
 
+//get current user spot
+export const fetchUserSpot = () => async (dispatch) => {
+    try {
+
+        const response = await csrfFetch ('/api/spots/current');
+
+        if(response.ok) {
+            const spots = await response.json();
+            dispatch(loadSpots(spots))
+
+            return spots;
+        }
+
+    }catch (error) {
+        console.log(error);
+        return error;
+    }
+};
+
+
+//edit spot
+export const fetchEditSpot = (spotId, spot) => async (dispatch) => {
+    try {
+        const response = await csrfFetch (`/api/spots/${spotId}`, {
+            method: 'PUT',
+            body: JSON.stringify(spot)
+        });
+
+        if (response.ok) {
+            const spot = await response.json();
+            dispatch(createSpot(spot));
+            return spot
+        }
+    }catch (error) {
+        console.log(error);
+        return error;
+    }
+};
+
+//delete spot
+export const fetchDeleteSpot = (spotId) => async (dispatch) => {
+    try {
+        const response = await csrfFetch (`/api/spots/${spotId}`, {
+            method: 'DELETE',
+        });
+
+        if (response.ok) {
+            const message = await response.json();
+            dispatch(deleteSpot(spotId));
+            return message;
+        }
+
+    }catch (error) {
+        console.log(error);
+        return error
+    }
+}
+
 
 const spotReducer = (state = {}, action) => {
     console.log('spot reducer..')
@@ -114,11 +181,18 @@ const spotReducer = (state = {}, action) => {
             });
             return spotsState
 
-        case RECEIVE_SPOT:
-            return {...state, requestedSpot: {...action.payload} }
+        case SPOT_DETAIL:
+            return {...state, [action.payload.id]: action.payload }
 
         case CREATE_SPOT:
             return {...state, [action.payload.id]: action.payload }
+
+        case DELETE_SPOT:
+            const newState = {...state}
+            console.log('ACTION', action)
+            delete newState[action.payload]
+            return newState
+
         default:
             return state;
     }

@@ -51,11 +51,11 @@
 
 
 
-/*----------------------- Profile ------------------------------------*/
+/*------------------------------------------ Profile ------------------------------------*/
 
 
 
-#logoutBtn {
+#logoutBtn, #manage-spot {
   background-color: rgb(233, 91, 95);
   color:rgb(251, 249, 249);
   font-size: 15px;
@@ -64,6 +64,16 @@
   margin-left: 5px;
   margin-top: 5px;
   cursor: pointer;
+}
+
+#manage-spot:hover {
+  background-color: #dddddd;
+  color: black
+}
+
+#logoutBtn:hover {
+  background-color: #dddddd;
+  color: black;
 }
 
 .profile-dropdown {
@@ -82,6 +92,10 @@
 
   padding: 15px;
   margin-bottom: 4px;
+}
+
+.profile-dropdown > * {
+  margin-bottom: 10px;
 }
 
 
@@ -108,5 +122,5 @@
 
 .createSpotBtn:hover {
   background-color: #dddddd;
-  color:rgb(233, 91, 95)
+  color: black;
 }
