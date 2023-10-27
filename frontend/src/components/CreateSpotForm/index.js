@@ -22,7 +22,7 @@ function CreateSpot({  spot, formType }) {
     const [description, setDescription] = useState(spot?.description);
     const [name, setName] = useState(spot?.name);
     const [price, setPrice] = useState(spot?.price);
-    const [previewImg, setPreviewImg] = useState(spot?.previewImage);
+    const [previewImage, setPreviewImage] = useState(spot?.previewImage);
     const [url1, setUrl1] = useState("");
     const [url2, setUrl2] = useState("");
     const [url3, setUrl3] = useState("");
@@ -46,15 +46,15 @@ function CreateSpot({  spot, formType }) {
 
         const error = {};
 
-        if(!previewImg.length) {
+        if(!previewImage.length) {
             error.previewImageUrl = "Preview Image is required"
         }
 
-        if(!previewImg.includes(".png") &&
-           !previewImg.includes(".jpg") &&
-           !previewImg.includes(".jpeg")
+        if(!previewImage.includes(".png") &&
+           !previewImage.includes(".jpg") &&
+           !previewImage.includes(".jpeg")
            ) {
-            error.previewImg = "Image URL must end in .png .jpg or .jpeg"
+            error.previewImage = "Image URL must end in .png .jpg or .jpeg"
         }
 
         if (!country.length) error.country = "Country is required";
@@ -67,6 +67,7 @@ function CreateSpot({  spot, formType }) {
         if (!name.length) error.name = "Name of spot is required";
         if (!price) error.price = "Price is required";
 
+        if (name.length < 5) error.name = "Spot name needs a minimum of 5 characters"
         if (isNaN(price)) error.price = "Price is invalid";
         if (lat > 90 || lat < -90) error.lat = "Latitude must be between 90 and -90";
         if (isNaN(lat)) error.lat = "Latitude is invalid"
@@ -76,12 +77,12 @@ function CreateSpot({  spot, formType }) {
         setError(error);
 
 
-        if (!Object.keys(errors).length) {
+        if (Object.keys(errors).length < 1) {
             setDisabled(false)
             setClassName("createFormBtn")
          }
 
-    }, [country, address, city, state, lat, lng, description, name, price, previewImg])
+    }, [country, address, city, state, lat, lng, description, name, price, previewImage])
 
 
     const handleSubmit = async (e) => {
@@ -89,7 +90,7 @@ function CreateSpot({  spot, formType }) {
 
     const spotImages = [
         {
-            url: previewImg,
+            url: previewImage,
             preview: true
         }
 
@@ -122,7 +123,7 @@ function CreateSpot({  spot, formType }) {
             description,
             name,
             price,
-            previewImg,
+            previewImage,
     }
 
     console.log('AFTER SPREAD', spot)
@@ -136,8 +137,8 @@ function CreateSpot({  spot, formType }) {
         }
         if (!(Object.values(errors).length) && formType === "Update Form") {
 
-            const res = await dispatch(fetchEditSpot(spot.id, spot))
-            history.push(`/spots/${res.id}`)
+            await dispatch(fetchEditSpot(spot.id, spot, spotImages, user.id))
+            history.push(`/spots/${spot.id}`)
         }
 
         setError({});
@@ -248,9 +249,9 @@ function CreateSpot({  spot, formType }) {
                         <input className="createFormInput"
                         type="text"
                         placeholder='Preview Image URL'
-                        value={previewImg}
-                        onChange={(e) => setPreviewImg(e.target.value)}/>
-                        {errors.previewImg && <p className="errors">{errors.previewImg}</p>}
+                        value={previewImage}
+                        onChange={(e) => setPreviewImage(e.target.value)}/>
+                        {errors.previewImage && <p className="errors">{errors.previewImage}</p>}
 
                         <input
                         className="createFormInput"
