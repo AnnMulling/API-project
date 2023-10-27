@@ -1,0 +1,46 @@
+.mainDeleteContainer {
+    font-family: 'Manrope', sans-serif;
+    padding: 10px;
+}
+
+#deleteBtn {
+
+    background-color: #ff5c40;
+    border-radius: 20px;
+    color:rgb(251, 249, 249);
+    font-size: 15px;
+    border: none;
+    height: 50px;
+    width: 50%;
+
+    margin-left: 25%;
+    margin-bottom: 10px;
+
+    cursor: pointer;
+}
+
+#deleteBtn:hover {
+    background-color: #080808;
+    color: #dddddd;
+}
+
+#keepBtn:hover {
+    background-color: #080808;
+    color: #dddddd;
+}
+
+#keepBtn {
+
+    background-color: #dadada;
+    border-radius: 20px;
+    color:rgb(13, 12, 12);
+    font-size: 15px;
+    border: none;
+    height: 50px;
+    width: 50%;
+
+    margin-left: 25%;
+
+    cursor: pointer;
+
+}

@@ -23,5 +23,8 @@
   "bugs": {
     "url": "https://github.com/AnnMulling/API-project/issues"
   },
-  "homepage": "https://github.com/AnnMulling/API-project#readme"
+  "homepage": "https://github.com/AnnMulling/API-project#readme",
+  "dependencies": {
+    "react-icons": "^4.11.0"
+  }
 }

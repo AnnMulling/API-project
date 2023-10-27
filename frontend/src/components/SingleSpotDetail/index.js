@@ -4,14 +4,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import * as spotActions from '../../store/spots';
 import { faker } from '@faker-js/faker';
 
-
 import './SingleSpot.css'
+
 import AllReviews from './reviews';
 
 
 function SpotDetail () {
     const { spotId } = useParams();
-    const spot = useSelector((state) => state.spots.requestedSpot);
+    const spot = useSelector((state) => state.spots[spotId]);
     const dispatch = useDispatch();
 
     const [ previewImg, setPreviewImg ] = useState(spot && spot.SpotImages ? spot.SpotImages.find((img) => img.preview == true) : '');
@@ -42,16 +42,14 @@ function SpotDetail () {
             }
             spot.SpotImages.push(img)
         }
-    }
-
-
+    };
 
 
     const handleReserve = (e) => {
         e.preventDefault();
 
         alert("Feature coming soon");
-    }
+    };
 
     return !spot ? 'Page Not Found' : (
         <>

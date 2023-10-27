@@ -2,6 +2,7 @@ import { csrfFetch } from "./csrf";
 
 const LOAD_REVIEWS = '/reviews/LOAD_REVIEWS'
 const CLEAR_REVIEWS = '/reviews/CLEAR_REVIEWS'
+const CREATE_REVIEW = './reviews/CREATE_REVIEWS'
 
 
 const loadReviews = (reviews) => ({
@@ -13,45 +14,72 @@ export const clearReviews = () => ({
         type: CLEAR_REVIEWS
 });
 
+const postReview = (review) => ({
+       type: CREATE_REVIEW,
+       payload: review
+})
 
+//get all review
 export const fetchReviews = (spotId) =>  async (dispatch) => {
-    console.log('fetching reviews..')
+    // console.log('fetching reviews..')
 
-    try {
-         const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
+
+        const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
 
         if (response.ok) {
             const reviews = await response.json();
             dispatch(loadReviews(reviews));
-        console.log('reviews from fetch', reviews)
+        // console.log('reviews from fetch', reviews)
             return reviews;
         }
+};
 
-    }catch (e){
-        console.error(e.message);
+export const fetchCreateReview = (review, spotId, user) => async (dispatch) => {
+
+    try {
+        console.log('fetching to create review...')
+        const response = await csrfFetch( `/api/spots/${spotId}/reviews`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(review),
+        });
+
+        if (response.ok) {
+            const review = await response.json();
+            // console.log('created review', review)
+            review.User = user
+            dispatch(postReview(review));
+            return review;
+        }
+    }catch (error){
+        console.log(error);
+        return error;
     }
-
 };
 
 
-// const initialState = {
-//     spot: {}
 
-// };
 
 const reviewReducer = (state={}, action) => {
     switch (action.type) {
-        case LOAD_REVIEWS:
-            console.log('reducer, LOAD_REVIEWS')
-            const reviewsState = {...state};
+        case LOAD_REVIEWS:{
+            const reviewsState = {};
             action.payload.Reviews.forEach((review) => {
-                // console.log('each review', review)
                 reviewsState[review.id] = review
             });
-            console.log('review state from reducer', reviewsState)
             return reviewsState;
-        case CLEAR_REVIEWS:
-            return {};
+        }
+
+        case CREATE_REVIEW: {
+            const newState = {...state}
+            newState[action.payload.id] = action.payload
+            return newState;
+        }
+
+            // return {...state, [action.payload.id]: action.payload}
+        // case CLEAR_REVIEWS:
+        //     return {};
+
         default:
             return state;
     }
