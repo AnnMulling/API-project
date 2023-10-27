@@ -7,6 +7,7 @@ import SpotDetail from "./components/SingleSpotDetail"
 import * as sessionActions from "./store/session";
 import EditSpotForm from "./components/CreateSpotForm/EditForm";
 import CreateSpot from "./components/CreateSpotForm";
+import CreateSpotForm from "./components/CreateSpotForm/CreateForm";
 import ManageSpot from "./components/ManageSpot/ManangeSpot";
 
 
@@ -28,7 +29,7 @@ function App() {
         <HomePage />
       </Route>
       <Route path="/spots/new">
-        <CreateSpot />
+        <CreateSpotForm />
       </Route>
       <Route path="/spots/current">
         <ManageSpot />

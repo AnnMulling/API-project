@@ -3,6 +3,7 @@ import { csrfFetch } from "./csrf";
 const LOAD_REVIEWS = '/reviews/LOAD_REVIEWS'
 const CLEAR_REVIEWS = '/reviews/CLEAR_REVIEWS'
 const CREATE_REVIEW = './reviews/CREATE_REVIEWS'
+const DELETE_REVIEWS = './reviews/DELETE_REVIEWS'
 
 
 const loadReviews = (reviews) => ({
@@ -10,20 +11,25 @@ const loadReviews = (reviews) => ({
         payload: reviews
 });
 
-export const clearReviews = () => ({
-        type: CLEAR_REVIEWS
-});
+// export const clearReviews = () => ({
+//         type: CLEAR_REVIEWS
+// });
 
 const postReview = (review) => ({
        type: CREATE_REVIEW,
        payload: review
-})
+});
+
+const deleteReview = (reviewId) => ({
+        type: DELETE_REVIEWS,
+        payload: reviewId
+});
 
 //get all review
 export const fetchReviews = (spotId) =>  async (dispatch) => {
     // console.log('fetching reviews..')
 
-
+    try {
         const response = await csrfFetch(`/api/spots/${spotId}/reviews`);
 
         if (response.ok) {
@@ -32,8 +38,14 @@ export const fetchReviews = (spotId) =>  async (dispatch) => {
         // console.log('reviews from fetch', reviews)
             return reviews;
         }
+
+    }catch(error) {
+        console.log(error);
+        return error;
+    }
 };
 
+//create review
 export const fetchCreateReview = (review, spotId, user) => async (dispatch) => {
 
     try {
@@ -57,6 +69,25 @@ export const fetchCreateReview = (review, spotId, user) => async (dispatch) => {
     }
 };
 
+//delete review
+export const fetchDeleteReview = (reviewId) => async (dispatch) => {
+    try {
+
+        const response = await csrfFetch(`/api/reviews/${reviewId}`, {
+            method: 'DELETE'
+        });
+
+        if (response.ok) {
+            const confirm = await response.json()
+            dispatch(deleteReview(reviewId));
+            return confirm;
+        }
+
+    }catch (error) {
+        console.log(error);
+        return error;
+    }
+};
 
 
 
@@ -76,9 +107,16 @@ const reviewReducer = (state={}, action) => {
             return newState;
         }
 
+
             // return {...state, [action.payload.id]: action.payload}
         // case CLEAR_REVIEWS:
         //     return {};
+
+        case DELETE_REVIEWS: {
+            const newState = {...state}
+            delete newState[action.payload]
+            return newState;
+        }
 
         default:
             return state;
