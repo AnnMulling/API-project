@@ -13,7 +13,7 @@ function SpotDetail () {
     const spot = useSelector((state) => state.spots[spotId]);
     const dispatch = useDispatch();
 
-    const [ previewImg, setPreviewImg ] = useState(spot && spot.SpotImages ? spot.SpotImages.find((img) => img.preview == true) : '');
+    const [ previewImage, setPreviewImage ] = useState(spot && spot.SpotImages ? spot.SpotImages.find((img) => img.preview == true) : '');
 
 
     console.log('SPOT detail', spot)
@@ -25,7 +25,7 @@ function SpotDetail () {
 
     useEffect(() => {
 
-        setPreviewImg(spot && spot.SpotImages ? spot.SpotImages.find((img) => img.preview == true) : '')
+        setPreviewImage(spot && spot.SpotImages ? spot.SpotImages.find((img) => img.preview == true) : '')
 
     }, [spot])
 
@@ -58,10 +58,10 @@ function SpotDetail () {
                     <p>{spot.city}, {spot.state}, {spot.country}</p>
                 </div>
                 <div className='spotImgContainer'>
-                <div className="bigImgContainer">{previewImg &&  <img className="bigImg" src={previewImg.url} alt={previewImg.id}/>}</div>
+                <div className="bigImgContainer">{previewImage &&  <img className="bigImg" src={previewImage.url} alt={previewImage.id}/>}</div>
                 {/* {spot.SpotImages.length > 0 &&
                 spot.SpotImages.map((img) => (
-                     img.id!== previewImg.id ?
+                     img.id!== previewImage.id ?
                     <div className="bigImgContainer"><img className="bigImg"src={img.url}/></div>
 
                         <div><img className="smallImg" src={img.url}/></div>
@@ -72,7 +72,7 @@ function SpotDetail () {
                 ))} */}
                      <div className='groupImage'>
                         {spot.SpotImages.length > 0 && spot.SpotImages.map(img => (
-                         img.id !== previewImg.id ? (
+                         img.id !== previewImage.id ? (
                         <div><img className="smallImg" key={img.id} src={img.url} alt={`Spot ${img.id}`} /></div>
                         ) : null
                         ))}
@@ -92,19 +92,19 @@ function SpotDetail () {
                     <div className='reserveContainer'>
                         <div className='reserveBox'>
                             <div style={{fontSize:'20px', fontWeight:'bold'}}>${spot.price} night</div>
-                            <div style={{paddingLeft: '25px'}}><i class="fa-solid fa-star"></i> {spot.avgRating === 0 ? '' : spot.avgRating}</div>
-                            <div style={{fontSize:'20px'}}>{!spot.numReviews ? '' : '·'}</div>
-                            <span>#{spot.numReviews ? spot.numReviews : ''}{!spot.numReviews ? '' : spot.numReviews > 1 ? 'Reviews' : 'Review'}</span>
+                            <div style={{paddingLeft: '25px'}}><i class="fa-solid fa-star"></i> {spot.avgRating === 0 ? 'New' : spot.avgRating}</div>
+                            <div style={{fontSize:'50px'}}>{!spot.numReviews ? '' : '·'}</div>
+                            <span>{spot.numReviews ? spot.numReviews : ''}{!spot.numReviews ?  '' : spot.numReviews > 1 ? 'Reviews' : 'Review'}</span>
                             <button onClick={handleReserve} className='reserveBtn'>reserve</button>
                         </div>
                     </div>
                 </div>
-                <div className='reviewContainer'>
+                {/* <div className='reviewContainer'>
                     <div style={{paddingLeft: '25px'}}><i class="fa-solid fa-star"></i>{!spot.avgRating ? `New` : spot.avgRating}</div>
-                    <div style={{fontSize:'20px'}}>·</div>
-                    <span>#{spot.numReviews ? spot.numReviews : ''}{!spot.numReviews ? '' : spot.numReviews > 1 ? 'Reviews' : 'Review'}</span>
+                    <div style={{fontSize:'50px'}}>{!spot.numReviews ? '' : '·'}</div>
+                    <span>{spot.numReviews ? spot.numReviews : ''}{!spot.numReviews ? '' : spot.numReviews > 1 ? 'Reviews' : 'Review'}</span>
 
-                </div>
+                </div> */}
             </div>
 
              <AllReviews spotId={spotId} spot={spot}/>

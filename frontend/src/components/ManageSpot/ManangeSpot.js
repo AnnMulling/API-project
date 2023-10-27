@@ -39,13 +39,16 @@ function ManageSpot() {
     return (
         <>
             <div className="titleContainer">
-                <h1>Mange Spots</h1>
+                <h1>Manage Spots</h1>
+        {spots.length < 1 && (
+
                 <button
                 id="createSpotBtn"
                 onClick={createSpot}
                 >
                     Create a New Spot
                 </button>
+        )}
             </div>
 
             <div className="spotsContainer">

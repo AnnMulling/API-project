@@ -454,6 +454,37 @@ router.post('/:spotId/images', [ requireAuth, reqAuthSpot ], async(req, res) => 
     res.json(result);
 });
 
+
+//Update a spot images
+router.put('/:spotId/images', reqAuthSpot, async(req,res) => {
+    const { spotId } = req.params
+    const { images } = req.body
+    const spot = await Spot.findByPk(spotId)
+
+
+    const spotImages = await SpotImage.findAll({
+      where: {
+        spotId
+      }
+    });
+
+
+    spotImages.forEach(async image => {
+      await image.destroy()
+    })
+
+    images.forEach(async img => {
+      await spot.createSpotImage(img)
+    })
+
+    const allImages = await SpotImage.findAll({
+      where: {
+        spotId
+      }
+    })
+    res.json(allImages)
+  });
+
 //Edit a Spot
 router.put('/:spotId', [ requireAuth, reqAuthSpot, validateSpot ], async(req, res) => {
     const { spotId } = req.params;
@@ -503,7 +534,9 @@ router.put('/:spotId', [ requireAuth, reqAuthSpot, validateSpot ], async(req, re
 
     res.json(spot)
 
-})
+});
+
+
 
 //Delete a Spot
 
@@ -529,5 +562,7 @@ router.delete('/:spotId', [ requireAuth, reqAuthSpot ], async(req, res) => {
       )
 
 });
+
+
 
 module.exports = router;

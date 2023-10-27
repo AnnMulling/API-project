@@ -132,18 +132,36 @@ export const fetchUserSpot = () => async (dispatch) => {
 
 
 //edit spot
-export const fetchEditSpot = (spotId, spot) => async (dispatch) => {
+export const fetchEditSpot = (spotId, spot, spotImages, userId ) => async (dispatch) => {
     try {
         const response = await csrfFetch (`/api/spots/${spotId}`, {
             method: 'PUT',
-            body: JSON.stringify(spot)
-        });
+            body: JSON.stringify(
+                {
+                   ...spot
+                }
+               ),
+               user: {
+                   id: userId
+               }
+           });
 
-        if (response.ok) {
-            const spot = await response.json();
-            dispatch(createSpot(spot));
-            return spot
-        }
+           if (response.ok) {
+               spotImages.forEach( async (images) => {
+                   await csrfFetch (`/api/spots/${spotId}/images`, {
+                       method: 'POST',
+                       headers: { 'Content-Type': 'application/json' },
+                       body: JSON.stringify({
+                           ...images
+                       })
+                   });
+
+
+               });
+
+               dispatch(fetchSpots());
+           }
+
     }catch (error) {
         console.log(error);
         return error;

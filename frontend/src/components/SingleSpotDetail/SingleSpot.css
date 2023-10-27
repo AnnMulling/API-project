@@ -99,17 +99,10 @@
 }
 /*---------------------------------------------------REVIEW--------------------------------------------------*/
 .reviewContainer {
-    display: flex;
-    gap: 20px;
+   /* border: solid red; */
+   margin-left: 4%;
 }
 
-.reviewBelowContainer {
-    margin-left: 5%;
-}
-
-.noReview {
-    margin-left: 50px;
-}
 
 .reviewBtn {
     background-color: rgb(233, 91, 95);

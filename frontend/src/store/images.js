@@ -23,9 +23,9 @@ const REMOVE_IMAGE = '/images/REMOVE_IMAGE'
 //         });
 
 //         if (response.ok) {
-//             const previewImg = await response.json();
-//             dispatch(addImage(previewImg));
-//             return previewImg;
+//             const previewImage = await response.json();
+//             dispatch(addImage(previewImage));
+//             return previewImage;
 //         };
 
 
