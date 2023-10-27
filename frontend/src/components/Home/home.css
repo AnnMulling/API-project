@@ -1,0 +1,72 @@
+
+* {
+    box-sizing: border-box;
+}
+
+.mainContainer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    column-gap: 8px;
+    margin: 10px;
+
+}
+
+.spotContainer {
+    padding: 10px;
+    /* border: solid purple; */
+}
+
+.spotDetail {
+    display: flex;
+    gap: 55%;
+    font-family: 'Manrope', sans-serif;
+
+}
+
+.spotImg{
+    width: 400px;
+    height: 300px;
+    border-radius: 5%;
+}
+
+
+
+.spotDetailLink {
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+
+}
+
+@media screen and (max-width: 749px){
+    .mainContainer {
+        grid-template-columns: auto;
+        width: fit-content;
+        margin: auto;
+    }
+
+    .spotContainer {
+        width: fit-content;
+    }
+
+
+}
+
+@media screen and (min-width: 750px) and (max-width: 1024px ) {
+
+    .mainContainer {
+        grid-template-columns: repeat(2, auto);
+        width: fit-content;
+        margin: auto;
+    }
+
+    .spotContainer {
+        width: fit-content;
+    }
+
+
+    .spotImg {
+        width: 35vw;
+        height: 35vw
+    }
+
+}

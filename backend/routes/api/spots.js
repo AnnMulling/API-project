@@ -164,6 +164,10 @@ router.get('/:spotId/bookings', requireAuth,  async(req, res) => {
 //Get all Reviews by a Spot's id
 router.get('/:spotId/reviews', async(req, res) => {
     const { spotId } = req.params;
+<<<<<<< Updated upstream
+=======
+    // const reviews = [];
+>>>>>>> Stashed changes
 
     const spotReview = await Review.unscoped().findAll({
         where: {
@@ -191,9 +195,17 @@ router.get('/:spotId/reviews', async(req, res) => {
               )
         }
 
+        console.log('from back end review', spotReview)
 
+<<<<<<< Updated upstream
        res.json({
         Review: spotReview
+=======
+        // reviews.push(spotReview)
+
+       res.json({
+        Reviews: spotReview
+>>>>>>> Stashed changes
        });
 
 
