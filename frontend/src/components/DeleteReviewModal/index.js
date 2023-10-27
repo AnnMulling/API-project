@@ -1,22 +1,25 @@
 import React, { useEffect, useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import { useModal } from '../../context/Modal';
 import { useDispatch, useSelector } from 'react-redux';
 
 import './DeleteReview.css'
 import { fetchDeleteReview } from '../../store/reviews';
+import { fetchSpotDetail } from '../../store/spots';
 
-function DeleteReview ({ review }) {
+function DeleteReview ({ review, spot }) {
     const { closeModal } = useModal();
     const dispatch = useDispatch();
 
     console.log('REVIEW', review)
 
-    const deleteReview = (e) => {
+    const deleteReview =  async (e) => {
         e.preventDefault();
 
-        dispatch(fetchDeleteReview(review.id)).then(closeModal)
+        await dispatch(fetchDeleteReview(review.id)).then(closeModal);
 
-    }
+        await dispatch(fetchSpotDetail(spot.id))
+    };
 
 
     return (

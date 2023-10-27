@@ -93,7 +93,8 @@
 }
 
 .reserveBtn:hover {
-    background-color: rgb(32, 32, 30);
+    background-color: #dddddd;
+    color: black;
 
 }
 /*---------------------------------------------------REVIEW--------------------------------------------------*/

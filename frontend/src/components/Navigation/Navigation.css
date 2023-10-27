@@ -4,6 +4,7 @@
   align-items: center;
   border-bottom: 1px solid #dddddd;
   padding: 50px;
+
 }
 
 
@@ -12,15 +13,13 @@
     display: none;
  }
 
-/* nav a.active {
 
-
-} */
 
 .navHome {
   text-decoration: none;
   color:rgb(233, 91, 95);
-  font-size: 25px;
+  font-size: 40px;
+
 }
 
 
@@ -47,6 +46,36 @@
   font-size: 20px;
   padding: 10px;
   color: rgb(98, 94, 94);
+}
+
+
+.createSpotBtn {
+  position: relative;
+  color: rgb(98, 94, 94);
+  font-size: 15px;
+
+  text-decoration: none;
+  cursor: pointer;
+
+
+}
+
+.navBtns {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+
+@media screen and (max-width: 749px) {
+  .navHome {
+    width: fit-content;
+    font-size: 20px;
+  }
+
+  /* .navHome > * {
+    font-size: 15px;
+  } */
 }
 
 
@@ -100,25 +129,6 @@
 
 
 
-.createSpotBtn {
-  position: relative;
-  color: rgb(98, 94, 94);
-  font-size: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  text-decoration: none;
-  cursor: pointer;
-
-  border-radius: 20px;
-  border: 1px solid #dddddd;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.18);
-  background-color: transparent;
-  width: 150px;
-  height: 45px;
-
-  margin-left: 60%;
-}
 
 .createSpotBtn:hover {
   background-color: #dddddd;
