@@ -4,6 +4,7 @@ import { fetchReviews } from '../../store/reviews';
 import * as sessionActions from "../../store/session";
 import OpenModalButton from "../OpenModalButton";
 import CreateReviewModal from "./reviewModal";
+import DeleteReview from "../DeleteReviewModal";
 
 
 
@@ -56,7 +57,15 @@ function AllReviews({ spotId, spot }) {
                         <h3>{review.User.firstName}</h3>
                         <p>{new Date(review.createdAt).toLocaleDateString('en-US', options)}</p>
                         <p>{review.review}</p>
-
+                    {(user && user.id === review.userId && (
+                        <>
+                            <span style={{ marginTop:"15px"}}></span>
+                            <OpenModalButton
+                            buttonText={"Delete Review"}
+                            modalComponent={<DeleteReview review={review} />}
+                            />
+                        </>
+                    ))}
                     </div>
                ))}
             </div>

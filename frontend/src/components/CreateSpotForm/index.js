@@ -8,7 +8,7 @@ import { fetchCreateSpot, fetchEditSpot } from '../../store/spots';
 
 import './CreateSpot.css';
 
-function CreateSpot({  spot, formType= "Create Form" }) {
+function CreateSpot({  spot, formType }) {
     const history = useHistory();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.session.user);
@@ -34,6 +34,7 @@ function CreateSpot({  spot, formType= "Create Form" }) {
 
 
     // console.log('USER====>', user)
+    console.log('SPOT PROP', spot)
 
 
     if(!user) {
@@ -76,7 +77,7 @@ function CreateSpot({  spot, formType= "Create Form" }) {
             setClassName("disabled")
          }
 
-    }, [country, address, city, state, lat, lng, description, name, price])
+    }, [country, address, city, state, lat, lng, description, name, price, previewImg])
 
 
     const handleSubmit = async (e) => {
@@ -106,7 +107,7 @@ function CreateSpot({  spot, formType= "Create Form" }) {
     console.log('spotImages', spotImages)
 
     spot = {
-        // ...spot,
+        ...spot,
             ownerId: user.id,
             address,
             country,
@@ -119,6 +120,8 @@ function CreateSpot({  spot, formType= "Create Form" }) {
             price,
             previewImg,
     }
+
+    console.log('AFTER SPREAD', spot)
 
 
         if (!(Object.values(errors).length) && formType === "Create Form") {
