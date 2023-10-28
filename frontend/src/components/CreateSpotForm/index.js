@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 
-import { fetchCreateSpot, fetchEditSpot, fetchAddImage, fetchSpotDetail } from '../../store/spots';
+import { fetchCreateSpot, fetchEditSpot, fetchAddImage } from '../../store/spots';
 
 
 import './CreateSpot.css';
@@ -35,11 +35,6 @@ function CreateSpot({  spot, formType }) {
 
     // console.log('USER====>', user)
     console.log('SPOT PROP', spot)
-
-
-    if(!user) {
-       history.replace('/')
-    }
 
 
     useEffect(() => {
@@ -82,7 +77,18 @@ function CreateSpot({  spot, formType }) {
             setClassName("createFormBtn")
          }
 
-    }, [country, address, city, state, lat, lng, description, name, price, previewImage])
+    }, [country, address, city, state, lat, lng, description, name, price, previewImage]);
+
+
+    if(!user) {
+        history.replace('/')
+        return;
+     };
+
+     if (formType === "Update Spot") {
+         if (user.id !== spot.ownerId) history.replace("/");
+     };
+
 
 
     const handleSubmit = async (e) => {
