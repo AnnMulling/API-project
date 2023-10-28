@@ -40,9 +40,10 @@ function AllReviews({ spotId, spot }) {
     return (
         <div className="reviewContainer">
             {reviews.length > 0 ? (
-                <div style={{ fontSize: "25px" }}>
+                <div className="reviewTitle" style={{ fontSize: "25px" }}>
                     <i className="fa-solid fa-star "></i>
-                    <span style={{ fontSize: "25px" }}>·</span>
+                    <span style={{ fontSize: "25px" }}>{spot.avgRating}</span>
+                    <span style={{ fontSize: "50px"}}>·</span>
                     {reviews.length} {reviews.length === 1 ? "Review" : "Reviews"}
                 </div>
 
@@ -53,19 +54,28 @@ function AllReviews({ spotId, spot }) {
                 </div>
             )}
             {user && user.id !== spot.ownerId && !reviewexists && (
-                <>
-                    <span style={{ margin: "15px 0" }}></span>
+                <div >
+
                     <OpenModalButton
                         buttonText={"Post Your Review"}
                         modalComponent={<CreateReviewModal spot={spot} />}
+                        style={{ backgroundColor: 'red',
+                            borderRadius: '20px',
+                            color: 'white',
+                            fontSize: '15px',
+                            border: 'none',
+                            height:'50px',
+                            width: '10%',
+                            marginBottom: '3%',
+                            cursor: 'pointer'}}
                         />
-                </>
+                </div>
             )}
 
             <span style={{ margin: "15px 0" }}></span>
             {reviews.length > 0 ? (
                 <div className="reviews">
-                    {reviews.map((review) => (
+                    {reviews.reverse().map((review) => (
                         <div className="individual-review">
                             <span id="review-firstName">{review.User.firstName}</span>
                             <p>{new Date(review.createdAt).toLocaleDateString('en-US', options)}</p>

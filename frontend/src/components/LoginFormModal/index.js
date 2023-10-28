@@ -11,7 +11,7 @@ function LoginFormModal() {
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
   const [disabled, setDisabled] = useState(true);
-  const [className, setClassName ] = useState("disabled")
+  const [className, setClassName ] = useState("disabledLogin")
   const { closeModal } = useModal();
 
   useEffect(() => {
@@ -23,7 +23,7 @@ function LoginFormModal() {
 
     if (Object.keys(errors).length > 0) {
       setDisabled(true)
-      setClassName("disabled")
+      setClassName("disabledLogin")
      }
 
   }, [credential, password, errors])

@@ -455,35 +455,40 @@ router.post('/:spotId/images', [ requireAuth, reqAuthSpot ], async(req, res) => 
 });
 
 
-//Update a spot images
-router.put('/:spotId/images', reqAuthSpot, async(req,res) => {
-    const { spotId } = req.params
-    const { images } = req.body
-    const spot = await Spot.findByPk(spotId)
+// //Update a spot images
+// router.put('/:spotId/images', reqAuthSpot, async(req,res) => {
+//     const { spotId } = req.params
+//     const { images } = req.body
+//     const spot = await Spot.findByPk(spotId)
 
 
-    const spotImages = await SpotImage.findAll({
-      where: {
-        spotId
-      }
-    });
+//     const spotImages = await SpotImage.findAll({
+//       where: {
+//         spotId
+//       }
+//     });
 
+//     if (spotImages.length > 1) {
 
-    spotImages.forEach(async image => {
-      await image.destroy()
-    })
+//         spotImages.forEach(async image => {
+//             await image.destroy()
+//           });
+//     }
+//     else {
 
-    images.forEach(async img => {
-      await spot.createSpotImage(img)
-    })
+//         images.forEach(async img => {
+//           await spot.createSpotImage(img)
+//         })
+//     }
 
-    const allImages = await SpotImage.findAll({
-      where: {
-        spotId
-      }
-    })
-    res.json(allImages)
-  });
+//     const allImages = await SpotImage.findAll({
+//       where: {
+//         spotId
+//       }
+//     })
+//     res.json(allImages)
+//   });
+
 
 //Edit a Spot
 router.put('/:spotId', [ requireAuth, reqAuthSpot, validateSpot ], async(req, res) => {
