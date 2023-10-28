@@ -60,15 +60,7 @@ function AllReviews({ spotId, spot }) {
                     <OpenModalButton
                         buttonText={"Post Your Review"}
                         modalComponent={<CreateReviewModal spot={spot} />}
-                        style={{ backgroundColor: 'red',
-                            borderRadius: '20px',
-                            color: 'white',
-                            fontSize: '15px',
-                            border: 'none',
-                            height:'50px',
-                            width: '10%',
-                            marginBottom: '3%',
-                            cursor: 'pointer'}}
+                        modalClasses={["create-Btn"]}
                         />
                 </div>
             )}
@@ -85,6 +77,7 @@ function AllReviews({ spotId, spot }) {
                                 <OpenModalButton
                                     buttonText={"Delete"}
                                     modalComponent={<DeleteReview review={review} spot={spot} />}
+                                    modalClasses={["delete-Btn"]}
                                 />
                             )}
                         </div>
