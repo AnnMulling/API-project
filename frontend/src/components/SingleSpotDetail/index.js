@@ -11,14 +11,29 @@ import AllReviews from './reviews';
 function SpotDetail () {
     const { spotId } = useParams();
     const spot = useSelector((state) => state.spots[spotId]);
+
     const dispatch = useDispatch();
     const [ errors, setErrors ] = useState();
 
     useEffect(() => {
+        const res = async () => {
 
-        dispatch(fetchSpotDetail(spotId));
+            try {
+                await dispatch(fetchSpotDetail(spotId));
+                
+            }catch(e) {
+                const error = {};
+                error.status = e.status;
+                error.statusText = e.statusText
+
+                setErrors(error)
+            }
+        }
+
+        res()
 
     }, [dispatch])
+
 
 
 
@@ -33,6 +48,11 @@ function SpotDetail () {
     let previewImage = spotImages.reverse().find(img => img.preview === true)
     // console.log('PREVIEW', previewImage.url)
 
+    const handleReserve = (e) => {
+        e.preventDefault();
+
+        alert("Feature coming soon");
+    };
 
     if (spot.SpotImages.length < 5) {
         for (let i = spot.SpotImages.length; i < 5 ; i++) {
@@ -46,11 +66,7 @@ function SpotDetail () {
     };
 
 
-    const handleReserve = (e) => {
-        e.preventDefault();
 
-        alert("Feature coming soon");
-    };
 
     return !spot ? 'Page Not Found' : (
         <>

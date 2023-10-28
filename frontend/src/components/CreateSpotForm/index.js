@@ -136,12 +136,15 @@ function CreateSpot({  spot, formType }) {
 
 
         if (!(Object.values(errors).length) && formType === "Create Form") {
-
-
             const res = await dispatch(fetchCreateSpot(spot));
-            await dispatch(fetchAddImage(res.id, spotImages));
 
-            history.push(`/spots/${res.id}`);
+            if (!res.errors) {
+                await dispatch(fetchAddImage(res.id, spotImages));
+                history.push(`/spots/${res.id}`);
+            }else {
+                setError(res.errors)
+            }
+
         }
 
         if (formType === "Update Form") {
