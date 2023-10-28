@@ -66,50 +66,90 @@ export const fetchSpotDetail = (spotId) => async (dispatch) => {
 };
 
 //create a spot
-export const fetchCreateSpot = (spot, spotImages, userId) => async (dispatch) => {
-    console.log('fetch to create spot...');
+// export const fetchCreateSpot = (spot, spotImages, userId) => async (dispatch) => {
+//     console.log('fetch to create spot...');
+
+//     try {
+
+//         const response = await csrfFetch('/api/spots', {
+//             method: 'POST',
+//             headers: { 'Content-Type': 'application/json' },
+//             body: JSON.stringify(
+//              {
+//                 ...spot
+//              }
+//             ),
+//             user: {
+//                 id: userId
+//             }
+//         });
+
+//         if (response.ok) {
+//             const spot = await response.json();
+
+//             spotImages.forEach( async (img) => {
+
+//                 await csrfFetch (`/api/spots/${spot.id}/images`, {
+//                     method: 'POST',
+//                     headers: { 'Content-Type': 'application/json' },
+//                     body: JSON.stringify({
+//                         ...img
+//                     })
+//                 });
+//             });
+
+//             dispatch(createSpot(spot))
+//             return spot;
+//         }
+
+//     }  catch (error){
+//         // error = await response.json()
+//         console.error(error)
+//         return error;
+//     }
+
+// };
+
+
+
+export const fetchCreateSpot = (spot) => async (dispatch) => {
+        console.log('fetch to create spot...');
+
+        try {
+
+            const response = await csrfFetch('/api/spots', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(spot)
+            });
+            if (response.ok) {
+                const spot = await response.json();
+                dispatch(createSpot(spot));
+                return spot;
+            }
+
+        }catch(error) {
+            console.log(error)
+            return error;
+        }
+}
+
+//add Imgage to spot
+export const fetchAddImage = (spotId, spotImages) => async (dispatch) => {
 
     try {
 
-        const response = await csrfFetch('/api/spots', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(
-             {
-                ...spot
-             }
-            ),
-            user: {
-                id: userId
-            }
-        });
-
-        if (response.ok) {
-            const spot = await response.json();
-
-            spotImages.forEach( async (img) => {
-
-                await csrfFetch (`/api/spots/${spot.id}/images`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        ...img
-                    })
-                });
+        spotImages.forEach(async (img) => {
+            await csrfFetch(`/api/spots/${spotId}/images`, {
+            method: "POST",
+            body: JSON.stringify(img),
             });
-
-            dispatch(createSpot(spot))
-            return spot;
-        }
-
-
-    }  catch (error){
-        // error = await response.json()
-        console.error(error)
+        });
+    }catch (error){
+        console.log(error);
         return error;
     }
-
-};
+}
 
 //get current user spot
 export const fetchUserSpot = () => async (dispatch) => {
@@ -190,10 +230,16 @@ const spotReducer = (state = {}, action) => {
             return spotsState
 
         case SPOT_DETAIL:
-            return {...state, [action.payload.id]: action.payload }
+            return {
+                ...state,
+                [action.payload.id]: action.payload
+            }
 
         case CREATE_SPOT:
-            return {...state, [action.payload.id]: action.payload }
+            return {
+                ...state,
+                [action.payload.id]: action.payload
+            }
 
         case DELETE_SPOT:
             const newState = {...state}

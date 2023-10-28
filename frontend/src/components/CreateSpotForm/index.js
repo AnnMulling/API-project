@@ -3,8 +3,8 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 
-import { fetchCreateSpot, fetchEditSpot } from '../../store/spots';
-// import { fetchAddImage } from '../../store/images';
+import { fetchCreateSpot, fetchEditSpot, fetchAddImage } from '../../store/spots';
+
 
 import './CreateSpot.css';
 
@@ -130,17 +130,17 @@ function CreateSpot({  spot, formType }) {
 
 
         if (!(Object.values(errors).length) && formType === "Create Form") {
-
-             const res = await dispatch(fetchCreateSpot(spot, spotImages, user.id));
-            // await dispatch(fetchAddImage(newSpot.id, spotImages));
-            history.push(`/spots/${res.id}`)
+            const res = await dispatch(fetchCreateSpot(spot));
+            await dispatch(fetchAddImage(res.id, spotImages));
+            history.push(`/spots/${res.id}`);
         }
 
         if (formType === "Update Form") {
             delete errors.previewImage;
 
             if (!(Object.values(errors).length) && formType === "Update Form") {
-                await dispatch(fetchEditSpot(spot, user.id))
+                await dispatch(fetchEditSpot(spot, user.id));
+
                 history.push(`/spots/${spot.id}`)
             }
         };
@@ -168,7 +168,7 @@ function CreateSpot({  spot, formType }) {
                         onChange={(e) => setCountry(e.target.value)} />
                         {errors.country && <p className="errors">{errors.country}</p>}
 
-                        <label className="createFormLabel">Stree Address</label>
+                        <label className="createFormLabel">Street Address</label>
                         <input
                         className="createFormInput"
                         placeholder="Address"
