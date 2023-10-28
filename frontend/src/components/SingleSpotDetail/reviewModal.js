@@ -25,15 +25,18 @@ function CreateReviewModal({ spot }) {
     useEffect(() => {
         const error = {}
 
+        if (starRate < 1) error.starRate =  "Please select stars"
         if (message.length < 10) error.message = "Review must be atleast 10 character"
+        if (message.length > 255) error.message = "Review must be shorter than 255 characters"
 
-        if (message.length > 10) {
+
+        if (!Object.keys(error).length) {
             setDisabled(false)
             setClassName("submitReviewBtn")
         }
         setError(error)
 
-    },[message]);
+    },[message, starRate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -54,6 +57,7 @@ function CreateReviewModal({ spot }) {
         console.log('REVIEW', review)
 
         closeModal()
+
     }
 
 
@@ -90,7 +94,8 @@ function CreateReviewModal({ spot }) {
                             />
                     </label>
             })}</div>
-            <button type="submit" className={` ${className}`} disabled={disabled} >Submit Your Review</button>
+            {error.starRate && <p className='errors'>{error.starRate}</p>}
+            <button type="submit" className={className} disabled={disabled} >Submit Your Review</button>
         </form>
     );
 }
