@@ -383,17 +383,8 @@ router.post('/:spotId/reviews', [ requireAuth, validateReview, isOwner ] , async
 router.post('/', [ requireAuth, validateSpot],  async(req, res) => {
     const { user } = req;
 
-    const {
-            address,
-            city,
-            state,
-            country,
-            lat,
-            lng,
-            name,
-            description,
-            price
-         } = req.body;
+    const { address, city, state, country, lat, lng, name,
+        description, price } = req.body
 
 
     const newSpot = await Spot.create({
@@ -408,8 +399,6 @@ router.post('/', [ requireAuth, validateSpot],  async(req, res) => {
             description,
             price
     });
-
-    // await newSpot.save();
 
     res.status(201);
     res.json(newSpot)
@@ -440,16 +429,21 @@ router.post('/:spotId/images', [ requireAuth, reqAuthSpot ], async(req, res) => 
     //     )
     // };
     //if image prview = true set the rest to false
+    const images = await spot.getSpotImages();
 
-    const spotImg = await spot.createSpotImage({
+    const newImg = await SpotImage.create({
+        spotId: spot.id,
         url,
         preview
     });
 
-    const result = { id: spotImg.id,
-                     url: spotImg.url,
-                     preview: spotImg.preview
-                    }
+    images.push(newImg)
+
+    const result = {
+        id: newImg.id,
+        url: newImg.url,
+        preview: newImg.preview
+    }
 
     res.json(result);
 });

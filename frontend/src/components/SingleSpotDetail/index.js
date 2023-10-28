@@ -47,7 +47,7 @@ function SpotDetail () {
     if (!spotImages) return null;
 
     let previewImage = spotImages.reverse().find(img => img.preview === true)
-    console.log('PREVIEW', previewImage.url)
+    // console.log('PREVIEW', previewImage.url)
 
 
     if (spot.SpotImages.length < 5) {
