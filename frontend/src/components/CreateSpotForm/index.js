@@ -135,9 +135,15 @@ function CreateSpot({  spot, formType }) {
             // await dispatch(fetchAddImage(newSpot.id, spotImages));
             history.push(`/spots/${res.id}`)
         }
+
+        if (formType === "Update Form") {
+            delete errors.previewImage;
+        };
+
         if (!(Object.values(errors).length) && formType === "Update Form") {
 
-            await dispatch(fetchEditSpot(spot.id, spot, spotImages, user.id))
+            await dispatch(fetchEditSpot(spot, user.id))
+
             history.push(`/spots/${spot.id}`)
         }
 

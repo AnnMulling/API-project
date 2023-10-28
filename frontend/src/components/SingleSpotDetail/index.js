@@ -12,31 +12,49 @@ function SpotDetail () {
     const { spotId } = useParams();
     const spot = useSelector((state) => state.spots[spotId]);
     const dispatch = useDispatch();
+    const [ errors, setErrors ] = useState();
 
-    const [ previewImage, setPreviewImage ] = useState(spot && spot.SpotImages ? spot.SpotImages.find((img) => img.preview == true) : '');
-
-
-    console.log('SPOT detail', spot)
     useEffect(() => {
-        console.log('dispatch spot')
-        dispatch(spotActions.fetchSpotDetail(spotId));
+        const res = async () => {
+            try {
+                await dispatch(spotActions.fetchSpotDetail(spotId));
+            } catch (e) {
+                const error = {};
+                error.status = e.status;
+                error.statusText = e.statusText
+                setErrors(error)
+            }
+        }
+
+       res();
+
 
     }, [dispatch])
 
-    useEffect(() => {
 
-        setPreviewImage(spot && spot.SpotImages ? spot.SpotImages.find((img) => img.preview == true) : '')
+    // if (!spot?.Owner) return (
+    //     <h1>{errors.status} {errors.statusText}</h1>
+    //   )
 
-    }, [spot])
+    if (!spot) return null;
 
-    if (!spot?.Owner) return null;
+    console.log('SPOT detail', spot)
+
+    const spotImages = spot.SpotImages;
+
+    console.log('IMAGE', spotImages)
+
+    if (!spotImages) return null;
+
+    let previewImage = spotImages.reverse().find(img => img.preview === true)
+    console.log('PREVIEW', previewImage.url)
 
 
     if (spot.SpotImages.length < 5) {
-        for (let i = spot.SpotImages.length; i < 6 ; i++) {
+        for (let i = spot.SpotImages.length; i < 5 ; i++) {
             const img = {
-                id: i ,
-                url: "https://banner2.cleanpng.com/20180506/roq/kisspng-house-computer-icons-clip-art-house-clipart-5aee8560d623a0.3006532015255811528771.jpg",
+                id: i + 1 ,
+                url: "https://png.pngtree.com/png-vector/20221108/ourmid/pngtree-cartoon-house-illustration-png-image_6434928.png",
                 preview: false
             }
             spot.SpotImages.push(img)
@@ -59,19 +77,8 @@ function SpotDetail () {
                 </div>
                 <div className='spotImgContainer'>
                 <div className="bigImgContainer">{previewImage &&  <img className="bigImg" src={previewImage.url} alt={previewImage.id}/>}</div>
-                {/* {spot.SpotImages.length > 0 &&
-                spot.SpotImages.map((img) => (
-                     img.id!== previewImage.id ?
-                    <div className="bigImgContainer"><img className="bigImg"src={img.url}/></div>
-
-                        <div><img className="smallImg" src={img.url}/></div>
-                        <div><img className="smallImg" src={img.url}/></div>
-                        <div><img className="smallImg" src={img.url}/></div>
-                        <div><img className="smallImg" src={img.url}/></div>
-                    </div>
-                ))} */}
                      <div className='groupImage'>
-                        {spot.SpotImages.length > 0 && spot.SpotImages.map(img => (
+                        {spotImages.map(img => (
                          img.id !== previewImage.id ? (
                         <div><img className="smallImg" key={img.id} src={img.url} alt={`Spot ${img.id}`} /></div>
                         ) : null
