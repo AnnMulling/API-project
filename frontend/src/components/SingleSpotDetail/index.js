@@ -15,26 +15,12 @@ function SpotDetail () {
     const [ errors, setErrors ] = useState();
 
     useEffect(() => {
-        const res = async () => {
-            try {
-                await dispatch(spotActions.fetchSpotDetail(spotId));
-            } catch (e) {
-                const error = {};
-                error.status = e.status;
-                error.statusText = e.statusText
-                setErrors(error)
-            }
-        }
 
-       res();
-
+        dispatch(spotActions.fetchSpotDetail(spotId));
 
     }, [dispatch])
 
 
-    // if (!spot?.Owner) return (
-    //     <h1>{errors.status} {errors.statusText}</h1>
-    //   )
 
     if (!spot) return null;
 
