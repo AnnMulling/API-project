@@ -92,7 +92,7 @@ function AllReviews({ spotId, spot }) {
             ) : (
                 <>
                     {(!user || user.id === spot.ownerId ?
-                        <div style={{fontSize: "25px"}}>No reivews...yet</div>
+                        <div style={{fontSize: "25px"}}>No reviews...yet</div>
                         : <div style={{fontSize: "25px"}}>Be the first to post a review!</div>
 
                     )}
