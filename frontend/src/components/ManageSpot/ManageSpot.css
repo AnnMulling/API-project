@@ -2,8 +2,8 @@
 .mainContainer {
     margin-left: 10px;
     display: flex;
-    /* flex-direction: column; */
-}
+    flex-direction: column;
+ }
 
 
 .spotsContainer {
@@ -13,18 +13,18 @@
     margin: 10px;
 
     width: 100%;
-
+    /* border: dashed purple */
 }
 
 .titleContainer {
    width: 100%;
    margin-left: 5%;
+   /* border: solid blue; */
 }
 
-.spotContainer {
+.spotContainer-manage {
     padding: 10px;
-
-    /* border: solid purple; */
+    /* border: solid green; */
 }
 
 .manageSpotDetail {
@@ -34,10 +34,13 @@
     gap: 50%;
     row-gap: 10px;
     font-family: 'Manrope', sans-serif;
+    margin-bottom: 20px;
+
+    /* border: solid red; */
 }
 
 .spotImg{
-    width: 400px;
+    width: 300px;
     height: 300px;
     border-radius: 5%;
 }
@@ -79,7 +82,7 @@
 }
 
 #updateSpotBtn {
-    background-color: rgb(233, 91, 95);
+    background-color: rgb(89, 171, 184);
     border-radius: 20px;
     color:rgb(251, 249, 249);
     font-size: 15px;
@@ -105,4 +108,60 @@
     margin-left: 25%;
 
     cursor: pointer;
+}
+
+.deleteBtn-manage {
+    background-color: rgb(232, 88, 93);
+    border-radius: 20px;
+    color:rgb(251, 249, 249);
+    font-size: 15px;
+    border: none;
+    height: 50px;
+    width: 50%;
+
+    margin-left: 25%;
+    margin-bottom: 10px;
+
+    cursor: pointer;
+
+ }
+
+.deleteBtn-manage:hover {
+   background-color: #dddddd;
+   color: black;
+}
+
+
+@media screen and (max-width: 749px){
+    .spotsContainer {
+        grid-template-columns: auto;
+        width: fit-content;
+        margin: auto;
+    }
+
+    .spotContainer-manage {
+        width: fit-content;
+    }
+
+
+}
+
+@media screen and (min-width: 750px) and (max-width: 1024px ) {
+
+    .spotsContainer {
+        grid-template-columns: repeat(2, auto);
+        width: fit-content;
+        margin: auto;
+    }
+
+    .spotContainer-manage {
+        width: fit-content;
+    }
+
+
+    .spotImg {
+        width: 35vw;
+        height: 35vw
+    }
+
 }

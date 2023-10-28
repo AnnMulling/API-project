@@ -44,7 +44,6 @@
 
 
  .individual-review {
-
     border-top: 1px solid #dddddd;
     margin-top: 15px;
     padding: 10px;
@@ -59,4 +58,23 @@
 
  #review-date {
     font-size: 12px;
+ }
+
+ .delete-Btn {
+    background-color: #dddddd;
+    border-radius: 10px;
+    color:rgb(16, 15, 15);
+    font-size: 15px;
+    border: none;
+    height: 30px;
+    width: 10%;
+
+    margin-bottom: 3%;
+    cursor: pointer;
+
+ }
+
+ .delete-Btn:hover {
+    background-color: rgb(233, 91, 95);
+    color: #dddddd;
  }

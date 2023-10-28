@@ -34,7 +34,7 @@ export default function HomePage () {
                             {/* <div className='country'>{spot.country}</div> */}
                             <div className='starsRating'><i class="fa-solid fa-star"></i>{!spot.avgRating ? `New` : spot.avgRating} </div>
                         </div>
-                            <div className='price'>${spot.price} night</div>
+                            <div className='price'>${spot.price.toFixed(2)} night</div>
                     </div>
                 </Link>
             )}

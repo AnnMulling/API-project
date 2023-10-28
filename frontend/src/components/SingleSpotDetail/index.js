@@ -20,7 +20,7 @@ function SpotDetail () {
 
             try {
                 await dispatch(fetchSpotDetail(spotId));
-                
+
             }catch(e) {
                 const error = {};
                 error.status = e.status;
@@ -36,8 +36,12 @@ function SpotDetail () {
 
 
 
+    if (!spot) {
+        return <h1 style={{marginLeft:"10%"}}>404 Spot Doesn't exists</h1>
 
-    if (!spot) return null;
+    };
+
+   
     console.log('SPOT detail', spot)
 
     const spotImages = spot.SpotImages;
@@ -66,7 +70,7 @@ function SpotDetail () {
     };
 
 
-
+    const price = parseFloat(spot.price)
 
     return !spot ? 'Page Not Found' : (
         <>
@@ -98,7 +102,7 @@ function SpotDetail () {
                     </div>
                     <div className='reserveContainer'>
                         <div className='reserveBox'>
-                            <div style={{fontSize:'20px', fontWeight:'bold'}}>${spot.price} night</div>
+                            <div style={{fontSize:'20px', fontWeight:'bold'}}>${price.toFixed(2)} night</div>
                             <div style={{paddingLeft: '25px'}}><i class="fa-solid fa-star"></i> {spot.avgRating === 0 ? 'New' : spot.avgRating}</div>
                             <div style={{fontSize:'50px'}}>{!spot.numReviews ? '' : '·'}</div>
                             <span>{spot.numReviews ? spot.numReviews : ''}{!spot.numReviews ?  '' : spot.numReviews > 1 ? 'Reviews' : 'Review'}</span>

@@ -53,11 +53,11 @@ function ManageSpot() {
 
             <div className="spotsContainer">
             {spots.length > 0 && (
-                <div>
+                <>
                     {spots.map((spot) =>
                         <div className="spotContainer">
                             <Link to={`/spots/${spot.id}`} className="spotDetailLink">
-                                <div key={spot.id} className='spotContainer'>
+                                <div key={spot.id} className='spotContainer-manage'>
                                     <img className='spotImg' src={spot.previewImage} alt='houses' title={spot.name} />
                                     <div className='manageSpotDetail'>
                                         <div className='address'>City, {spot.city}</div>
@@ -73,13 +73,16 @@ function ManageSpot() {
                             >
                             Update Spot
                             </button>
-                            <OpenModalButton
-                            buttonText={"Delete"}
-                            modalComponent={<DeleteSpot spot={spot}/>}
+                          <div>
+                                <OpenModalButton
+                                buttonText={"Delete"}
+                                modalComponent={<DeleteSpot spot={spot}/>}
+                                modalClasses={["deleteBtn-manage"]}
                              />
+                          </div>
                         </div>
                     )}
-                 </div>
+                 </>
              )}
              </div>
         </>
