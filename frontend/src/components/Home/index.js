@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
-import * as spotActions from '../../store/spots';
+import { fetchSpots } from '../../store/spots';
 
 import './home.css';
 
@@ -15,10 +15,12 @@ export default function HomePage () {
     console.log('spotState home-page', spotState)
 
     useEffect(() => {
-        dispatch(spotActions.fetchSpots())
+        dispatch(fetchSpots())
     },[dispatch])
 
     if(!spots) return null;
+
+    // const price = parseFloat(spot.price)
 
     return(
         <>
@@ -34,7 +36,7 @@ export default function HomePage () {
                             {/* <div className='country'>{spot.country}</div> */}
                             <div className='starsRating'><i class="fa-solid fa-star"></i>{!spot.avgRating ? `New` : spot.avgRating} </div>
                         </div>
-                            <div className='price'>${spot.price.toFixed(2)} night</div>
+                            <div className='price'>${parseFloat(spot.price).toFixed(2)} night</div>
                     </div>
                 </Link>
             )}
