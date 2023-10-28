@@ -41,7 +41,7 @@ function SpotDetail () {
 
     };
 
-   
+
     console.log('SPOT detail', spot)
 
     const spotImages = spot.SpotImages;
@@ -62,7 +62,7 @@ function SpotDetail () {
         for (let i = spot.SpotImages.length; i < 5 ; i++) {
             const img = {
                 id: i + 1 ,
-                url: "https://png.pngtree.com/png-vector/20221108/ourmid/pngtree-cartoon-house-illustration-png-image_6434928.png",
+                url: "https://www.distefanosales.com/wp-content/uploads/2023/08/image-coming-soon-placeholder.png",
                 preview: false
             }
             spot.SpotImages.push(img)
