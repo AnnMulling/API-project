@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import * as spotActions from '../../store/spots';
+import { fetchSpotDetail } from '../../store/spots';
 
 
 import './SingleSpot.css'
@@ -16,18 +16,16 @@ function SpotDetail () {
 
     useEffect(() => {
 
-        dispatch(spotActions.fetchSpotDetail(spotId));
+        dispatch(fetchSpotDetail(spotId));
 
     }, [dispatch])
 
 
 
     if (!spot) return null;
-
     console.log('SPOT detail', spot)
 
     const spotImages = spot.SpotImages;
-
     console.log('IMAGE', spotImages)
 
     if (!spotImages) return null;
