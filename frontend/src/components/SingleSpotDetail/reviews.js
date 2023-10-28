@@ -6,6 +6,7 @@ import OpenModalButton from "../OpenModalButton";
 import CreateReviewModal from "./reviewModal";
 import DeleteReview from "../DeleteReviewModal";
 
+import './review.css'
 
 
 function AllReviews({ spotId, spot }) {
@@ -78,7 +79,7 @@ function AllReviews({ spotId, spot }) {
                     {reviews.reverse().map((review) => (
                         <div className="individual-review">
                             <span id="review-firstName">{review.User.firstName}</span>
-                            <p>{new Date(review.createdAt).toLocaleDateString('en-US', options)}</p>
+                            <p id="review-date">{new Date(review.createdAt).toLocaleDateString('en-US', options)}</p>
                             <p>{review.review}</p>
                             {user && user.id === review.userId && (
                                 <OpenModalButton

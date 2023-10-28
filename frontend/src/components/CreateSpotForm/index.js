@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 
-import { fetchCreateSpot, fetchEditSpot, fetchAddImage } from '../../store/spots';
+import { fetchCreateSpot, fetchEditSpot, fetchAddImage, fetchSpotDetail } from '../../store/spots';
 
 
 import './CreateSpot.css';
@@ -130,8 +130,11 @@ function CreateSpot({  spot, formType }) {
 
 
         if (!(Object.values(errors).length) && formType === "Create Form") {
+
+
             const res = await dispatch(fetchCreateSpot(spot));
             await dispatch(fetchAddImage(res.id, spotImages));
+
             history.push(`/spots/${res.id}`);
         }
 
@@ -153,12 +156,15 @@ function CreateSpot({  spot, formType }) {
     return (
         <>
             <div className="mainCreateSpotContianer">
-                <div id="mainTitle">
-                    <h1>Create a new Spot</h1>
-                    <h2>Where's your place located?</h2>
-                    <p className='descriptionText'>Guests will only get your exact address once they booked a reservation</p>
-                </div>
                 <form onSubmit={handleSubmit} className="createSpotForm">
+                    <div id="mainTitle">
+                        {formType === "Create Form" ? (
+                        <h1>Create a new Spot</h1>) : (
+                         <h1>Update your Spot</h1>
+                        )}
+                        <h2>Where's your place located?</h2>
+                        <p className='descriptionText'>Guests will only get your exact address once they booked a reservation</p>
+                    </div>
                      <div className='addressContainer'>
                         <label className="createFormLabel">Country</label>
                         <input
