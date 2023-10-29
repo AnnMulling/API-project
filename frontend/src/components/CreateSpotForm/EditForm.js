@@ -9,12 +9,12 @@ const EditSpotForm = () => {
     const history = useHistory();
     const dispatch = useDispatch();
     const { spotId } = useParams();
-    const spot = useSelector((state) => state.spots ? state.spots[spotId] : null);
-    const user = useSelector((state) => state.session.user);
+    const spot = useSelector((state) =>  state.spots[spotId]);
+    // const user = useSelector((state) => state.session.user);
 
-    if (!user) {
-        history.replace("/")
-    }
+    // if (!user) {
+    //     history.replace("/")
+    // }
 
     useEffect(() => {
         dispatch(fetchSpotDetail(spotId)).catch((e) => history.push('/'));
