@@ -7,8 +7,8 @@ import CreateSpot from './index';
 
 const EditSpotForm = () => {
     const history = useHistory();
-    const { spotId } = useParams();
     const dispatch = useDispatch();
+    const { spotId } = useParams();
     const spot = useSelector((state) => state.spots ? state.spots[spotId] : null);
     const user = useSelector((state) => state.session.user);
 
@@ -17,7 +17,7 @@ const EditSpotForm = () => {
     }
 
     useEffect(() => {
-       if (spot) dispatch(fetchSpotDetail(spotId))
+        dispatch(fetchSpotDetail(spotId)).catch((e) => history.push('/'));
     }, [dispatch, spotId])
 
     if (!spot) {

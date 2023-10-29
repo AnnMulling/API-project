@@ -11,9 +11,10 @@ import AllReviews from './reviews';
 function SpotDetail () {
     const { spotId } = useParams();
     const spot = useSelector((state) => state.spots[spotId]);
-
     const dispatch = useDispatch();
-    const [ errors, setErrors ] = useState();
+    //const [ previewImage, setPreviewImage ] = useState(spotImages.find(img => img.preview === true))
+    const [ errors, setErrors ] = useState({});
+
 
     useEffect(() => {
         const res = async () => {
@@ -37,7 +38,7 @@ function SpotDetail () {
 
 
     if (!spot) {
-        return <h1 style={{marginLeft:"10%"}}>404 Spot Doesn't exists</h1>
+        return <h1 style={{marginLeft:"10%", color:"grey"}}>404 Page Not Found</h1>
 
     };
 
@@ -49,7 +50,6 @@ function SpotDetail () {
 
     if (!spotImages) return null;
 
-    let previewImage = spotImages.reverse().find(img => img.preview === true)
     // console.log('PREVIEW', previewImage.url)
 
     const handleReserve = (e) => {
@@ -69,10 +69,11 @@ function SpotDetail () {
         }
     };
 
+   let previewImage = spotImages.find(img => img.preview === true)
 
-    const price = parseFloat(spot.price)
+    const price = parseFloat(spot.price);
 
-    return !spot ? 'Page Not Found' : (
+    return  (
         <>
             <div className='spotMainContainer'>
                 <div className='spotTitleContainer'>
@@ -83,8 +84,8 @@ function SpotDetail () {
                 <div className="bigImgContainer">{previewImage &&  <img className="bigImg" src={previewImage.url} alt={previewImage.id}/>}</div>
                      <div className='groupImage'>
                         {spotImages.map(img => (
-                         img.id !== previewImage.id ? (
-                        <div><img className="smallImg" key={img.id} src={img.url} alt={`Spot ${img.id}`} /></div>
+                         img.preview === false ? (
+                        <div key={img.id}><img className="smallImg"  src={img.url} alt={`Spot ${img.id}`} /></div>
                         ) : null
                         ))}
                     </div>
