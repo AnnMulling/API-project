@@ -24,24 +24,28 @@ function App() {
   return (
     <>
     <Navigation isLoaded={isLoaded} />
+
+    {isLoaded && (
     <Switch>
-      <Route exact path="/">
-        <HomePage />
-      </Route>
-      <Route path="/spots/new">
-        <CreateSpotForm />
-      </Route>
-      <Route path="/spots/current">
-        <ManageSpot />
-      </Route>
-      <Route path="/spots/:spotId/edit">
-        <EditSpotForm />
-      </Route>
-      <Route path="/spots/:spotId">
-        <SpotDetail />
-      </Route>
-    </Switch>
-    {isLoaded && <Switch></Switch>}
+        <Route exact path="/">
+          <HomePage />
+        </Route>
+        <Route path="/spots/new">
+          <CreateSpotForm />
+        </Route>
+        <Route path="/spots/current">
+          <ManageSpot />
+        </Route>
+        <Route path="/spots/:spotId/edit">
+          <EditSpotForm />
+        </Route>
+        <Route path="/spots/:spotId">
+          <SpotDetail />
+        </Route>
+        <Route>
+          <h1>404 Page Not Found</h1>
+        </Route>
+    </Switch>)}
     </>
   );
 }

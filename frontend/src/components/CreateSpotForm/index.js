@@ -3,12 +3,13 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 
-import { fetchCreateSpot, fetchEditSpot, fetchAddImage } from '../../store/spots';
+import { fetchCreateSpot, fetchEditSpot, fetchAddImage, fetchSpotDetail } from '../../store/spots';
 
 
 import './CreateSpot.css';
+import { fetchReviews } from '../../store/reviews';
 
-function CreateSpot({  spot, formType }) {
+function CreateSpot({ spot, formType }) {
     const history = useHistory();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.session.user);
@@ -19,65 +20,102 @@ function CreateSpot({  spot, formType }) {
     const [state, setState] = useState(spot?.state);
     const [lat, setLat] = useState(spot?.lat);
     const [lng, setLng] = useState(spot?.lng);
-    const [description, setDescription] = useState(spot?.description);
+    const [description, setDescription] = useState(spot?.description );
     const [name, setName] = useState(spot?.name);
     const [price, setPrice] = useState(spot?.price);
-    const [previewImage, setPreviewImage] = useState(spot?.previewImage);
+    const [previewImage, setPreviewImage] = useState("");
     const [url1, setUrl1] = useState("");
     const [url2, setUrl2] = useState("");
     const [url3, setUrl3] = useState("");
     const [url4, setUrl4] = useState("");
     const [errors, setError] = useState({});
-    const [disabled, setDisabled] = useState(true);
-    const [className, setClassName ] = useState("disabled")
+    // const [disabled, setDisabled] = useState(true);
+    // const [className, setClassName ] = useState("disabled");
 
 
+    if (formType === "Update Form") {
+        if (user.id !== spot.ownerId) history.replace("/");
+      }
 
     // console.log('USER====>', user)
     console.log('SPOT PROP', spot)
 
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        const error = {};
+    //     const error = {};
 
-        if(!previewImage.length) {
-            error.previewImageUrl = "Preview Image is required"
-        }
+    //     if(!previewImage.length) {
+    //         error.previewImageUrl = "Preview Image is required"
+    //     }
 
-        if(!previewImage.includes(".png") &&
-           !previewImage.includes(".jpg") &&
-           !previewImage.includes(".jpeg")
-           ) {
-            error.previewImage = "Image URL must end in .png .jpg or .jpeg"
-        }
+    //     if(!previewImage.includes(".png") &&
+    //        !previewImage.includes(".jpg") &&
+    //        !previewImage.includes(".jpeg")
+    //        ) {
+    //         error.previewImage = "Image URL must end in .png .jpg or .jpeg"
+    //     }
 
-        if (!country.length) error.country = "Country is required";
-        if (!address.length) error.address = "Address is required";
-        if (!city.length) error.city = "City is required";
-        if (!state.length) error.state = "State is required";
-        if (!lat) error.lat = "Lat is requrired";
-        if (!lng) error.lng = "Longtitude is required";
-        if (description.length < 30) error.description = "Description needs a minimum of 30 or more characters";
-        if (!name.length) error.name = "Name of spot is required";
-        if (!price) error.price = "Price is required";
+    //     if (
+    //         url1 &&
+    //         (!url1.includes(".png") &&
+    //          !url1.includes(".jpg") &&
+    //          !url1.includes(".jpeg"))
+    //     ) {
+    //         error.imgUrl = "Image URL must end in .png .jpg or .jpeg"
+    //     };
 
-        if (name.length < 5) error.name = "Spot name needs a minimum of 5 characters"
-        if (isNaN(price)) error.price = "Price is invalid";
-        if (lat > 90 || lat < -90) error.lat = "Latitude must be between 90 and -90";
-        if (isNaN(lat)) error.lat = "Latitude is invalid"
-        if (lng > 180 || lng < -180) error.lng = "Longitude must be between 180 and -180";
-        if (isNaN(lng)) error.lng = "Longtitude is invalid"
+    //     if (
+    //         url2 &&
+    //         (!url2.includes(".png") &&
+    //          !url2.includes(".jpg") &&
+    //          !url2.includes(".jpeg"))
+    //     ) {
+    //         error.imgUrl = "Image URL must end in .png .jpg or .jpeg"
+    //     };
 
-        setError(error);
+    //     if (
+    //         url3 &&
+    //         (!url3.includes(".png") &&
+    //          !url3.includes(".jpg") &&
+    //          !url3.includes(".jpeg"))
+    //     ) {
+    //         error.imgUrl = "Image URL must end in .png .jpg or .jpeg"
+    //     };
+    //     if (
+    //         url4 &&
+    //         (!url4.includes(".png") &&
+    //          !url4.includes(".jpg") &&
+    //          !url4.includes(".jpeg"))
+    //     ) {
+    //         error.imgUrl = "Image URL must end in .png .jpg or .jpeg"
+    //     }
+
+    //     if (!country.length) error.country = "Country is required";
+    //     if (!address.length) error.address = "Address is required";
+    //     if (!city.length) error.city = "City is required";
+    //     if (!state.length) error.state = "State is required";
+    //     if (!lat) error.lat = "Lat is requrired";
+    //     if (!lng) error.lng = "Longtitude is required";
+    //     if (description.length < 30) error.description = "Description needs a minimum of 30 or more characters";
+    //     if (!name.length) error.name = "Name of spot is required";
+    //     if (!price) error.price = "Price is required";
+
+    //     if (name.length < 5) error.name = "Spot name needs a minimum of 5 characters"
+    //     if (isNaN(price)) error.price = "Price is invalid";
+    //     if (lat > 90 || lat < -90) error.lat = "Latitude must be between 90 and -90";
+    //     if (isNaN(lat)) error.lat = "Latitude is invalid"
+    //     if (lng > 180 || lng < -180) error.lng = "Longitude must be between 180 and -180";
+    //     if (isNaN(lng)) error.lng = "Longtitude is invalid"
+
+    //     setError(error);
 
 
-        if (Object.keys(errors).length < 1) {
-            setDisabled(false)
-            setClassName("createFormBtn")
-         }
-
-    }, [country, address, city, state, lat, lng, description, name, price, previewImage]);
+    //     // if (!Object.keys(errors).length) {
+    //     //     setDisabled(false)
+    //     //     setClassName("createFormBtn")
+    //     //  }
+    // }, [country, address, city, state, lat, lng, description, name, price, previewImage]);
 
 
     if(!user) {
@@ -93,6 +131,8 @@ function CreateSpot({  spot, formType }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const error = {};
+
 
     const spotImages = [
         {
@@ -112,10 +152,14 @@ function CreateSpot({  spot, formType }) {
                 spotImages.push({
                     url: "https://media.istockphoto.com/id/1145840259/vector/home-flat-icon-pixel-perfect-for-mobile-and-web.jpg?s=612x612&w=0&k=20&c=2DWK30S50TbctWwccYw5b-uR6EAksv1n4L_aoatjM9Q=",
                     preview: false
-                })
+                });
             }
     });
     console.log('spotImages', spotImages)
+
+
+    console.log('AFTER SPREAD', spot)
+
 
     spot = {
         ...spot,
@@ -132,38 +176,99 @@ function CreateSpot({  spot, formType }) {
             previewImage,
     }
 
-    console.log('AFTER SPREAD', spot)
+
+    if(!previewImage.length) {
+        error.previewImageUrl = "Preview Image is required"
+    }
+
+    if(!previewImage.includes(".png") &&
+       !previewImage.includes(".jpg") &&
+       !previewImage.includes(".jpeg")
+       ) {
+        error.previewImage = "Image URL must end in .png .jpg or .jpeg"
+    }
+
+    if (
+        url1 &&
+        (!url1.includes(".png") &&
+         !url1.includes(".jpg") &&
+         !url1.includes(".jpeg"))
+    ) {
+        error.imgUrl = "Image URL must end in .png .jpg or .jpeg"
+    };
+
+    if (
+        url2 &&
+        (!url2.includes(".png") &&
+         !url2.includes(".jpg") &&
+         !url2.includes(".jpeg"))
+    ) {
+        error.imgUrl = "Image URL must end in .png .jpg or .jpeg"
+    };
+
+    if (
+        url3 &&
+        (!url3.includes(".png") &&
+         !url3.includes(".jpg") &&
+         !url3.includes(".jpeg"))
+    ) {
+        error.imgUrl = "Image URL must end in .png .jpg or .jpeg"
+    };
+    if (
+        url4 &&
+        (!url4.includes(".png") &&
+         !url4.includes(".jpg") &&
+         !url4.includes(".jpeg"))
+    ) {
+        error.imgUrl = "Image URL must end in .png .jpg or .jpeg"
+    }
+
+    if (!country.length) error.country = "Country is required";
+    if (!address.length) error.address = "Address is required";
+    if (!city.length) error.city = "City is required";
+    if (!state.length) error.state = "State is required";
+    if (!lat) error.lat = "Latitude is requried";
+    if (!lng) error.lng = "Longtitude is required";
+    if (description.length < 30) error.description = "Description needs a minimum of 30 or more characters";
+    if (!name.length) error.name = "Name of spot is required";
+    if (!price) error.price = "Price is required";
+
+    if (name.length < 5) error.name = "Spot name needs a minimum of 5 characters"
+    if (isNaN(price)) error.price = "Price is invalid";
+    if (lat > 90 || lat < -90) error.lat = "Latitude must be between 90 and -90";
+    if (isNaN(lat)) error.lat = "Latitude is invalid"
+    if (lng > 180 || lng < -180) error.lng = "Longitude must be between 180 and -180";
+    if (isNaN(lng)) error.lng = "Longtitude is invalid"
 
 
-        if (!(Object.values(errors).length) && formType === "Create Form") {
+        if (!(Object.keys(error).length) && formType === "Create Form") {
             const res = await dispatch(fetchCreateSpot(spot));
 
-            if (!res.errors) {
+            // if (!res.errors) {
                 await dispatch(fetchAddImage(res.id, spotImages));
                 history.push(`/spots/${res.id}`);
-            }else {
-                setError(res.errors)
-            }
+            // }else {
+            //     setError(res.errors)
+            // }
 
         }
 
         if (formType === "Update Form") {
             delete errors.previewImage;
+            delete errors.imgUrl
 
-            if (!(Object.values(errors).length) && formType === "Update Form") {
-                await dispatch(fetchEditSpot(spot, user.id));
-
-                history.push(`/spots/${spot.id}`)
+            if (!(Object.keys(error).length) && formType === "Update Form") {
+                 const res=  await dispatch(fetchEditSpot(spot, user.id));
+                 history.push(`/spots/${res.id}`)
             }
         };
 
 
-        setError({});
+        setError(error);
 
     };
 
     return (
-        <>
             <div className="mainCreateSpotContianer">
                 <form onSubmit={handleSubmit} className="createSpotForm">
                     <div id="mainTitle">
@@ -204,7 +309,7 @@ function CreateSpot({  spot, formType }) {
                         value={state} onChange={(e) => setState(e.target.value)} />
                         {errors.state && <p className="errors">{errors.state}</p>}
 
-                        <label className="createFormLabel">Lat</label>
+                        <label className="createFormLabel">Latitude</label>
                         <input
                         className="createFormInput"
                         placeholder="Lat"
@@ -212,7 +317,7 @@ function CreateSpot({  spot, formType }) {
                         {errors.lat && <p className="errors">{errors.lat}</p>}
 
 
-                        <label className="createFormLabel">Lng</label>
+                        <label className="createFormLabel">Longitude</label>
                         <input
                         className="createFormInput"
                         placeholder="Longtitude"
@@ -262,46 +367,50 @@ function CreateSpot({  spot, formType }) {
                          {errors.price && <p className="errors">{errors.price}</p>}
 
                     </div>
+                        {formType === "Create Form" && (
+                        <div className='groupInput'>
+                            <label className="setUrl createFormLabel">Liven up your spot with photos</label>
+                            <p className='descriptionText'>Catch guests attention with a spot title that highlights what makes your place special</p>
+                            <input className="createFormInput"
+                            type="text"
+                            placeholder='Preview Image URL'
+                            value={previewImage}
+                            onChange={(e) => setPreviewImage(e.target.value)}/>
+                            {errors.previewImage && <p className="errors">{errors.previewImage}</p>}
 
-                    <div className='groupInput'>
-                        <label className="setUrl createFormLabel">Liven up your spot with photos</label>
-                        <p className='descriptionText'>Catch guests attention with a spot title that highlights what makes your place special</p>
-                        <input className="createFormInput"
-                        type="text"
-                        placeholder='Preview Image URL'
-                        value={previewImage}
-                        onChange={(e) => setPreviewImage(e.target.value)}/>
-                        {errors.previewImage && <p className="errors">{errors.previewImage}</p>}
 
-                        <input
-                        className="createFormInput"
-                        type="text"
-                        placeholder='Image URL'
-                        value={url1} onChange={(e) => setUrl1(e.target.value)}/>
+                            <input
+                            className="createFormInput"
+                            type="text"
+                            placeholder='Image URL'
+                            value={url1} onChange={(e) => setUrl1(e.target.value)}/>
+                            {errors.imgUrl && <p className='errors'>{errors.imgUrl}</p>}
 
-                        <input
-                        className="createFormInput"
-                        type="text"
-                        placeholder='Image URL'
-                        value={url2} onChange={(e) => setUrl2(e.target.value)}/>
+                            <input
+                            className="createFormInput"
+                            type="text"
+                            placeholder='Image URL'
+                            value={url2} onChange={(e) => setUrl2(e.target.value)}/>
+                            {errors.imgUrl && <p className='errors'>{errors.imgUrl}</p>}
 
-                        <input
-                        className="createFormInput" type="text"
-                        placeholder='Image URL'
-                        value={url3} onChange={(e) => setUrl3(e.target.value)}/>
+                            <input
+                            className="createFormInput" type="text"
+                            placeholder='Image URL'
+                            value={url3} onChange={(e) => setUrl3(e.target.value)}/>
+                            {errors.imgUrl && <p className='errors'>{errors.imgUrl}</p>}
 
-                        <input
-                        className="createFormInput"
-                        type="text"
-                        placeholder='Image URL'
-                        value={url4} onChange={(e) => setUrl4(e.target.value)}/>
+                            <input
+                            className="createFormInput"
+                            type="text"
+                            placeholder='Image URL'
+                            value={url4} onChange={(e) => setUrl4(e.target.value)}/>
+                            {errors.imgUrl && <p className='errors'>{errors.imgUrl}</p>}
 
-                    </div>
-
-                     <button className={`${className}`} type="submit" disabled={disabled}>{formType}</button>
+                        </div>
+                        )}
+                     <button className="createFormBtn" type="submit" >{formType}</button>
                 </form>
             </div>
-        </>
     );
 }
 
