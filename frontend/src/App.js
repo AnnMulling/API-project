@@ -7,7 +7,7 @@ import SpotDetail from "./components/SingleSpotDetail"
 import * as sessionActions from "./store/session";
 import EditSpotForm from "./components/CreateSpotForm/EditForm";
 import CreateSpot from "./components/CreateSpotForm";
-import CreateSpotForm from "./components/CreateSpotForm/CreateForm";
+//import CreateSpotForm from "./components/CreateSpotForm/CreateForm";
 import ManageSpot from "./components/ManageSpot/ManangeSpot";
 
 
@@ -24,28 +24,29 @@ function App() {
   return (
     <>
     <Navigation isLoaded={isLoaded} />
-
     {isLoaded && (
     <Switch>
-        <Route exact path="/">
-          <HomePage />
-        </Route>
-        <Route path="/spots/new">
-          <CreateSpotForm />
-        </Route>
-        <Route path="/spots/current">
-          <ManageSpot />
-        </Route>
-        <Route path="/spots/:spotId/edit">
-          <EditSpotForm />
-        </Route>
-        <Route path="/spots/:spotId">
-          <SpotDetail />
-        </Route>
-        <Route>
-          <h1>404 Page Not Found</h1>
-        </Route>
-    </Switch>)}
+      <Route exact path="/">
+        <HomePage />
+      </Route>
+      <Route path="/spots/new">
+        <CreateSpot />
+      </Route>
+      <Route path="/spots/current">
+        <ManageSpot />
+      </Route>
+      <Route path="/spots/:spotId/edit">
+        <EditSpotForm />
+      </Route>
+      <Route path="/spots/:spotId">
+        <SpotDetail />
+      </Route>
+      <Route>
+        <h1>404 Page Not Found</h1>
+      </Route>
+    </Switch>
+
+    )}
     </>
   );
 }

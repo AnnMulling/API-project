@@ -42,15 +42,10 @@ function SpotDetail () {
 
     };
 
-
-    console.log('SPOT detail', spot)
-
     const spotImages = spot.SpotImages;
-    console.log('IMAGE', spotImages)
 
     if (!spotImages) return null;
 
-    // console.log('PREVIEW', previewImage.url)
 
     const handleReserve = (e) => {
         e.preventDefault();
@@ -58,20 +53,22 @@ function SpotDetail () {
         alert("Feature coming soon");
     };
 
-    if (spot.SpotImages.length < 5) {
-        for (let i = spot.SpotImages.length; i < 5 ; i++) {
+    if (spotImages.length < 5) {
+        for (let i = spotImages.length; i < 5 ; i++) {
             const img = {
                 id: i + 1 ,
                 url: "https://www.distefanosales.com/wp-content/uploads/2023/08/image-coming-soon-placeholder.png",
                 preview: false
             }
-            spot.SpotImages.push(img)
+            spotImages.push(img)
         }
     };
 
-   let previewImage = spotImages.find(img => img.preview === true)
+
 
     const price = parseFloat(spot.price);
+
+    let previewImage = spotImages.find(img => img.preview === true)
 
     return  (
         <>
@@ -85,7 +82,7 @@ function SpotDetail () {
                      <div className='groupImage'>
                         {spotImages.map(img => (
                          img.preview === false ? (
-                        <div key={img.id}><img className="smallImg"  src={img.url} alt={`Spot ${img.id}`} /></div>
+                        <div><img className="smallImg" key={img.id} src={img.url} alt={`Spot ${img.id}`} /></div>
                         ) : null
                         ))}
                     </div>

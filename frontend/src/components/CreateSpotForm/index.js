@@ -3,26 +3,27 @@ import { useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 
-import { fetchCreateSpot, fetchEditSpot, fetchAddImage, fetchSpotDetail } from '../../store/spots';
+import { fetchCreateSpot, fetchEditSpot, fetchAddImage } from '../../store/spots';
 
 
 import './CreateSpot.css';
-import { fetchReviews } from '../../store/reviews';
 
-function CreateSpot({ spot, formType }) {
+
+function CreateSpot({ formType = "Create Form", spot }) {
     const history = useHistory();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.session.user);
 
-    const [country, setCountry] = useState(spot?.country);
-    const [address, setAddress] = useState(spot?.address);
-    const [city, setCity] = useState(spot?.city);
-    const [state, setState] = useState(spot?.state);
-    const [lat, setLat] = useState(spot?.lat);
-    const [lng, setLng] = useState(spot?.lng);
-    const [description, setDescription] = useState(spot?.description );
-    const [name, setName] = useState(spot?.name);
-    const [price, setPrice] = useState(spot?.price);
+    const [country, setCountry] = useState(formType === "Update Form" ? spot.country : "");
+    const [address, setAddress] = useState(formType === "Update Form" ? spot.address: "");
+    const [city, setCity] = useState(formType === "Update Form" ? spot.city : "");
+    const [state, setState] = useState(formType === "Update Form" ? spot.state : "");
+    const [lat, setLat] = useState(formType === "Update Form" ? spot.lat : "");
+    const [lng, setLng] = useState(formType === "Update Form" ? spot.lng : "");
+    const [description, setDescription] = useState(formType === "Update Form" ? spot.description : "");
+    const [name, setName] = useState(formType === "Update Form" ? spot.name : "");
+    const [price, setPrice] = useState(formType === "Update Form" ? spot.price : "");
+
     const [previewImage, setPreviewImage] = useState("");
     const [url1, setUrl1] = useState("");
     const [url2, setUrl2] = useState("");
@@ -161,8 +162,8 @@ function CreateSpot({ spot, formType }) {
     console.log('AFTER SPREAD', spot)
 
 
-    spot = {
-        ...spot,
+    const spotInfo = {
+        // ...spot,
             ownerId: user.id,
             address,
             country,
@@ -173,7 +174,6 @@ function CreateSpot({ spot, formType }) {
             description,
             name,
             price,
-            previewImage,
     }
 
 
@@ -241,8 +241,8 @@ function CreateSpot({ spot, formType }) {
     if (isNaN(lng)) error.lng = "Longtitude is invalid"
 
 
-        if (!(Object.keys(error).length) && formType === "Create Form") {
-            const res = await dispatch(fetchCreateSpot(spot));
+        if (!Object.keys(error).length && formType === "Create Form") {
+            const res = await dispatch(fetchCreateSpot(spotInfo));
 
             // if (!res.errors) {
                 await dispatch(fetchAddImage(res.id, spotImages));
@@ -257,8 +257,8 @@ function CreateSpot({ spot, formType }) {
             delete errors.previewImage;
             delete errors.imgUrl
 
-            if (!(Object.keys(error).length) && formType === "Update Form") {
-                 const res=  await dispatch(fetchEditSpot(spot, user.id));
+            if (!Object.keys(errors).length && formType === "Update Form") {
+                 const res=  await dispatch(fetchEditSpot(spot.id, spotInfo));
                  history.push(`/spots/${res.id}`)
             }
         };
@@ -377,7 +377,6 @@ function CreateSpot({ spot, formType }) {
                             value={previewImage}
                             onChange={(e) => setPreviewImage(e.target.value)}/>
                             {errors.previewImage && <p className="errors">{errors.previewImage}</p>}
-
 
                             <input
                             className="createFormInput"

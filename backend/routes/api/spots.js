@@ -505,7 +505,7 @@ router.put('/:spotId', [ requireAuth, reqAuthSpot, validateSpot ], async(req, re
     // if (spot.ownerId !== user.id) {
     //     res.status(403)
     //     res.json({
-    //         message: "Unauthorized Not Allow"
+    //         message: "Forbidden"
     //     })
     // }
 
