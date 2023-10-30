@@ -14,6 +14,9 @@ function SpotDetail () {
     const dispatch = useDispatch();
     //const [ previewImage, setPreviewImage ] = useState(spotImages.find(img => img.preview === true))
     const [ errors, setErrors ] = useState({});
+   
+
+
 
 
     useEffect(() => {
@@ -35,7 +38,7 @@ function SpotDetail () {
 
     }, [dispatch])
 
-
+    if (!spot?.Owner) return null;
 
     if (!spot) {
         return <h1 style={{marginLeft:"10%", color:"grey"}}>404 Page Not Found</h1>

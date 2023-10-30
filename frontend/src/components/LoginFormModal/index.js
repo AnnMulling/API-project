@@ -7,26 +7,29 @@ import "./LoginForm.css";
 function LoginFormModal() {
   console.log('loginform ')
   const dispatch = useDispatch();
+  const { closeModal } = useModal();
   const [credential, setCredential] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
-  const [disabled, setDisabled] = useState(true);
-  const [className, setClassName ] = useState("disabledLogin")
-  const { closeModal } = useModal();
+  // const [disabled, setDisabled] = useState(true);
+  // const [className, setClassName ] = useState("disabledLogin")
+  const disabled = credential.length < 4 || password.length < 6;
+  const className = disabled ? "disabledLogin" : "loginBtn";
 
-  useEffect(() => {
 
-    if (credential.length >= 4 || password.length >= 4) {
-      setDisabled(false)
-      setClassName("loginBtn")
-    }
+  // useEffect(() => {
 
-    if (Object.keys(errors).length > 0) {
-      setDisabled(true)
-      setClassName("disabledLogin")
-     }
+  //   if (credential.length >= 4 || password.length >= 4) {
+  //     setDisabled(false)
+  //     setClassName("loginBtn")
+  //   }
 
-  }, [credential, password, errors])
+  //   if (Object.keys(errors).length > 0) {
+  //     setDisabled(true)
+  //     setClassName("disabledLogin")
+  //    }
+
+  // }, [credential, password, errors])
 
   const handleSubmit = (e) => {
 
