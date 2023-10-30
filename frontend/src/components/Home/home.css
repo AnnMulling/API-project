@@ -18,9 +18,13 @@
 
 .spotDetail {
     display: flex;
-    gap: 55%;
+    gap: 40%;
     font-family: 'Manrope', sans-serif;
 
+}
+
+.spotDetail > * {
+    margin-bottom: 10px;
 }
 
 .spotImg{

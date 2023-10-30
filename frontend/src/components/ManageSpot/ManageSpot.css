@@ -31,7 +31,7 @@
     display: flex;
     /* justify-content: space-around; */
     flex-wrap: wrap;
-    gap: 50%;
+    gap: 40%;
     row-gap: 10px;
     font-family: 'Manrope', sans-serif;
     margin-bottom: 20px;
