@@ -1,26 +1,26 @@
-import CreateSpot from "./index";
+// import CreateSpot from "./index";
 
-const CreateSpotForm = () => {
+// const CreateSpotForm = () => {
 
-   const spot = {
-        ownerId: '',
-        address: '',
-        country: '',
-        city: '',
-        lat: '',
-        lng: '',
-        state: '',
-        description: '',
-        name: '',
-        price: '',
-        previewImage: ''
-    };
+//    const spot = {
+//         ownerId: '',
+//         address: '',
+//         country: '',
+//         city: '',
+//         lat: '',
+//         lng: '',
+//         state: '',
+//         description: '',
+//         name: '',
+//         price: '',
+//         previewImage: ''
+//     };
 
-    return (
-        <>
-            <CreateSpot spot={spot} formType="Create Form" />
-        </>
-    )
-}
+//     return (
+//         <>
+//             <CreateSpot spot={spot} formType="Create Form" />
+//         </>
+//     )
+// }
 
-export default CreateSpotForm;
+// export default CreateSpotForm;
