@@ -9,20 +9,20 @@ import { fetchCreateSpot, fetchEditSpot, fetchAddImage } from '../../store/spots
 import './CreateSpot.css';
 
 
-function CreateSpot({ formType = "Create Form", spot }) {
+function CreateSpot({ formType = "Create Spot", spot }) {
     const history = useHistory();
     const dispatch = useDispatch();
     const user = useSelector((state) => state.session.user);
 
-    const [country, setCountry] = useState(formType === "Update Form" ? spot.country : "");
-    const [address, setAddress] = useState(formType === "Update Form" ? spot.address: "");
-    const [city, setCity] = useState(formType === "Update Form" ? spot.city : "");
-    const [state, setState] = useState(formType === "Update Form" ? spot.state : "");
-    const [lat, setLat] = useState(formType === "Update Form" ? spot.lat : "");
-    const [lng, setLng] = useState(formType === "Update Form" ? spot.lng : "");
-    const [description, setDescription] = useState(formType === "Update Form" ? spot.description : "");
-    const [name, setName] = useState(formType === "Update Form" ? spot.name : "");
-    const [price, setPrice] = useState(formType === "Update Form" ? spot.price : "");
+    const [country, setCountry] = useState(formType === "Update Spot" ? spot.country : "");
+    const [address, setAddress] = useState(formType === "Update Spot" ? spot.address: "");
+    const [city, setCity] = useState(formType === "Update Spot" ? spot.city : "");
+    const [state, setState] = useState(formType === "Update Spot" ? spot.state : "");
+    const [lat, setLat] = useState(formType === "Update Spot" ? spot.lat : "");
+    const [lng, setLng] = useState(formType === "Update Spot" ? spot.lng : "");
+    const [description, setDescription] = useState(formType === "Update Spot" ? spot.description : "");
+    const [name, setName] = useState(formType === "Update Spot" ? spot.name : "");
+    const [price, setPrice] = useState(formType === "Update Spot" ? spot.price : "");
 
     const [previewImage, setPreviewImage] = useState("");
     const [url1, setUrl1] = useState("");
@@ -34,7 +34,7 @@ function CreateSpot({ formType = "Create Form", spot }) {
     // const [className, setClassName ] = useState("disabled");
 
 
-    if (formType === "Update Form") {
+    if (formType === "Update Spot") {
         if (user.id !== spot.ownerId) history.replace("/");
       }
 
@@ -241,7 +241,7 @@ function CreateSpot({ formType = "Create Form", spot }) {
     if (isNaN(lng)) error.lng = "Longtitude is invalid"
 
 
-        if (!Object.keys(error).length && formType === "Create Form") {
+        if (!Object.keys(error).length && formType === "Create Spot") {
             const res = await dispatch(fetchCreateSpot(spotInfo));
 
             // if (!res.errors) {
@@ -253,11 +253,11 @@ function CreateSpot({ formType = "Create Form", spot }) {
 
         }
 
-        if (formType === "Update Form") {
+        if (formType === "Update Spot") {
             delete errors.previewImage;
             delete errors.imgUrl
 
-            if (!Object.keys(errors).length && formType === "Update Form") {
+            if (!Object.keys(errors).length && formType === "Update Spot") {
                  const res=  await dispatch(fetchEditSpot(spot.id, spotInfo));
                  history.push(`/spots/${res.id}`)
             }
@@ -272,7 +272,7 @@ function CreateSpot({ formType = "Create Form", spot }) {
             <div className="mainCreateSpotContianer">
                 <form onSubmit={handleSubmit} className="createSpotForm">
                     <div id="mainTitle">
-                        {formType === "Create Form" ? (
+                        {formType === "Create Spot" ? (
                         <h1>Create a new Spot</h1>) : (
                          <h1>Update your Spot</h1>
                         )}
@@ -367,7 +367,7 @@ function CreateSpot({ formType = "Create Form", spot }) {
                          {errors.price && <p className="errors">{errors.price}</p>}
 
                     </div>
-                        {formType === "Create Form" && (
+                        {formType === "Create Spot" && (
                         <div className='groupInput'>
                             <label className="setUrl createFormLabel">Liven up your spot with photos</label>
                             <p className='descriptionText'>Catch guests attention with a spot title that highlights what makes your place special</p>
