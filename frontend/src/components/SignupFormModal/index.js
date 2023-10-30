@@ -13,27 +13,37 @@ function SignupFormModal() {
   const [lastName, setLastName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [disabled, setDisabled] = useState(true);
-  const [className, setClassName ] = useState("disabled")
+  // const [disabled, setDisabled] = useState(true);
+  // const [className, setClassName ] = useState("disabled")
   const [errors, setErrors] = useState({});
   const { closeModal } = useModal();
 
- useEffect(() => {
-    // const error = {}
-    if (email && username && firstName && lastName && password && confirmPassword !== ''){
-       setDisabled(false);
-       setClassName("signupBtn");
-    }
-
-    if (Object.keys(errors).length > 0) {
-        setDisabled(true)
-        setClassName("disabled")
-     }
-
-    //  if (!email.length)
+  const disabled = username.length < 4 || password.length < 6
+  const className = disabled ? "disabled" : "signupBtn"
 
 
-}, [email, username, firstName, lastName, password, confirmPassword, errors])
+//  useEffect(() => {
+//     // const error = {}
+//     if (email &&
+//         username &&
+//         firstName &&
+//         lastName &&
+//         password && confirmPassword !== '' ){
+//        setDisabled(false);
+//        setClassName("signupBtn");
+//     }
+
+
+
+//     if (Object.keys(errors).length > 0) {
+//         setDisabled(true)
+//         setClassName("disabled")
+//      }
+
+//     //  if (!email.length)
+
+
+// }, [email, username, firstName, lastName, password, confirmPassword, errors])
 
 
 
@@ -147,7 +157,7 @@ function SignupFormModal() {
         {errors.confirmPassword && (
           <p className="errors">{errors.confirmPassword}</p>
         )}
-        <button type="submit" className={`${className} signupBtn`} disabled={disabled}>Sign Up</button>
+        <button type="submit" className={className} disabled={disabled}>Sign Up</button>
       </form>
     </>
   );
