@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchSpots } from '../../store/spots';
 
@@ -7,6 +7,7 @@ import './home.css';
 
 
 export default function HomePage () {
+    // const history = useHistory();
     const dispatch = useDispatch();
     const spotState = (useSelector(state => state.spots))
     const spots = Object.values(spotState);
@@ -22,9 +23,9 @@ export default function HomePage () {
 
     // const price = parseFloat(spot.price)
 
+
     return(
         <>
-
           <h1>home page</h1>
           <div className='mainContainer'>
             {spots.map((spot) =>

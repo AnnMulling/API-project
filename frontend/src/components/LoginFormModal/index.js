@@ -50,13 +50,18 @@ function LoginFormModal() {
       });
   };
 
-  const demoLogin = (e) => {
-    e.preventDefault();
+  // const demoLogin = (e) => {
+  //   e.preventDefault();
 
-    return dispatch(sessionActions.login({
-      credential: 'user6',
-      password: 'password6'
-    })).then(closeModal);
+  //   return dispatch(sessionActions.login({
+  //     credential: 'user6',
+  //     password: 'password6'
+  //   })).then(closeModal);
+  // }
+
+  const demoLogin = () => {
+    setCredential("user6@user.io");
+    setPassword("password6");
   }
 
   return (
