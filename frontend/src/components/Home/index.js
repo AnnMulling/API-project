@@ -26,7 +26,7 @@ export default function HomePage () {
 
     return(
         <>
-          <h1>home page</h1>
+          {/* <h1>home page</h1> */}
           <div className='mainContainer'>
             {spots.map((spot) =>
                 <Link to={`/spots/${spot.id}`} className="spotDetailLink">
