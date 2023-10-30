@@ -17,29 +17,39 @@ function CreateReviewModal({ spot }) {
     const [ starRate, setStarRate ] = useState(null);
     const [ hover, setHover ] = useState(null)
     const [ error, setError ] = useState({});
-    const [ disabled, setDisabled ] = useState(true);
-    const [ className, setClassName ] = useState("disabled");
+    // const [ disabled, setDisabled ] = useState(true);
+    // const [ className, setClassName ] = useState("disabled");
+    const disabled = message.length < 10 || starRate < 1;
+    const className = disabled ? "disabled" : "submitReviewBtn"
 
     console.log('USER', user);
 
-    useEffect(() => {
-        const error = {}
+    // useEffect(() => {
+        // const error = {}
 
-        if (starRate < 1) error.starRate =  "Please select stars"
-        if (message.length < 10) error.message = "Review must be atleast 10 character"
-        if (message.length > 255) error.message = "Review must be shorter than 255 characters"
+        // if (starRate < 1) error.starRate =  "Please select stars"
+        // if (message.length < 10) error.message = "Review must be at least 10 character"
+        // if (message.length > 255) error.message = "Review must be shorter than 255 characters"
 
 
-        if (!Object.keys(error).length) {
-            setDisabled(false)
-            setClassName("submitReviewBtn")
-        }
-        setError(error)
+        // if (!Object.keys(error).length) {
+        //     setDisabled(false)
+        //     setClassName("submitReviewBtn")
+        // }
+        // setError(error)
 
-    },[message, starRate]);
+    // },[message, starRate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const error = {}
+
+        if (starRate < 1) error.starRate =  "Please select stars"
+        if (message.length < 10) error.message = "Review must be at least 10 character"
+        if (message.length > 255) error.message = "Review must be shorter than 255 characters"
+
+
+        setError(error)
 
         const review = {
             review: message,

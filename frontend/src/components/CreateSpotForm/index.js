@@ -312,7 +312,7 @@ function CreateSpot({ formType = "Create Spot", spot }) {
                         <label className="createFormLabel">Latitude</label>
                         <input
                         className="createFormInput"
-                        placeholder="Lat"
+                        placeholder="Latitude"
                         value={lat} onChange={(e) => setLat(e.target.value)} />
                         {errors.lat && <p className="errors">{errors.lat}</p>}
 
