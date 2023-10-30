@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchSpotDetail } from '../../store/spots';
 
@@ -9,13 +9,14 @@ import './SingleSpot.css'
 import AllReviews from './reviews';
 
 function SpotDetail () {
+    const history = useHistory();
     const { spotId } = useParams();
     const spot = useSelector((state) => state.spots[spotId]);
     const dispatch = useDispatch();
     //const [ previewImage, setPreviewImage ] = useState(spotImages.find(img => img.preview === true))
     const [ errors, setErrors ] = useState({});
-   
-
+    const user = useSelector((state) => state.session.user);
+    console.log('USER', user)
 
 
 
@@ -36,17 +37,25 @@ function SpotDetail () {
 
         res()
 
+
+
     }, [dispatch])
 
+    // if (!user) {
+    //     history.replace("/")
+    //     return
+    // };
+
     if (!spot?.Owner) return null;
+
 
     if (!spot) {
         return <h1 style={{marginLeft:"10%", color:"grey"}}>404 Page Not Found</h1>
 
     };
 
-    const spotImages = spot.SpotImages;
 
+    const spotImages = spot.SpotImages;
     if (!spotImages) return null;
 
 
