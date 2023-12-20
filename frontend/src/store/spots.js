@@ -178,9 +178,6 @@ export const fetchEditSpot = (spotId, spotInfo) => async (dispatch) => {
         const response = await csrfFetch(`/api/spots/${spotId}`, {
             method: 'PUT',
             body: JSON.stringify(spotInfo),
-            // user: {
-            //     id: userId
-            // }
 
           });
 

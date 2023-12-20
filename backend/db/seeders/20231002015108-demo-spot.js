@@ -94,14 +94,25 @@ module.exports = {
         description: "Private Luxury Guesthouse with Romantic Patio",
         price: 123
       },
+      {
+        ownerId: 3,
+        address: " Paw Paw Ave ",
+        city: 'Las Vegas',
+        state: 'Ohio',
+        country: 'USA',
+        lat: 34.67582948,
+        lng: -134.94573199,
+        name: "Entire-Guesthouse",
+        description: "Private Peacful Cottage",
+        price: 145
+
+      }
     ], {validate: true})
   },
 
   async down (queryInterface, Sequelize) {
     options.tableName = 'Spots'
     const Op = Sequelize.Op;
-    return queryInterface.bulkDelete(options, {
-      name: { [Op.in]: ['Cottage', 'Tiny-home', 'Entire-Condo', 'Entire home', 'Entire-Cabin', 'Entire-House', 'Entire-Guesthouse' ] }
-    }, {})
+    return await queryInterface.bulkDelete('Spots', null, {});
   }
 };

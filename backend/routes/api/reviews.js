@@ -7,7 +7,7 @@ const { reqAuthReview  } = require('../../utils/validation-reqAuth');
 const { validateReview } = require('../../utils/validation-review');
 
 
-//Add an Image to a Review bashed on the Review's id
+//Add an Image to a Review based on the Review's id
 router.post('/:reviewId/images', [ requireAuth , reqAuthReview ], async ( req, res ) => {
     const { url } = req.body;
     const { reviewId } = req.params;

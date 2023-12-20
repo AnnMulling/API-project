@@ -13,45 +13,50 @@ module.exports = {
     {
 
       spotId: 1,
-      url: 'https://hips.hearstapps.com/hmg-prod/images/unique-thatched-cottage-for-sale-64070369c2812.jpg?crop=0.8888888888888888xw:1xh;center,top&resize=1200:*',
+      url: 'https://images.unsplash.com/photo-1523217582562-09d0def993a6?q=80&w=2960&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       preview: true,
     },
     {
 
       spotId: 2,
-      url: 'https://cdn.houseplansservices.com/content/7tl37sj1js99tigr6gbr3pvg6n/w575.jpg?v=9',
+      url: 'https://images.unsplash.com/photo-1568605114967-8130f3a36994?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       preview: true,
     },
     {
 
       spotId: 3,
-      url: 'https://i0.wp.com/i.pinimg.com/originals/cc/c1/c5/ccc1c5c5d52a2dbc1be00ccb81268e08.jpg?resize=650,400',
+      url: 'https://images.unsplash.com/photo-1583608205776-bfd35f0d9f83?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       preview: true,
     },
     {
 
       spotId: 4,
-      url: 'https://a0.muscache.com/im/pictures/ffb001b7-92a3-413f-ae51-e5b2c1df5580.jpg?im_w=720',
+      url: 'https://images.unsplash.com/photo-1575517111478-7f6afd0973db?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       preview: true,
     },
     {
 
       spotId: 5,
-      url: 'https://a0.muscache.com/im/pictures/ebaabed4-751d-49f5-95bd-254374d84145.jpg?im_w=960',
+      url: 'https://images.unsplash.com/photo-1598228723793-52759bba239c?q=80&w=2874&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       preview: true,
     },
     {
 
       spotId: 6,
-      url: 'https://www.wisdells.com/Files/Partner-Images/Accomm-Partner-Images/LakeDeltonWaterfrontVillas_1.jpg?Large',
+      url: 'https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       preview: true,
     },
     {
 
       spotId: 7,
-      url: 'https://tomlencustomhomes.com/wp-content/uploads/2021/04/Design-the-Ultimate-Luxury-Backyard-for-Your-Family14.jpg',
+      url: 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?q=80&w=2940&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
       preview: true,
     },
+    {
+      spotId: 8,
+      url: 'https://images.unsplash.com/photo-1520190282873-afe1285c9a2a?q=80&w=3006&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
+      preview: true,
+    }
 
     ] ,{ validate : true})
 
@@ -60,17 +65,6 @@ module.exports = {
   async down (queryInterface, Sequelize) {
     options.tableName = 'SpotImages';
     const Op = Sequelize.Op;
-    return queryInterface.bulkDelete(options, {url: {[Op.in]:
-
-      ['https://hips.hearstapps.com/hmg-prod/images/unique-thatched-cottage-for-sale-64070369c2812.jpg?crop=0.8888888888888888xw:1xh;center,top&resize=1200:*',
-        'https://cdn.houseplansservices.com/content/7tl37sj1js99tigr6gbr3pvg6n/w575.jpg?v=9',
-        'https://i0.wp.com/i.pinimg.com/originals/cc/c1/c5/ccc1c5c5d52a2dbc1be00ccb81268e08.jpg?resize=650,400',
-        'https://a0.muscache.com/im/pictures/ffb001b7-92a3-413f-ae51-e5b2c1df5580.jpg?im_w=720',
-        'https://a0.muscache.com/im/pictures/ebaabed4-751d-49f5-95bd-254374d84145.jpg?im_w=960',
-        'https://www.wisdells.com/Files/Partner-Images/Accomm-Partner-Images/LakeDeltonWaterfrontVillas_1.jpg?Large',
-        'https://tomlencustomhomes.com/wp-content/uploads/2021/04/Design-the-Ultimate-Luxury-Backyard-for-Your-Family14.jpg'
-      ]
-    }}
-    , {})
+    return await queryInterface.bulkDelete('SpotImages', null, {});
   }
 };
