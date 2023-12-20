@@ -27,3 +27,25 @@ https://api-aribnb-project.onrender.com
   <img src="https://img.shields.io/badge/Render-%46E3B7.svg?style=for-the-badge&logo=render&logoColor=white" alt="badge"/>
 </div>
 
+<div id="details">
+<h1>Landing Page</h1>
+  <img width="555" alt="Screenshot 2023-12-20 at 7 13 18 AM" src="https://github.com/AnnMulling/API-project/assets/105256768/f1a46311-4eea-4877-baa1-fa6fabfcb9ad">
+<h1>Spot Detail Page</h1>
+  <img width="555" alt="Screenshot 2023-12-20 at 7 15 41 AM" src="https://github.com/AnnMulling/API-project/assets/105256768/c72aa279-7256-499c-9da4-bfec65166b9c">
+<h1>Form Page</h1>
+  <img width="555" alt="Screenshot 2023-12-20 at 7 16 54 AM" src="https://github.com/AnnMulling/API-project/assets/105256768/2f4e1245-49d3-454f-bdf6-6fd42bef1bc6">
+<h1>Manage Spot Page</h1>
+  <img width="513" alt="Screenshot 2023-12-20 at 7 18 22 AM" src="https://github.com/AnnMulling/API-project/assets/105256768/ec2774f8-9fe7-4a97-81e5-1147a9665b49">
+</div>
+
+# Feature Implementation Goal
+1. Implement booking feature
+2. Integrate Google Map
+3. Integrate Goole Sign-in
+
+
+# Connect 
+<a href="https://www.linkedin.com/in/primpraow-m-653708227/">
+  <img src="https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white" alt="badge"/>
+</a>
+
