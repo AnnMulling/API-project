@@ -7,7 +7,8 @@ The visual design is clean, avoiding a cluttered or chaotic appearance.
 # Live Link
 https://api-aribnb-project.onrender.com
 
-# Frameworks and Libraries
+# Tech Stack
+## Frameworks and Libraries
 <div id="badges">
   <img src="https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E" alt="badge"/>
   <img src="https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB" alt="badge"/>
@@ -18,12 +19,12 @@ https://api-aribnb-project.onrender.com
   <img src="https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white" alt="badge"/>
 </div>
 
-# Database
+## Database
 <div>
   <img src="https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white" alt="badge"/>
 </div>
 
-# Hosting
+## Hosting
 <div>
   <img src="https://img.shields.io/badge/Render-%46E3B7.svg?style=for-the-badge&logo=render&logoColor=white" alt="badge"/>
 </div>
