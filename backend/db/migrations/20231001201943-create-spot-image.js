@@ -27,7 +27,7 @@ module.exports = {
       },
       preview: {
         type: Sequelize.BOOLEAN,
-        allowNull: true
+        allowNull: false
       },
       createdAt: {
         allowNull: false,

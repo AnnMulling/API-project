@@ -13,12 +13,13 @@ function SpotDetail () {
     const { spotId } = useParams();
     const spot = useSelector((state) => state.spots[spotId]);
     const dispatch = useDispatch();
-    //const [ previewImage, setPreviewImage ] = useState(spotImages.find(img => img.preview === true))
     const [ errors, setErrors ] = useState({});
     const user = useSelector((state) => state.session.user);
-    console.log('USER', user)
+    const imgSpot = spot?.SpotImages
 
 
+    console.log('spot', spot)
+    console.log('imgs', imgSpot)
 
     useEffect(() => {
         const res = async () => {
@@ -69,7 +70,8 @@ function SpotDetail () {
         for (let i = spotImages.length; i < 5 ; i++) {
             const img = {
                 id: i + 1 ,
-                url: "https://www.distefanosales.com/wp-content/uploads/2023/08/image-coming-soon-placeholder.png",
+                // url: "https://www.distefanosales.com/wp-content/uploads/2023/08/image-coming-soon-placeholder.png",
+                url: imgSpot[0].url,
                 preview: false
             }
             spotImages.push(img)
